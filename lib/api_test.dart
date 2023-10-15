@@ -21,8 +21,7 @@ Future<void> handleRegister() async {
 
   if (response.statusCode == 200) {
     print(json.encode(response.data));
-  }
-  else {
+  } else {
     print(response.statusMessage);
   }
 }
@@ -46,19 +45,16 @@ Future<void> handleLogin() async {
     if (response.statusCode == 200) {
       print('verified');
       print(json.encode(response.data));
-    }
-    else {
+    } else {
       print(response.statusMessage);
     }
   } on Exception catch (e) {
     if (e is DioException) {
       if (e.response?.statusCode == 401) {
         print('You are not authorized.');
-      }
-      else if(e.response?.statusCode==404){
+      } else if (e.response?.statusCode == 404) {
         print('Email not exists');
-      }
-      else {
+      } else {
         print('An error occurred: ${e.toString()}');
       }
     } else {
@@ -67,7 +63,7 @@ Future<void> handleLogin() async {
   }
 }
 
-Future<void> getworks(int id) async {
+Future<List> getworks(int id) async {
   var dio = Dio();
   var response = await dio.request(
     'https://tceworkmanagement.azurewebsites.net/db/getworksbyid?workerid=$id',
@@ -77,13 +73,16 @@ Future<void> getworks(int id) async {
   );
 
   if (response.statusCode == 200) {
-    print(json.encode(response.data));
-  }
-  else {
+    print("++++++++++++++++++ ${response.data.runtimeType}\n");
+    print(response.data);
+    return response.data;
+  } else {
     print(response.statusMessage);
+    return [];
   }
 }
 
-void main(){
-  getworks(905595305116663809);
-}
+// void main(){
+//   int worker_id;
+//   getworks(worker_id);
+// }
