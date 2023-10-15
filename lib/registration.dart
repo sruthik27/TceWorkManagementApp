@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:work_management_app/main.dart';
 
 class RegistrationForm extends StatefulWidget {
   RegistrationForm({Key? key}) : super(key: key);
@@ -18,10 +19,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   Future<void> handleRegister() async {
     var data = {
-      'worker_name': nameController,
-      'email': emailController,
-      'phone_number': phoneController,
-      'password': passwordController,
+      'worker_name': nameController.text,
+      'email': emailController.text,
+      'phone_number': phoneController.text,
+      'password': passwordController.text,
     };
     var dio = Dio();
     var response = await dio.request(
@@ -98,9 +99,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
               child: ElevatedButton(
                 child: const Text('Register'),
                 onPressed: () {
-                  print(nameController.text);
-                  print(emailController.text);
-                  print(passwordController.text);
+                  handleRegister();
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => MyHomePage(title: 'Login page'),
+                      ),);
                 },
               ),
             ),
