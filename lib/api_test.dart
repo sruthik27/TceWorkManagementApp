@@ -82,6 +82,23 @@ Future<List> getworks(int id) async {
   }
 }
 
+Future<void> gettasks(int workid) async {
+  var dio = Dio();
+  var response = await dio.request(
+    'https://tceworkmanagement.azurewebsites.net/db/gettasks?n=$workid',
+    options: Options(
+      method: 'GET',
+    ),
+  );
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonData = response.data;
+    print(jsonData);
+  }
+  else {
+    print(response.statusMessage);
+  }
+}
+
 // void main(){
 //   int worker_id;
 //   getworks(worker_id);
