@@ -23,7 +23,9 @@ class WorkDescriptionPage extends StatefulWidget {
 
 class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _messageController = TextEditingController();
+  int completed = 0;
 
   Future<void> handleQuery(int work, String message) async {
     final jsonData = {
@@ -83,9 +85,15 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
   @override
   Widget build(BuildContext context) {
+
     var work = widget.work_details;
-    var progress = (work['completed_subtasks'] / work['total_subtasks']);
-    // print(progress);
+    double calculateProgress() {
+      return completed / work['total_subtasks'];
+    }
+
+    completed = work['completed_subtasks'];
+    var progress = calculateProgress();
+
     String dateTime(String isoDate) {
       DateTime time = DateTime.parse(isoDate);
       String formattedDate = DateFormat('MMMM dd, y').format(time);
@@ -206,7 +214,6 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-
     List<XFile>? selectedImages;
     final ImagePicker _picker = ImagePicker();
 
@@ -229,8 +236,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     Future<void> showUploadPhotoDialog(BuildContext context,task) async {
       bool uploadSuccess = false;
 
+      setState(() {
+        completed++;
+        progress = (completed / work['total_subtasks']);
+      });
+
       showDialog(
-        context: context,
+        context: _scaffoldKey.currentContext!,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Attach proof of completion'),
@@ -247,13 +259,14 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       await pickImages();
                       uploadSuccess = true;
                       await updatecompletion(task['task_id']);
-                      setState(() {});
+                      setState(() {
+                      });
                     } catch (e) {
                       print('Error: $e');
                       uploadSuccess = false;
                     }
                     showDialog(
-                      context: context,
+                      context: _scaffoldKey.currentContext!,
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text('Upload Status'),
@@ -278,7 +291,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   onTap: () async {
                     Navigator.of(context).pop(); // Close the dialog
                     await updatecompletion(task['task_id']);
-                    setState(() {});
+                    setState(() {
+                    });
                   },
                 ),
               ],
@@ -290,6 +304,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
         title: Text("${work['work_name']}"),

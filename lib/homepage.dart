@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -109,7 +109,12 @@ class _HomePageState extends State<HomePage> {
                                                   WorkNameList[index]
                                               ),
                                             ),
-                                          );
+                                          ).then((_) {
+                                            // This block runs when you have returned back to the 1st Page from 2nd.
+                                            setState(() {
+                                              // Call setState to refresh the page.
+                                            });
+                                          });
                                         },
                                         title: Text("${WorkNameList[index]['work_name']}"),
                                       ),
