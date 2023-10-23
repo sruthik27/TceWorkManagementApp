@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:work_management_app/homepage.dart';
 import 'package:work_management_app/registration.dart';
 import 'package:dio/dio.dart';
+import 'firebase_options.dart';
+
 import 'package:work_management_app/widgets/appColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +16,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   int worker_id = prefs.getInt('worker_id') ?? 0;
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'TCE Work Management',
