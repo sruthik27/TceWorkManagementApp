@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-
+import 'widgets/appImages.dart';
 
 class WorkDescriptionPage extends StatefulWidget {
   final Map<String, dynamic> work_details;
@@ -22,7 +21,6 @@ class WorkDescriptionPage extends StatefulWidget {
 }
 
 class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _messageController = TextEditingController();
   int completed = 0;
@@ -55,25 +53,42 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(8.0),
+          color: AppColors.lightSandal,
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Enter your message:'),
+              const Text(
+                'Enter your message:',
+                style: TextStyle(
+                  color: AppColors.darkBrown,
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(height: 20),
               TextField(
                 controller: _messageController,
                 maxLines: 10,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                    color: AppColors.darkBrown,
+                  )),
                   hintText: 'Enter your message here',
                 ),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  await handleQuery(workId, _messageController.text);
-                  Navigator.of(context).pop();
-                },
-                child: Text('Submit'),
+              const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.darkBrown,
+                  ),
+                  onPressed: () async {
+                    await handleQuery(workId, _messageController.text);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Submit'),
+                ),
               ),
             ],
           ),
@@ -82,10 +97,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     var work = widget.work_details;
     double calculateProgress() {
       return completed / work['total_subtasks'];
@@ -118,10 +131,10 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-    Future<void> changeorder(String task_id, int new_order) async {
+    Future<void> changeorder(String taskId, int newOrder) async {
       var dio = Dio();
       var response = await dio.request(
-        'https://tceworkmanagement.azurewebsites.net/db/updateorder?task_id=${task_id}&new_order=$new_order',
+        'https://tceworkmanagement.azurewebsites.net/db/updateorder?task_id=$taskId&new_order=$newOrder',
         options: Options(
           method: 'PUT',
         ),
@@ -135,23 +148,23 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     }
 
     Future<Uint8List> compressImage(XFile image) async {
-      final Uint8List? compressedImage = await FlutterImageCompress.compressWithList(
+      final Uint8List compressedImage =
+          await FlutterImageCompress.compressWithList(
         await image.readAsBytes(),
         minWidth: 1000,
         minHeight: 1000,
         quality: 65,
       );
-      return compressedImage!;
+      return compressedImage;
     }
-
-
 
     Future<String> uploadImage(XFile image) async {
       // Compress the image
       Uint8List compressedImage = await compressImage(image);
 
       // Create a reference to the location you want to upload to in Firebase Storage
-      Reference ref = FirebaseStorage.instance.ref().child('images/${image.name}');
+      Reference ref =
+          FirebaseStorage.instance.ref().child('images/${image.name}');
 
       // Upload the compressed image to Firebase Storage
       UploadTask uploadTask = ref.putData(compressedImage);
@@ -197,10 +210,10 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-    Future<void> updatecompletion(String task_id) async {
+    Future<void> updatecompletion(String taskId) async {
       var dio = Dio();
       var response = await dio.request(
-        'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$task_id',
+        'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$taskId',
         options: Options(
           method: 'PUT',
         ),
@@ -208,17 +221,16 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
       if (response.statusCode == 200) {
         print(json.encode(response.data));
-      }
-      else {
+      } else {
         print(response.statusMessage);
       }
     }
 
     List<XFile>? selectedImages;
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
 
     Future<void> pickImages() async {
-      final List<XFile>? images = await _picker.pickMultiImage();
+      final List<XFile> images = await picker.pickMultiImage();
       if (images != null) {
         selectedImages = images;
         for (XFile image in selectedImages!) {
@@ -232,8 +244,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-
-    Future<void> showUploadPhotoDialog(BuildContext context,task) async {
+    Future<void> showUploadPhotoDialog(BuildContext context, task) async {
       bool uploadSuccess = false;
 
       setState(() {
@@ -244,23 +255,50 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       showDialog(
         context: _scaffoldKey.currentContext!,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Attach proof of completion'),
-            content: Column(
+          return Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppImages.pop_up),
+              ),
+            ),
+            child: Column(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ListTile(
-                  leading: Icon(Icons.photo_camera),
-                  title: Text('Upload photo'),
-                  onTap: () async {
+                Text(
+                  work['work_name'],
+                  style: TextStyle(
+                    decorationThickness: 0.001,
+                    color: AppColors.darkBrown,
+                    fontSize: 20,
+                  ),
+                ),
+                SizedBox(height: 50),
+                Text(
+                  "Completed?",
+                  style: TextStyle(
+                    decorationThickness: 0.001,
+                    color: AppColors.darkBrown,
+                    fontSize: 30,
+                  ),
+                ),
+                SizedBox(height: 50),
+                ElevatedButton(
+                  child: Text("Upload Attachments"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.darkBrown,
+                  ),
+                  onPressed: () async {
                     Navigator.of(context).pop(); // Close the dialog
 
                     try {
                       await pickImages();
                       uploadSuccess = true;
                       await updatecompletion(task['task_id']);
-                      setState(() {
-                      });
+                      setState(() {});
                     } catch (e) {
                       print('Error: $e');
                       uploadSuccess = false;
@@ -269,15 +307,18 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       context: _scaffoldKey.currentContext!,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Upload Status'),
+                          title: const Text('Upload Status'),
                           content: Text(
-                            uploadSuccess ? 'Uploaded successfully' : 'Upload failed',
+                            uploadSuccess
+                                ? 'Uploaded successfully'
+                                : 'Upload failed',
                           ),
                           actions: <Widget>[
                             TextButton(
-                              child: Text('OK'),
+                              child: const Text('OK'),
                               onPressed: () {
-                                Navigator.of(context).pop(); // Close the status dialog
+                                Navigator.of(context)
+                                    .pop(); // Close the status dialog
                               },
                             ),
                           ],
@@ -286,13 +327,16 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     );
                   },
                 ),
-                ListTile(
-                  title: Text('Skip'),
-                  onTap: () async {
+                SizedBox(height: 50),
+                ElevatedButton(
+                  child: const Text('Skip'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.darkBrown,
+                  ),
+                  onPressed: () async {
                     Navigator.of(context).pop(); // Close the dialog
                     await updatecompletion(task['task_id']);
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                 ),
               ],
@@ -301,7 +345,6 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         },
       );
     }
-
 
     return Scaffold(
       key: _scaffoldKey,
@@ -313,8 +356,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         onPressed: () {
           _showBottomPopup(context, int.parse(work['work_id']));
         },
-        child: Icon(Icons.announcement),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.darkBrown,
+        child: const Icon(Icons.announcement),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -326,20 +369,22 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText.HeadingText("Task Description"),
-                    AppText.ContentText("${work['work_description']}"),
-                    SizedBox(height: 20),
-                    AppText.HeadingText("Time Period"),
-                  ],
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppText.HeadingText("Task Description"),
+                      AppText.ContentText("${work['work_description']}"),
+                      const SizedBox(height: 20),
+                      AppText.HeadingText("Time Period"),
+                    ],
+                  ),
                 ),
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: 100,
                       width: 100,
                       child: CircularProgressIndicator(
@@ -349,38 +394,45 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                         value: progress,
                       ),
                     ),
-                    AppText.HeadingText("${(progress * 100).toStringAsFixed(1)}%"),
+                    AppText.HeadingText(
+                        "${(progress * 100).toStringAsFixed(1)}%"),
                   ],
                 ),
               ],
             ),
             AppText.ContentText(
                 "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}"),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                AppText.HeadingText("Total Wage:"),
-                AppText.brownBoldText("₹${work['wage']}"),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                AppText.HeadingText("Advnc Paid?"),
-                AppText.brownBoldText("${work['advance_paid']}"),
-              ],
-            ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AppText.HeadingText("Total Wage:"),
+                  SizedBox(height: 10),
+                  AppText.HeadingText("Advnc Paid:"),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText.brownBoldText("₹${work['wage']}"),
+                  SizedBox(height: 10),
+                  AppText.brownBoldText(work['advance_paid'] ? "Yes" : "No"),
+                ],
+              ),
+            ]),
+            const SizedBox(height: 20),
             AppText.HeadingText("Sub Tasks:"),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: gettasks(int.parse(work['work_id'])),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -388,37 +440,51 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         var task = snapshot.data![index];
-                        return ListTile(
+                        return Column(
                           key: ValueKey(task['task_id']),
-                          title: Text(task['task_name']),
-                          subtitle: Text("Due: " + dateTime(task['due_date'])),
-                          leading: task['completed']
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Text(
-                                    'Done',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                )
-                              : IconButton(
-                                  onPressed: () async {
-                                    await showUploadPhotoDialog(context,task);
-                                  },
-                                  icon: Icon(
-                                    Icons.task_alt,
-                                    color: Colors.green,
-                                  )),
-                          trailing: ReorderableDragStartListener(
-                            index: index,
-                            child: Icon(Icons.drag_handle),
-                          ),
+                          children: [
+                            ListTile(
+                              tileColor: Color(0xFFFFEAC8),
+                              // key: ValueKey(task['task_id']),
+                              title: Text(task['task_name']),
+                              subtitle:
+                                  Text("Due: ${dateTime(task['due_date'])}"),
+                              leading: task['completed']
+                                  ? Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: const Text(
+                                        'Done',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  : IconButton(
+                                      onPressed: () async {
+                                        await showUploadPhotoDialog(
+                                            context, task);
+                                      },
+                                      icon: const Icon(
+                                        Icons.upload,
+                                        color: AppColors.darkBrown,
+                                      )),
+                              trailing: ReorderableDragStartListener(
+                                index: index,
+                                child: const Icon(Icons.drag_handle),
+                              ),
+                            ),
+                            Container(
+                              // key: ValueKey(task['task_id']),
+                              height: 2,
+                              width: double.infinity,
+                              color: AppColors.darkBrown,
+                            )
+                          ],
                         );
                       },
                       onReorder: (oldIndex, newIndex) async {

@@ -5,7 +5,7 @@ class AppText {
   static HeadingText(String text) {
     return Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.bold,
         fontSize: 25,
@@ -16,7 +16,7 @@ class AppText {
   static brownBoldText(String text) {
     return Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         color: AppColors.darkBrown,
         fontWeight: FontWeight.bold,
         fontSize: 25,
@@ -27,7 +27,7 @@ class AppText {
   static ContentText(String text) {
     return Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.black,
         fontSize: 16,
       ),

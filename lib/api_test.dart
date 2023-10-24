@@ -99,10 +99,10 @@ Future<void> gettasks(int workid) async {
   }
 }
 
-Future<void> changeorder(int task_id,int new_order) async{
+Future<void> changeorder(int taskId,int newOrder) async{
   var dio = Dio();
   var response = await dio.request(
-    'https://tceworkmanagement.azurewebsites.net/db/updateorder?task_id=${task_id}&new_order=$new_order',
+    'https://tceworkmanagement.azurewebsites.net/db/updateorder?task_id=$taskId&new_order=$newOrder',
     options: Options(
       method: 'PUT',
     ),
@@ -116,10 +116,10 @@ Future<void> changeorder(int task_id,int new_order) async{
   }
 }
 
-Future<void> updatecompletion(int task_id) async {
+Future<void> updatecompletion(int taskId) async {
   var dio = Dio();
   var response = await dio.request(
-    'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$task_id',
+    'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$taskId',
     options: Options(
       method: 'PUT',
     ),

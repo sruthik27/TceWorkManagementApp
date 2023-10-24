@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:work_management_app/main.dart';
 
 class RegistrationForm extends StatefulWidget {
-  RegistrationForm({Key? key}) : super(key: key);
+  const RegistrationForm({Key? key}) : super(key: key);
   @override
   _RegistrationFormState createState() => _RegistrationFormState();
 }
@@ -45,7 +45,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration'),
+        title: const Text('Registration'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -102,7 +102,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   handleRegister();
                   Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MyHomePage(title: 'Login page'),
+                        builder: (context) => const MyHomePage(title: 'Login page'),
                       ),);
                 },
               ),

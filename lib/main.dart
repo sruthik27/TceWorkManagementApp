@@ -15,12 +15,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-  int worker_id = prefs.getInt('worker_id') ?? 0;
+  int workerId = prefs.getInt('worker_id') ?? 0;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'TCE Work Management',
-    home: isLoggedIn ? HomePage(worker_id) : MyHomePage(title: 'TCE Work Management'),
+    home: isLoggedIn ? HomePage(workerId) : const MyHomePage(title: 'TCE Work Management'),
   ));
 }
 
@@ -30,10 +30,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TCE Work Management',
-      home: const MyHomePage(title: 'TCE Work Management'),
+      home: MyHomePage(title: 'TCE Work Management'),
     );
   }
 }
@@ -81,19 +81,19 @@ class _MyHomePageState extends State<MyHomePage> {
       if (e is DioException) {
         if (e.response?.statusCode == 401) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Wrong password'),
             ),
           );
         } else if (e.response?.statusCode == 404) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Email does not exist'),
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Problem in backend'),
             ),
           );
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return SpinKitFadingCircle(
+        return const SpinKitFadingCircle(
                 color: AppColors.darkSandal,
                 size: 100.0,
         );
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
         backgroundColor: AppColors.darkBrown,
       ),
       body: Form(
@@ -183,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Login'),
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 'Register Now',
                 style: TextStyle(color: Colors.blue),
               ),
@@ -191,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Navigate to the registration page
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => RegistrationForm(),
+                    builder: (context) => const RegistrationForm(),
                   ),
                 );
               },
