@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 #Tue Oct 24 20:43:49 IST 2023
 base.0=E\:\\TceWorkManagementApp\\TceWorkManagementApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
+=======
+#Mon Oct 23 16:49:17 IST 2023
+base.0=C\:\\Users\\sruth\\Desktop\\flutter_files\\TceWorkManagementApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+>>>>>>> 0bb5183a9a7a938970413b58d676b67154d4dbcd
 path.0=classes.dex
+renamed.0=classes.dex

@@ -82,7 +82,114 @@ Future<List> getworks(int id) async {
   }
 }
 
-// void main(){
-//   int worker_id;
-//   getworks(worker_id);
-// }
+Future<void> gettasks(int workid) async {
+  var dio = Dio();
+  var response = await dio.request(
+    'https://tceworkmanagement.azurewebsites.net/db/gettasks?n=$workid',
+    options: Options(
+      method: 'GET',
+    ),
+  );
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonData = response.data;
+    print(jsonData);
+  }
+  else {
+    print(response.statusMessage);
+  }
+}
+
+Future<void> changeorder(int task_id,int new_order) async{
+  var dio = Dio();
+  var response = await dio.request(
+    'https://tceworkmanagement.azurewebsites.net/db/updateorder?task_id=${task_id}&new_order=$new_order',
+    options: Options(
+      method: 'PUT',
+    ),
+  );
+
+  if (response.statusCode == 200) {
+    print(json.encode(response.data));
+  }
+  else {
+    print(response.statusMessage);
+  }
+}
+
+Future<void> updatecompletion(int task_id) async {
+  var dio = Dio();
+  var response = await dio.request(
+    'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$task_id',
+    options: Options(
+      method: 'PUT',
+    ),
+  );
+
+  if (response.statusCode == 200) {
+    print(json.encode(response.data));
+  }
+  else {
+    print(response.statusMessage);
+  }
+}
+
+Future<void> addimageurl(String id, String url) async {
+  final dio = Dio();
+
+  final requestData = {
+    'id': id,
+    'url': url,
+  };
+
+  try {
+    final response = await dio.put(
+      'https://tceworkmanagement.azurewebsites.net/db/appendimage',
+      options: Options(
+        method: 'PUT',
+        headers: {
+          Headers.contentTypeHeader: 'application/json',
+        },
+      ),
+      data: requestData,
+    );
+
+    if (response.statusCode == 200) {
+      print(response.data);
+    } else {
+      print(response.statusMessage);
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+
+Future<void> handleQuery(int work, String message) async {
+  final jsonData = {
+    'work': work,
+    'message': message,
+    'who': 'W',
+  };
+  
+  final dio = Dio();
+  final response = await dio.post(
+    'https://tceworkmanagement.azurewebsites.net/db/addquery', // Replace with your actual API endpoint
+    data: jsonData,
+    options: Options(
+      contentType: Headers.jsonContentType,
+    ),
+  );
+
+  if (response.statusCode == 200) {
+    print('Response: ${response.data}');
+  } else {
+    print('Error: ${response.statusMessage}');
+  }
+}
+
+
+void main(){
+  // int worker_id;
+  // changeorder(908685839585640449,1);
+  // updatecompletion(908685839585640449);
+  // handleQuery(910760215319019521, "hello just a test");
+}

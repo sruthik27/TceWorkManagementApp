@@ -1,19 +1,33 @@
-import 'dart:convert';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:work_management_app/homepage.dart';
 import 'package:work_management_app/registration.dart';
 import 'package:dio/dio.dart';
+import 'firebase_options.dart';
+
 import 'package:work_management_app/widgets/appColors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 int worker_id = 0;
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  int worker_id = prefs.getInt('worker_id') ?? 0;
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'TCE Work Management',
+    home: isLoggedIn ? HomePage(worker_id) : MyHomePage(title: 'TCE Work Management'),
+  ));
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future<void> handleLogin() async {
+  Future<bool> handleLogin() async {
     var data = {
       'useremail': emailController.text,
       'userpassword': passwordController.text,
@@ -56,25 +70,56 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (response.statusCode == 200) {
         print('verified');
-        print(json.encode("-------${response.data}"));
-        worker_id = int.parse(json.encode(response.data));
-      } else {
-        print(response.statusMessage);
+        worker_id = int.parse(response.data.toString());
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('worker_id', worker_id);
+        await prefs.setBool('isLoggedIn', true);
+        return true;
       }
+      return false;
     } on Exception catch (e) {
       if (e is DioException) {
         if (e.response?.statusCode == 401) {
-          print('You are not authorized.');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Wrong password'),
+            ),
+          );
         } else if (e.response?.statusCode == 404) {
-          print('Email not exists');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Email does not exist'),
+            ),
+          );
         } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Problem in backend'),
+            ),
+          );
           print('An error occurred: ${e.toString()}');
         }
+        return false;
       } else {
         print('An unexpected error occurred: ${e.toString()}');
+        return false;
       }
     }
   }
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return SpinKitFadingCircle(
+                color: AppColors.darkSandal,
+                size: 100.0,
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,14 +166,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  handleLogin();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomePage(worker_id)),
-                  );
+                  showLoadingDialog(context);
+                  bool success = await handleLogin();
+                  Navigator.pop(context);  // Dismiss the dialog
+                  if (success) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage(worker_id)),
+                    );
+                  }
                 }
               },
               child: const Text('Login'),
@@ -140,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 // Navigate to the registration page
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => RegistrationForm(),
                   ),
