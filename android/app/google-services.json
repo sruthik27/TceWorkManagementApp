@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "923868162061",
+    "project_id": "tceworkmanagement",
+    "storage_bucket": "tceworkmanagement.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923868162061:android:362c3d2e56bfa02931cd44",
+        "android_client_info": {
+          "package_name": "com.tce.work_management_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChvKtjNbKXx9eNazHOh2-FOMTXi0a9j2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
