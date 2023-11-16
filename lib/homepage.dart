@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.darkBrown,
-          title: const Text("Agency/Contractor"),
+          title: const Text("TCE MDR Platform"),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.logout),
@@ -47,9 +47,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           children: [
             Image.asset(AppImages.workers),
             Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               alignment: Alignment.topLeft,
-              child: Text(
+              child: const Text(
                 "Greetings!!",
                 style: TextStyle(
                   color: Colors.white,
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     child: RefreshIndicator(
                       onRefresh: () async {
                         setState(
-                            () {}); // This will trigger a rebuild of the FutureBuilder
+                                () {}); // This will trigger a rebuild of the FutureBuilder
                       },
                       child: FutureBuilder(
                         future: getworks(workerId),

@@ -59,7 +59,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text(
-                'Enter your message:',
+                'Share any update or ask queries:',
                 style: TextStyle(
                   color: AppColors.darkBrown,
                   fontSize: 20,
@@ -257,9 +257,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         builder: (BuildContext context) {
           return Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AppImages.pop_up),
               ),
@@ -270,14 +270,14 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
               children: [
                 Text(
                   work['work_name'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     decorationThickness: 0.001,
                     color: AppColors.darkBrown,
                     fontSize: 20,
                   ),
                 ),
-                SizedBox(height: 50),
-                Text(
+                const SizedBox(height: 50),
+                const Text(
                   "Completed?",
                   style: TextStyle(
                     decorationThickness: 0.001,
@@ -285,9 +285,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     fontSize: 30,
                   ),
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 ElevatedButton(
-                  child: Text("Upload Attachments"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.darkBrown,
                   ),
@@ -326,10 +325,10 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       },
                     );
                   },
+                  child: const Text("Upload Attachments"),
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 ElevatedButton(
-                  child: const Text('Skip'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.darkBrown,
                   ),
@@ -338,6 +337,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     await updatecompletion(task['task_id']);
                     setState(() {});
                   },
+                  child: const Text('Skip'),
                 ),
               ],
             ),
@@ -400,8 +400,12 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 ),
               ],
             ),
-            AppText.ContentText(
-                "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}"),
+            Text(
+                "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}", style: TextStyle(
+            color: DateTime.parse(work['due_date']).isAfter(DateTime.now())
+                ? Colors.green
+                : Colors.red,
+      ),),
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               Column(
@@ -409,7 +413,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   AppText.HeadingText("Total Wage:"),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   AppText.HeadingText("Advnc Paid:"),
                 ],
               ),
@@ -419,7 +423,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppText.brownBoldText("₹${work['wage']}"),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   AppText.brownBoldText(work['advance_paid'] ? "Yes" : "No"),
                 ],
               ),
@@ -444,7 +448,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                           key: ValueKey(task['task_id']),
                           children: [
                             ListTile(
-                              tileColor: Color(0xFFFFEAC8),
+                              tileColor: const Color(0xFFFFEAC8),
                               // key: ValueKey(task['task_id']),
                               title: Text(task['task_name']),
                               subtitle:
