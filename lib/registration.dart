@@ -17,8 +17,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController verifyController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool passwordVisible1 = false;
+  bool passwordVisible2 = false;
+
 
   Future<void> handleRegister() async {
     var data = {
@@ -71,85 +76,143 @@ class _RegistrationFormState extends State<RegistrationForm> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Name',
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Name',
+                  ),
+                ),
+              ),Container(
+                padding: const EdgeInsets.all(10),
+                child: TextField(
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Phone',
+                  ),
                 ),
               ),
-            ),Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Phone',
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            SizedBox(height: 20,),
-            Column(
-              children: <Widget>[
-                Text('Verification Code'),
-                OtpTextField(
-                  numberOfFields: 4,
-                  borderColor: Colors.blue,
-                  borderWidth: 2.0,
-                  borderRadius: BorderRadius.circular(10),
-                  fieldWidth: 40,
-                  showFieldAsBox: true,
-                  onSubmit: (String verificationCode) {
-                    setState(() {
-                      verifyController.text = verificationCode;
-                    });
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  obscureText: !passwordVisible1,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        passwordVisible1 ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          passwordVisible1 = !passwordVisible1;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    if (value != confirmPasswordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
                   },
                 ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: ElevatedButton(
-                child: const Text('Register'),
-                onPressed: () {
-                  handleRegister();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const MyHomePage(title: 'Login page'),
-                    ),);
-                },
               ),
-            ),
-          ],
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  obscureText: !passwordVisible1,
+                  controller: confirmPasswordController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Confirm Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        passwordVisible1 ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          passwordVisible1 = !passwordVisible1;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm your password';
+                    }
+                    if (value != passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 20,),
+              Column(
+                children: <Widget>[
+                  Text('Verification Code'),
+                  OtpTextField(
+                    numberOfFields: 4,
+                    borderColor: Colors.blue,
+                    borderWidth: 2.0,
+                    borderRadius: BorderRadius.circular(10),
+                    fieldWidth: 40,
+                    showFieldAsBox: true,
+                    onSubmit: (String verificationCode) {
+                      setState(() {
+                        verifyController.text = verificationCode;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: ElevatedButton(
+                  child: const Text('Register'),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      handleRegister();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MyHomePage(title: 'Login page'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

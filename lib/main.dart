@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -51,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  bool passwordVisible = false;
+  bool isLoading = false;
   Future<bool> handleLogin() async {
     var data = {
       'useremail': emailController.text,
@@ -106,6 +109,39 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
   }
+  Future<void> sendmail(String email) async {
+    setState(() {
+      isLoading = true;
+    });
+    Dio dio = Dio();
+
+    String url = 'https://tceworkmanagement.azurewebsites.net/db/resetpass?mailid=$email';
+
+    try {
+      Response response = await dio.post(
+        url,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: jsonEncode({}),
+      );
+      if (response.statusCode == 200) {
+        var data = response.data;
+        print(data);
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+    finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   void showLoadingDialog(BuildContext context) {
     showDialog(
@@ -151,11 +187,21 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: TextFormField(
-                obscureText: true,
+                obscureText: !passwordVisible,
                 controller: passwordController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -164,7 +210,47 @@ class _MyHomePageState extends State<MyHomePage> {
                   return null;
                 },
               ),
-            ),
+            )
+            ,TextButton(
+              child: const Text(
+                'Forgot Password?',
+                style: TextStyle(color: Colors.blue),
+              ),
+              onPressed: () async {
+                if (emailController.text!="") {
+                  await sendmail(emailController.text);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Password Reset'),
+                        content: Text('A new password has been sent to your email.'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Fill the email field and click forgot'),
+                    ),
+                  );
+                }
+              },
+            ),if (isLoading)
+              Center(
+                child: SpinKitFadingCircle(
+                  color: AppColors.darkSandal,
+                  size: 100.0,
+                ),
+              ),
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
