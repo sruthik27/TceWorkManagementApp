@@ -177,14 +177,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
               SizedBox(height: 20,),
               Column(
                 children: <Widget>[
-                  Text('Verification Code'),
+                  Text('Verification Code (get from TCE MDR head to sign up)'),
                   OtpTextField(
+                    enabledBorderColor: Colors.grey,
                     numberOfFields: 4,
                     borderColor: Colors.blue,
-                    borderWidth: 2.0,
+                    borderWidth: 3.0,
                     borderRadius: BorderRadius.circular(10),
                     fieldWidth: 40,
-                    showFieldAsBox: true,
                     onSubmit: (String verificationCode) {
                       setState(() {
                         verifyController.text = verificationCode;

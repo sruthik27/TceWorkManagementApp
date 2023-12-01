@@ -2,18 +2,21 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:work_management_app/main.dart';
 import 'package:work_management_app/widgets/appColors.dart';
 import 'package:work_management_app/widgets/appText.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'widgets/appImages.dart';
+int completed = 0;
+final ValueNotifier<double> _progressNotifier = ValueNotifier<double>(0);
 
 class WorkDescriptionPage extends StatefulWidget {
   final Map<String, dynamic> work_details;
-
   const WorkDescriptionPage(this.work_details, {super.key});
 
   @override
@@ -23,7 +26,8 @@ class WorkDescriptionPage extends StatefulWidget {
 class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _messageController = TextEditingController();
-  int completed = 0;
+
+
 
   Future<void> handleQuery(int work, String message) async {
     final jsonData = {
@@ -98,15 +102,20 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    var work = widget.work_details;
+    int total = work['total_subtasks'];
+    setState(() {
+      completed+= work['completed_subtasks'] as int;
+      _progressNotifier.value+=(completed/total)*100;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var work = widget.work_details;
-    double calculateProgress() {
-      return completed / work['total_subtasks'];
-    }
-
-    completed = work['completed_subtasks'];
-    var progress = calculateProgress();
-
+    int total = work['total_subtasks'];
     String dateTime(String isoDate) {
       DateTime time = DateTime.parse(isoDate);
       String formattedDate = DateFormat('MMMM dd, y').format(time);
@@ -210,7 +219,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-    Future<void> updatecompletion(String taskId) async {
+    Future<void> updatecompletion(String taskId,int taskWeight) async {
       var dio = Dio();
       var response = await dio.request(
         'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$taskId',
@@ -221,6 +230,11 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
       if (response.statusCode == 200) {
         print(json.encode(response.data));
+        setState(() {
+          completed+=taskWeight;
+          _progressNotifier.value = (completed/total)*100;
+        });
+        print(_progressNotifier.value);
       } else {
         print(response.statusMessage);
       }
@@ -229,28 +243,22 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     List<XFile>? selectedImages;
     final ImagePicker picker = ImagePicker();
 
-    Future<void> pickImages() async {
+    Future<bool> pickImages() async {
       final List<XFile> images = await picker.pickMultiImage();
-      if (images != null) {
-        selectedImages = images;
-        for (XFile image in selectedImages!) {
+      if (images == null || images.isEmpty) {
+        print('No images were selected.');
+        return false;
+      }
+        for (XFile image in images!) {
           String url = await uploadImage(image);
           print('Image URL: $url');
           await addimageurl(work['work_id'], url);
         }
-      } else {
-        print('No images were selected.');
-        throw Exception('No images were selected');
-      }
+        return true;
     }
 
     Future<void> showUploadPhotoDialog(BuildContext context, task) async {
       bool uploadSuccess = false;
-
-      setState(() {
-        completed++;
-        progress = (completed / work['total_subtasks']);
-      });
 
       showDialog(
         context: _scaffoldKey.currentContext!,
@@ -294,10 +302,12 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Navigator.of(context).pop(); // Close the dialog
 
                     try {
-                      await pickImages();
+                      bool uploaded = await pickImages();
+                      if(uploaded){
                       uploadSuccess = true;
-                      await updatecompletion(task['task_id']);
+                      await updatecompletion(task['task_id'],task['weightage']);
                       setState(() {});
+                      }
                     } catch (e) {
                       print('Error: $e');
                       uploadSuccess = false;
@@ -334,7 +344,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   ),
                   onPressed: () async {
                     Navigator.of(context).pop(); // Close the dialog
-                    await updatecompletion(task['task_id']);
+                    print(task);
+                    await updatecompletion(task['task_id'],task['weightage']);
                     setState(() {});
                   },
                   child: const Text('Skip'),
@@ -365,72 +376,49 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text("Work Description", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
+            Text("${work['work_description']}", style: TextStyle(fontSize: 16)),
+            SizedBox(height: 20),
+            Text("Time Period", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
+            Text("${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}", style: TextStyle(fontSize: 16, color: DateTime.parse(work['due_date']).isAfter(DateTime.now()) ? Colors.green : Colors.red)),
+            SizedBox(height: 20),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText.HeadingText("Task Description"),
-                      AppText.ContentText("${work['work_description']}"),
-                      const SizedBox(height: 20),
-                      AppText.HeadingText("Time Period"),
-                    ],
-                  ),
-                ),
-                Stack(
-                  alignment: Alignment.center,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 8,
-                        backgroundColor: AppColors.lightSandal,
-                        color: AppColors.mediumBrown,
-                        value: progress,
-                      ),
+                    Text("Total Wage", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 10),
+                    Text("₹${work['wage']}", style: TextStyle(fontSize: 16)),
+                    SizedBox(height: 20),
+                    Text("Advance Paid", style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+                    SizedBox(height: 10),
+                    Text("${work['advance_paid'] ? "Yes" : "No"}", style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('Progress %', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 20),
+                    SimpleCircularProgressBar(
+                      mergeMode: true,
+                      progressColors: const [Colors.cyan],
+                      valueNotifier: _progressNotifier,
+                      onGetText: (double value) {
+                        return Text('${value.toInt()}%');
+                      },
                     ),
-                    AppText.HeadingText(
-                        "${(progress * 100).toStringAsFixed(1)}%"),
                   ],
                 ),
               ],
             ),
-            Text(
-                "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}", style: TextStyle(
-            color: DateTime.parse(work['due_date']).isAfter(DateTime.now())
-                ? Colors.green
-                : Colors.red,
-      ),),
-            const SizedBox(height: 20),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  AppText.HeadingText("Total Wage:"),
-                  const SizedBox(height: 10),
-                  AppText.HeadingText("Advnc Paid:"),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText.brownBoldText("₹${work['wage']}"),
-                  const SizedBox(height: 10),
-                  AppText.brownBoldText(work['advance_paid'] ? "Yes" : "No"),
-                ],
-              ),
-            ]),
-            const SizedBox(height: 20),
-            AppText.HeadingText("Sub Tasks:"),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
+            Center(child: Text("Sub Tasks:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+            SizedBox(height: 20),
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: gettasks(int.parse(work['work_id'])),
@@ -450,7 +438,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             ListTile(
                               tileColor: const Color(0xFFFFEAC8),
                               // key: ValueKey(task['task_id']),
-                              title: Text(task['task_name']),
+                              title: Tooltip(child: Text(task['task_name']),message:"⭐"*task['weightage'],preferBelow: true,triggerMode: TooltipTriggerMode.tap,),
                               subtitle:
                                   Text("Due: ${dateTime(task['due_date'])}"),
                               leading: task['completed']
