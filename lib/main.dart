@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:work_management_app/homepage.dart';
 import 'package:work_management_app/registration.dart';
 import 'package:dio/dio.dart';
 import 'firebase_options.dart';
+import 'package:email_otp/email_otp.dart';
 
 import 'package:work_management_app/widgets/appColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,8 +55,15 @@ class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final otpController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmNewPasswordController = TextEditingController();
   bool passwordVisible = false;
   bool isLoading = false;
+  String? generatedOtp;
+  DateTime? otpGeneratedTime;
+  EmailOTP myAuth = EmailOTP();
+
   Future<bool> handleLogin() async {
     var data = {
       'useremail': emailController.text,
@@ -156,6 +165,55 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Future<void> generateOtpAndSendEmail() async {
+    otpGeneratedTime = DateTime.now();
+    await myAuth.setSMTP(
+        host: "smtp.gmail.com",
+        auth: true,
+        username: "insomniadevs007@gmail.com",
+        password: "lzhyecgavxzkcgvg",
+        secure: "SSL",
+        port: 587
+    );
+    await myAuth.setConfig(
+      appEmail: "insomniadevs007@gmail.com",
+      appName: "TCE MDR",
+      userEmail: emailController.text,
+      otpLength: 6,
+      otpType: OTPType.digitsOnly,
+    );
+    await myAuth.sendOTP();
+  }
+
+  Future<void> verifyOtpAndChangePassword() async {
+    bool verified = await myAuth.verifyOTP(
+        otp: otpController.text
+    );
+    if (verified &&
+        DateTime.now().difference(otpGeneratedTime!).inMinutes < 5) {
+      if (newPasswordController.text == confirmNewPasswordController.text) {
+        print('----------verified------------');
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('PASSWORD CHANGED'),
+            ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('New passwords do not match'),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid or expired OTP'),
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -218,18 +276,39 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () async {
                 if (emailController.text!="") {
-                  await sendmail(emailController.text);
+                  await generateOtpAndSendEmail();
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) {
+                    builder: (context) {
                       return AlertDialog(
-                        title: Text('Password Reset'),
-                        content: Text('A new password has been sent to your email.'),
+                        title: Text('Enter OTP and New Password'),
+                        content: Column(
+                          children: <Widget>[
+                            TextField(
+                              controller: otpController,
+                              decoration: InputDecoration(
+                                hintText: 'Enter OTP',
+                              ),
+                            ),
+                            TextField(
+                              controller: newPasswordController,
+                              decoration: InputDecoration(
+                                hintText: 'Enter new password',
+                              ),
+                            ),
+                            TextField(
+                              controller: confirmNewPasswordController,
+                              decoration: InputDecoration(
+                                hintText: 'Confirm new password',
+                              ),
+                            ),
+                          ],
+                        ),
                         actions: <Widget>[
                           TextButton(
-                            child: Text('OK'),
+                            child: Text('Submit'),
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              verifyOtpAndChangePassword();
                             },
                           ),
                         ],
@@ -244,7 +323,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 }
               },
-            ),if (isLoading)
+            ),
+            if (isLoading)
               Center(
                 child: SpinKitFadingCircle(
                   color: AppColors.darkSandal,
