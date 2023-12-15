@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:work_management_app/main.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:work_management_app/widgets/appColors.dart';
 
 
 class RegistrationForm extends StatefulWidget {
@@ -62,6 +64,19 @@ class _RegistrationFormState extends State<RegistrationForm> {
           },
         );
       }
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //       content: Text('REGISTERED'),
+      //     ));
+      Fluttertoast.showToast(
+          msg: "REGISTERED",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
     }
     else {
       print(response.statusMessage);
@@ -71,7 +86,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
+        backgroundColor: AppColors.darkBrown,
         title: const Text('Registration'),
       ),
       body: Padding(
@@ -107,7 +124,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   controller: emailController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Email',
+                    labelText: 'Email (existing active one)',
                   ),
                 ),
               ),
@@ -181,7 +198,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   OtpTextField(
                     enabledBorderColor: Colors.grey,
                     numberOfFields: 4,
-                    borderColor: Colors.blue,
+                    borderColor: AppColors.darkBrown,
                     borderWidth: 3.0,
                     borderRadius: BorderRadius.circular(10),
                     fieldWidth: 40,
@@ -198,7 +215,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
-                  child: const Text('Register'),
+                  child: const Text('Register'),style: ElevatedButton.styleFrom(
+                  foregroundColor: AppColors.lightSandal,
+                  backgroundColor: AppColors.darkBrown, // Set the text color
+                  // You can customize other properties like padding, elevation, shape, etc.
+                ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       handleRegister();

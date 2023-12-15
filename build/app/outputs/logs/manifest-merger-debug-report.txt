@@ -7,16 +7,20 @@ MERGED from [:firebase_core] C:\Users\sruth\Desktop\flutter_files\TceWorkManagem
 MERGED from [:firebase_core] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:image_picker_android] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-19:19
 MERGED from [:image_picker_android] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-19:19
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:28:5-36:19
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:28:5-36:19
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] C:\Users\sruth\.gradle\caches\transforms-3\995c7913e1e6bb9a4a78315a032730d0\transformed\jetified-firebase-appcheck-interop-17.0.0\AndroidManifest.xml:23:5-20
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] C:\Users\sruth\.gradle\caches\transforms-3\995c7913e1e6bb9a4a78315a032730d0\transformed\jetified-firebase-appcheck-interop-17.0.0\AndroidManifest.xml:23:5-20
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:26:5-37:19
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:26:5-37:19
+MERGED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:21:5-32:19
+MERGED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:21:5-32:19
+MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:8:5-16:19
+MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:8:5-16:19
+MERGED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:22:5-39:19
+MERGED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:22:5-39:19
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\6a0d1839d9f9f36545584eb0f2d0f678\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:21:5-20
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\6a0d1839d9f9f36545584eb0f2d0f678\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:21:5-20
 MERGED from [com.google.firebase:firebase-auth-interop:18.0.0] C:\Users\sruth\.gradle\caches\transforms-3\3510025c46adf5ba7a3fcf8f3bc3ec80\transformed\jetified-firebase-auth-interop-18.0.0\AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.firebase:firebase-auth-interop:18.0.0] C:\Users\sruth\.gradle\caches\transforms-3\3510025c46adf5ba7a3fcf8f3bc3ec80\transformed\jetified-firebase-auth-interop-18.0.0\AndroidManifest.xml:7:5-8:19
 MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
 MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
-MERGED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:24:5-37:19
-MERGED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:24:5-37:19
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\sruth\.gradle\caches\transforms-3\ce5c58c6e35047e3d15f8e30a3aa7219\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:5:5-20
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\sruth\.gradle\caches\transforms-3\ce5c58c6e35047e3d15f8e30a3aa7219\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:5:5-20
 MERGED from [com.google.android.gms:play-services-basement:18.1.0] C:\Users\sruth\.gradle\caches\transforms-3\58aa1384bde170d075503b845cfcf44c\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:20:5-24:19
@@ -47,11 +51,14 @@ MERGED from [:firebase_core] C:\Users\sruth\Desktop\flutter_files\TceWorkManagem
 MERGED from [:image_picker_android] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:flutter_image_compress_common] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\flutter_image_compress_common\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:15:1-38:12
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] C:\Users\sruth\.gradle\caches\transforms-3\995c7913e1e6bb9a4a78315a032730d0\transformed\jetified-firebase-appcheck-interop-17.0.0\AndroidManifest.xml:15:1-25:12
+MERGED from [:fluttertoast] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\fluttertoast\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:15:1-39:12
+MERGED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:15:1-34:12
+MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:2:1-18:12
+MERGED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:15:1-41:12
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\6a0d1839d9f9f36545584eb0f2d0f678\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:15:1-23:12
 MERGED from [com.google.firebase:firebase-auth-interop:18.0.0] C:\Users\sruth\.gradle\caches\transforms-3\3510025c46adf5ba7a3fcf8f3bc3ec80\transformed\jetified-firebase-auth-interop-18.0.0\AndroidManifest.xml:2:1-10:12
 MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:16:1-24:12
-MERGED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:15:1-39:12
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\sruth\.gradle\caches\transforms-3\ce5c58c6e35047e3d15f8e30a3aa7219\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:2:1-6:12
 MERGED from [com.google.android.gms:play-services-basement:18.1.0] C:\Users\sruth\.gradle\caches\transforms-3\58aa1384bde170d075503b845cfcf44c\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:16:1-26:12
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\sruth\.gradle\caches\transforms-3\75f94412898c7559d34d7edbbeaeb394\transformed\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -76,7 +83,7 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\sruth\.gradle\cach
 MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\sruth\.gradle\caches\transforms-3\cda2a1ca4d3bd6aae60d8d586ec4f3ff\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\sruth\.gradle\caches\transforms-3\860a920bd188d8e467960610e541a595\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\sruth\.gradle\caches\transforms-3\47ecd4e588b99ef3b772f04d5aa6c9b7\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
-MERGED from [com.google.firebase:firebase-components:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\9aac4c41ad0d813ae1dcd3395b7eb0cc\transformed\jetified-firebase-components-17.1.0\AndroidManifest.xml:15:1-22:12
+MERGED from [com.google.firebase:firebase-components:17.1.5] C:\Users\sruth\.gradle\caches\transforms-3\5dc18843449206e2e601d1da8625c09b\transformed\jetified-firebase-components-17.1.5\AndroidManifest.xml:15:1-20:12
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\sruth\.gradle\caches\transforms-3\db3ce0e4102f75753fdc0e9c2753a822\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\sruth\.gradle\caches\transforms-3\937d6edc8055f6701a18eeac1a67afe6\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:17:1-22:12
 INJECTED from C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\android\app\src\debug\AndroidManifest.xml:1:1-7:12
@@ -100,8 +107,8 @@ uses-permission#android.permission.INTERNET
 ADDED from C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\android\app\src\main\AndroidManifest.xml:2:5-66
 MERGED from C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\android\app\src\main\AndroidManifest.xml:2:5-66
 MERGED from C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\android\app\src\main\AndroidManifest.xml:2:5-66
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:26:5-67
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:26:5-67
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:24:5-67
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:24:5-67
 	android:name
 		ADDED from C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\android\app\src\main\AndroidManifest.xml:2:22-64
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
@@ -128,16 +135,22 @@ MERGED from [:flutter_plugin_android_lifecycle] C:\Users\sruth\Desktop\flutter_f
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_image_compress_common] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\flutter_image_compress_common\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-9:55
 MERGED from [:flutter_image_compress_common] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\flutter_image_compress_common\intermediates\merged_manifest\debug\AndroidManifest.xml:6:5-9:55
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:19:5-21:41
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:19:5-21:41
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] C:\Users\sruth\.gradle\caches\transforms-3\995c7913e1e6bb9a4a78315a032730d0\transformed\jetified-firebase-appcheck-interop-17.0.0\AndroidManifest.xml:18:5-20:41
-MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] C:\Users\sruth\.gradle\caches\transforms-3\995c7913e1e6bb9a4a78315a032730d0\transformed\jetified-firebase-appcheck-interop-17.0.0\AndroidManifest.xml:18:5-20:41
+MERGED from [:fluttertoast] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\fluttertoast\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:fluttertoast] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\fluttertoast\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\6a0d1839d9f9f36545584eb0f2d0f678\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\6a0d1839d9f9f36545584eb0f2d0f678\transformed\jetified-firebase-appcheck-interop-17.1.0\AndroidManifest.xml:18:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:18.0.0] C:\Users\sruth\.gradle\caches\transforms-3\3510025c46adf5ba7a3fcf8f3bc3ec80\transformed\jetified-firebase-auth-interop-18.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-auth-interop:18.0.0] C:\Users\sruth\.gradle\caches\transforms-3\3510025c46adf5ba7a3fcf8f3bc3ec80\transformed\jetified-firebase-auth-interop-18.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:18:5-43
 MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:18:5-43
-MERGED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:19:5-21:41
-MERGED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:19:5-21:41
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\sruth\.gradle\caches\transforms-3\ce5c58c6e35047e3d15f8e30a3aa7219\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:4:5-43
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\sruth\.gradle\caches\transforms-3\ce5c58c6e35047e3d15f8e30a3aa7219\transformed\jetified-play-services-tasks-18.0.2\AndroidManifest.xml:4:5-43
 MERGED from [com.google.android.gms:play-services-basement:18.1.0] C:\Users\sruth\.gradle\caches\transforms-3\58aa1384bde170d075503b845cfcf44c\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:18:5-43
@@ -186,8 +199,8 @@ MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\sruth\.gradle\ca
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\sruth\.gradle\caches\transforms-3\860a920bd188d8e467960610e541a595\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\sruth\.gradle\caches\transforms-3\47ecd4e588b99ef3b772f04d5aa6c9b7\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\sruth\.gradle\caches\transforms-3\47ecd4e588b99ef3b772f04d5aa6c9b7\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
-MERGED from [com.google.firebase:firebase-components:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\9aac4c41ad0d813ae1dcd3395b7eb0cc\transformed\jetified-firebase-components-17.1.0\AndroidManifest.xml:18:5-20:41
-MERGED from [com.google.firebase:firebase-components:17.1.0] C:\Users\sruth\.gradle\caches\transforms-3\9aac4c41ad0d813ae1dcd3395b7eb0cc\transformed\jetified-firebase-components-17.1.0\AndroidManifest.xml:18:5-20:41
+MERGED from [com.google.firebase:firebase-components:17.1.5] C:\Users\sruth\.gradle\caches\transforms-3\5dc18843449206e2e601d1da8625c09b\transformed\jetified-firebase-components-17.1.5\AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-components:17.1.5] C:\Users\sruth\.gradle\caches\transforms-3\5dc18843449206e2e601d1da8625c09b\transformed\jetified-firebase-components-17.1.5\AndroidManifest.xml:18:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\sruth\.gradle\caches\transforms-3\db3ce0e4102f75753fdc0e9c2753a822\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\sruth\.gradle\caches\transforms-3\db3ce0e4102f75753fdc0e9c2753a822\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\sruth\.gradle\caches\transforms-3\937d6edc8055f6701a18eeac1a67afe6\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
@@ -206,16 +219,20 @@ service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [:firebase_storage] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
 MERGED from [:firebase_core] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
 MERGED from [:firebase_core] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:19
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:29:9-35:19
-MERGED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:29:9-35:19
-MERGED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:32:9-36:35
-MERGED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:32:9-36:35
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:27:9-36:19
+MERGED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:27:9-36:19
+MERGED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:22:9-31:19
+MERGED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:22:9-31:19
+MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:9:9-15:19
+MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:9:9-15:19
+MERGED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:30:9-38:19
+MERGED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:30:9-38:19
 	android:exported
-		ADDED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:31:13-37
+		ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:29:13-37
 	tools:targetApi
-		ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:36:13-32
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:34:13-32
 	android:directBootAware
-		ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:34:13-43
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:32:13-43
 	android:name
 		ADDED from [:firebase_storage] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\firebase_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:10:18-89
 meta-data#com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar
@@ -247,15 +264,57 @@ ADDED from [:image_picker_android] C:\Users\sruth\Desktop\flutter_files\TceWorkM
 	android:name
 		ADDED from [:image_picker_android] C:\Users\sruth\Desktop\flutter_files\TceWorkManagementApp\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:16:17-67
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:25:5-79
+ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:23:5-79
 	android:name
-		ADDED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:25:22-76
-meta-data#com.google.firebase.components:com.google.firebase.storage.StorageRegistrar
-ADDED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:32:13-34:85
+		ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:23:22-76
+meta-data#com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar
+ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:30:13-32:85
 	android:value
-		ADDED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:34:17-82
+		ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:32:17-82
 	android:name
-		ADDED from [com.google.firebase:firebase-storage:20.2.1] C:\Users\sruth\.gradle\caches\transforms-3\48401fbb896ab8a6384fcb26fc783a9e\transformed\jetified-firebase-storage-20.2.1\AndroidManifest.xml:33:17-107
+		ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:31:17-118
+meta-data#com.google.firebase.components:com.google.firebase.storage.StorageRegistrar
+ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:33:13-35:85
+	android:value
+		ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:35:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-storage:20.3.0] C:\Users\sruth\.gradle\caches\transforms-3\ffd7bb85a326242f7f9a18daa7592f6e\transformed\jetified-firebase-storage-20.3.0\AndroidManifest.xml:34:17-107
+meta-data#com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar
+ADDED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:25:13-27:85
+	android:value
+		ADDED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:27:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:26:17-120
+meta-data#com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar
+ADDED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:28:13-30:85
+	android:value
+		ADDED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:30:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-appcheck:17.1.1] C:\Users\sruth\.gradle\caches\transforms-3\f6283da25ede614038c342c1daa48643\transformed\jetified-firebase-appcheck-17.1.1\AndroidManifest.xml:29:17-117
+meta-data#com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar
+ADDED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:12:13-14:85
+	android:value
+		ADDED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:14:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:13:17-116
+provider#com.google.firebase.provider.FirebaseInitProvider
+ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:23:9-28:39
+	android:authorities
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:25:13-72
+	android:exported
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:27:13-37
+	android:directBootAware
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:26:13-43
+	android:initOrder
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:28:13-36
+	android:name
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:24:13-77
+meta-data#com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar
+ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:35:13-37:85
+	android:value
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:37:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-common:20.4.2] C:\Users\sruth\.gradle\caches\transforms-3\e7d9dc77e05549f012842a2b34d6bb45\transformed\jetified-firebase-common-20.4.2\AndroidManifest.xml:36:17-109
 activity#com.google.android.gms.common.api.GoogleApiActivity
 ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
 	android:exported
@@ -264,18 +323,6 @@ ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gr
 		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
 	android:name
 		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\sruth\.gradle\caches\transforms-3\aba8f806953ea3dd8f794da3aeb78a12\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
-provider#com.google.firebase.provider.FirebaseInitProvider
-ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:25:9-30:39
-	android:authorities
-		ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:27:13-72
-	android:exported
-		ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:29:13-37
-	android:directBootAware
-		ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:28:13-43
-	android:initOrder
-		ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:30:13-36
-	android:name
-		ADDED from [com.google.firebase:firebase-common:20.3.3] C:\Users\sruth\.gradle\caches\transforms-3\6f9fa5902813f78de2aefcdfcdb180f7\transformed\jetified-firebase-common-20.3.3\AndroidManifest.xml:26:13-77
 meta-data#com.google.android.gms.version
 ADDED from [com.google.android.gms:play-services-basement:18.1.0] C:\Users\sruth\.gradle\caches\transforms-3\58aa1384bde170d075503b845cfcf44c\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
 	android:value

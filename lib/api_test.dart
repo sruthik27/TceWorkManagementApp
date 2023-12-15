@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:email_otp/email_otp.dart';
 
 Future<void> handleRegister() async {
   var data = {
@@ -187,9 +188,24 @@ Future<void> handleQuery(int work, String message) async {
 }
 
 
-void main(){
-  // int worker_id;
-  // changeorder(908685839585640449,1);
-  // updatecompletion(908685839585640449);
-  // handleQuery(910760215319019521, "hello just a test");
+Future<void> main() async {
+  EmailOTP myAuth = EmailOTP();
+  var otpGeneratedTime = DateTime.now();
+  await myAuth.setSMTP(
+      host: "smtp-relay.brevo.com",
+      auth: true,
+      username: "sruthik2016@gmail.com",
+      password: "a4BrdMsQJXLkcyYE",
+      secure: "SSL",
+      port: 587
+  );
+  await myAuth.setConfig(
+    appEmail: "insomniadevs007@gmail.com",
+    appName: "TCE MDR",
+    userEmail: "issacpremdass@gmail.com",
+    otpLength: 6,
+    otpType: OTPType.digitsOnly,
+  );
+  var res = await myAuth.sendOTP();
+  print("-----------------------"+"sent email"+"------------------"+res.toString());
 }

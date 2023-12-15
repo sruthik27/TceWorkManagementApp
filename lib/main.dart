@@ -4,11 +4,14 @@ import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:work_management_app/homepage.dart';
 import 'package:work_management_app/registration.dart';
 import 'package:dio/dio.dart';
 import 'firebase_options.dart';
 import 'package:email_otp/email_otp.dart';
+import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
+
 
 import 'package:work_management_app/widgets/appColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +28,20 @@ void main() async {
     debugShowCheckedModeBanner: false,
     title: 'TCE Work Management',
     home: isLoggedIn ? HomePage(workerId) : const MyHomePage(title: 'TCE Work Management'),
+      theme:ThemeData(
+        colorScheme: ColorScheme.light(
+          primary: Colors.lightBlue,
+          secondary: Colors.lightBlue, // Secondary is the equivalent of the old accentColor
+        ),
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: Colors.lightBlue),
+          bodyMedium: TextStyle(color: Colors.lightBlue),
+          // Add other text styles if needed
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.lightBlue,
+        ),
+      ),
   ));
 }
 
@@ -34,10 +51,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TCE Work Management',
       home: MyHomePage(title: 'TCE Work Management'),
+      theme: ThemeData(primaryColor: AppColors.darkBrown),
     );
   }
 }
@@ -118,29 +136,34 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
   }
-  Future<void> sendmail(String email) async {
+
+  Future<void> changepass() async {
     setState(() {
       isLoading = true;
     });
-    Dio dio = Dio();
-
-    String url = 'https://tceworkmanagement.azurewebsites.net/db/resetpass?mailid=$email';
-
+    String url = 'https://tceworkmanagement.azurewebsites.net/db/resetpass';
     try {
-      Response response = await dio.post(
-        url,
+      var headers = {
+        'Content-Type': 'application/json'
+      };
+      var data = json.encode({
+        "email": emailController.text,
+        "newpass": newPasswordController.text,
+        "oldpass": ""
+      });
+      var dio = Dio();
+      var response = await dio.request(url,
         options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          method: 'PUT',
+          headers: headers,
         ),
-        data: jsonEncode({}),
+        data: data,
       );
       if (response.statusCode == 200) {
-        var data = response.data;
-        print(data);
-      } else {
-        print('Error: ${response.statusCode}');
+        print(json.encode(response.data));
+      }
+      else {
+        print(response.statusMessage);
       }
     } catch (error) {
       print('Error: $error');
@@ -167,14 +190,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> generateOtpAndSendEmail() async {
     otpGeneratedTime = DateTime.now();
-    await myAuth.setSMTP(
-        host: "smtp.gmail.com",
-        auth: true,
-        username: "insomniadevs007@gmail.com",
-        password: "lzhyecgavxzkcgvg",
-        secure: "SSL",
-        port: 587
-    );
+    // await myAuth.setSMTP(
+    //     host: "smtp.gmail.com",
+    //     auth: true,
+    //     username: "insomniadevs007@gmail.com",
+    //     password: "lzhyecgavxzkcgvg",
+    //     secure: "SSL",
+    //     port: 587
+    // );
     await myAuth.setConfig(
       appEmail: "insomniadevs007@gmail.com",
       appName: "TCE MDR",
@@ -193,24 +216,40 @@ class _MyHomePageState extends State<MyHomePage> {
         DateTime.now().difference(otpGeneratedTime!).inMinutes < 5) {
       if (newPasswordController.text == confirmNewPasswordController.text) {
         print('----------verified------------');
+        await changepass();
         Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('PASSWORD CHANGED'),
-            ));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('New passwords do not match'),
-          ),
+        Fluttertoast.showToast(
+            msg: "PASSWORD CHANGED",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
         );
+      } else {
+          Fluttertoast.showToast(
+              msg: "Passwords do not match",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 3,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+
+          print('passwords don\'t match');
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Invalid or expired OTP'),
-        ),
-      );
+        Fluttertoast.showToast(
+            msg: "OTP wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
     }
   }
 
@@ -218,9 +257,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
         title: const Text('Login'),
         backgroundColor: AppColors.darkBrown,
+        foregroundColor: Colors.white,
       ),
       body: Form(
         key: _formKey,
@@ -272,46 +313,63 @@ class _MyHomePageState extends State<MyHomePage> {
             ,TextButton(
               child: const Text(
                 'Forgot Password?',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: AppColors.darkBrown),
               ),
               onPressed: () async {
                 if (emailController.text!="") {
                   await generateOtpAndSendEmail();
                   showDialog(
                     context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Enter OTP and New Password'),
-                        content: Column(
-                          children: <Widget>[
-                            TextField(
-                              controller: otpController,
-                              decoration: InputDecoration(
-                                hintText: 'Enter OTP',
-                              ),
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return AlertDialog(
+                            title: Text('Enter OTP and New Password'),
+                            content: Column(
+                              children: <Widget>[
+                                TextField(
+                                  controller: otpController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter OTP',
+                                  ),
+                                ),
+                                TimerCountdown(
+                                  format: CountDownTimerFormat.minutesSeconds,
+                                  endTime: DateTime.now().add(Duration(minutes: 5)),
+                                  onEnd: () {
+                                    print("Timer finished");
+                                    Navigator.of(context).pop();
+                                  },
+                                  timeTextStyle: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                                ),
+                                TextField(
+                                  controller: newPasswordController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter new password',
+                                  ),
+                                ),
+                                TextField(
+                                  controller: confirmNewPasswordController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Confirm new password',
+                                  ),
+                                ),
+                              ],
                             ),
-                            TextField(
-                              controller: newPasswordController,
-                              decoration: InputDecoration(
-                                hintText: 'Enter new password',
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('Submit'),
+                                onPressed: () {
+                                  verifyOtpAndChangePassword();
+                                },
                               ),
-                            ),
-                            TextField(
-                              controller: confirmNewPasswordController,
-                              decoration: InputDecoration(
-                                hintText: 'Confirm new password',
-                              ),
-                            ),
-                          ],
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('Submit'),
-                            onPressed: () {
-                              verifyOtpAndChangePassword();
-                            },
-                          ),
-                        ],
+                            ],
+                          );
+                        }
                       );
                     },
                   );
@@ -332,6 +390,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.darkBrown,
+            foregroundColor: AppColors.lightSandal
+            // You can customize other properties like padding, elevation, shape, etc.
+            ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   showLoadingDialog(context);
@@ -351,11 +414,11 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               child: const Text(
                 'Register Now',
-                style: TextStyle(color: Colors.blue),
+                style: TextStyle(color: AppColors.darkBrown),
               ),
               onPressed: () {
                 // Navigate to the registration page
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const RegistrationForm(),
                   ),

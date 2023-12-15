@@ -4,10 +4,6 @@
         "source": "com.tce.work_management_app-main-19:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.tce.work_management_app-merged_res-25:/drawable_launch_background.xml.flat",
-        "source": "com.tce.work_management_app-main-19:/drawable/launch_background.xml"
-    },
-    {
         "merged": "com.tce.work_management_app-merged_res-25:/mipmap-mdpi_ic_launcher.png.flat",
         "source": "com.tce.work_management_app-main-19:/mipmap-mdpi/ic_launcher.png"
     },

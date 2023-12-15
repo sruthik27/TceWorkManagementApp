@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.darkBrown,
+          foregroundColor: Colors.white,
           title: const Text("TCE MDR Platform"),
           actions: <Widget>[
             IconButton(
@@ -95,12 +96,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           } else {
                             var WorkNameList = snapshot.data;
                             if (WorkNameList.isEmpty) {
-                              return const Card(
+                              return Card(
                                 child: Padding(
                                   padding: EdgeInsets.all(16.0),
-                                  child: Text(
-                                    "You have no works currently",
-                                    style: TextStyle(fontSize: 18),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "You have no works currently",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      IconButton(icon: Icon(Icons.refresh), onPressed: (){
+                                        setState(() {
+                                        });
+                                      },)
+                                    ],
                                   ),
                                 ),
                               );

@@ -9,11 +9,13 @@ import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'widgets/appImages.dart';
+import 'package:image_watermark/image_watermark.dart';
+import 'package:intl/intl.dart';
+
 int completed = 0;
-final ValueNotifier<double> _progressNotifier = ValueNotifier<double>(0);
+ValueNotifier<double> _progressNotifier = ValueNotifier<double>(0);
 
 class WorkDescriptionPage extends StatefulWidget {
   final Map<String, dynamic> work_details;
@@ -26,7 +28,6 @@ class WorkDescriptionPage extends StatefulWidget {
 class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _messageController = TextEditingController();
-
 
 
   Future<void> handleQuery(int work, String message) async {
@@ -105,11 +106,18 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   void initState() {
     super.initState();
     var work = widget.work_details;
-    int total = work['total_subtasks'];
     setState(() {
       completed+= work['completed_subtasks'] as int;
-      _progressNotifier.value+=(completed/total)*100;
+      print("${completed}");
+      _progressNotifier.value+= completed;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    completed = 0;
+    _progressNotifier = ValueNotifier<double>(0);
   }
 
   @override
@@ -156,15 +164,26 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
+
     Future<Uint8List> compressImage(XFile image) async {
       final Uint8List compressedImage =
-          await FlutterImageCompress.compressWithList(
+      await FlutterImageCompress.compressWithList(
         await image.readAsBytes(),
         minWidth: 1000,
         minHeight: 1000,
         quality: 65,
       );
-      return compressedImage;
+      String formattedDateTime = DateFormat("yyyy-MM-dd @ HH:mm").format(DateTime.now());
+      // Add the timestamp watermark to the image
+      final Uint8List watermarkedImage = await ImageWatermark.addTextWatermark(
+        imgBytes: compressedImage,
+        watermarkText: formattedDateTime,
+        color: AppColors.darkBrown,
+        dstX: 5,
+        dstY: 5,
+      );
+
+      return watermarkedImage;
     }
 
     Future<String> uploadImage(XFile image) async {
@@ -232,7 +251,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         print(json.encode(response.data));
         setState(() {
           completed+=taskWeight;
-          _progressNotifier.value = (completed/total)*100;
+          print(completed);
+          _progressNotifier.value = completed*1.0;
         });
         print(_progressNotifier.value);
       } else {
@@ -361,6 +381,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
+          foregroundColor: Colors.white,
         title: Text("${work['work_name']}"),
       ),
       floatingActionButton: FloatingActionButton(
@@ -419,6 +440,47 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             SizedBox(height: 20),
             Center(child: Text("Sub Tasks:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
             SizedBox(height: 20),
+            Column(
+              children: [
+                Text("Weightage percentages",style: TextStyle(fontSize: 18),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          width: 25,
+                          height: 25,
+                          color: Colors.green,
+                        ),
+                        Text('Low(< 30%)'),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          width: 25,
+                          height: 25,
+                          color: Colors.orange,
+                        ),
+                        Text('Medium(<70%)'),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          width: 25,
+                          height: 25,
+                          color: Colors.red,
+                        ),
+                        Text('High(>70%)'),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            )
+,
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: gettasks(int.parse(work['work_id'])),
@@ -438,9 +500,15 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             ListTile(
                               tileColor: const Color(0xFFFFEAC8),
                               // key: ValueKey(task['task_id']),
-                              title: Tooltip(child: Text(task['task_name']),message:"⭐"*task['weightage'],preferBelow: true,triggerMode: TooltipTriggerMode.tap,),
+                              title: Tooltip(child: Text(task['task_name']),message:"${task['weightage']} %",preferBelow: true,triggerMode: TooltipTriggerMode.tap,),
                               subtitle:
-                                  Text("Due: ${dateTime(task['due_date'])}"),
+                        Text(
+                        "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year &&
+                        DateTime.now().month == DateTime.parse(task['due_date']).month &&
+                        DateTime.now().day == DateTime.parse(task['due_date']).day
+                        ? "\u203C"
+                            : ""}",
+                        ),
                               leading: task['completed']
                                   ? Container(
                                       padding: const EdgeInsets.symmetric(
@@ -470,9 +538,20 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                 child: const Icon(Icons.drag_handle),
                               ),
                             ),
+                        LinearProgressIndicator(
+                          minHeight: 10,
+                          borderRadius: BorderRadius.circular(60),
+                          value: task['weightage']/100,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              task['weightage'] < 30 ? Colors.green :
+                              task['weightage'] < 70 ? Colors.orange :
+                              Colors.red,
+                            ),
+                            backgroundColor: Colors.grey[300]
+                        ),
                             Container(
                               // key: ValueKey(task['task_id']),
-                              height: 2,
+                              height: 3,
                               width: double.infinity,
                               color: AppColors.darkBrown,
                             )
