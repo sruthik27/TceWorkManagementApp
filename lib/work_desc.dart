@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:intl/intl.dart';
 
 int completed = 0;
 ValueNotifier<double> _progressNotifier = ValueNotifier<double>(0);
+List<XFile>? selectedImages;
 
 class WorkDescriptionPage extends StatefulWidget {
   final Map<String, dynamic> work_details;
@@ -262,20 +264,81 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
     List<XFile>? selectedImages;
     final ImagePicker picker = ImagePicker();
-
+  //point of failure
     Future<bool> pickImages() async {
       final List<XFile> images = await picker.pickMultiImage();
       if (images == null || images.isEmpty) {
         print('No images were selected.');
         return false;
       }
-        for (XFile image in images!) {
+      selectedImages = images;
+      bool proceed = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return AlertDialog(
+                title: Text('Proceed with these images?'),
+                content: Container(
+                  width: double.maxFinite,
+                  child: Column(
+                    children: [
+                      Wrap(
+                        spacing: 5.0, // gap between adjacent chips
+                        runSpacing: 5.0, // gap between lines
+                        children: selectedImages!.map((image) {
+                          return Image.file(
+                            File(image.path),
+                            width: 50, // width of the image
+                            height: 50, // height of the image
+                            fit: BoxFit.cover,
+                          );
+                        }).toList(),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final List<XFile> newImages = await picker.pickMultiImage();
+                          if (newImages != null && newImages.isNotEmpty) {
+                            setState(() {
+                              selectedImages!.addAll(newImages);
+                            });
+                          }
+                        },
+                        child: Text('Add more images'),
+                      ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Proceed'),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+      if (proceed == true) {
+        for (XFile image in selectedImages!) {
           String url = await uploadImage(image);
           print('Image URL: $url');
           await addimageurl(work['work_id'], url);
         }
-        return true;
+      }
+      return proceed == true;
     }
+
+
 
     Future<void> showUploadPhotoDialog(BuildContext context, task) async {
       bool uploadSuccess = false;
@@ -427,7 +490,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     SizedBox(height: 20),
                     SimpleCircularProgressBar(
                       mergeMode: true,
-                      progressColors: const [Colors.cyan],
+                      progressColors: const [AppColors.darkBrown],
+                      backColor: AppColors.darkSandal,
+                      fullProgressColor: Colors.green,
                       valueNotifier: _progressNotifier,
                       onGetText: (double value) {
                         return Text('${value.toInt()}%');
@@ -442,7 +507,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             SizedBox(height: 20),
             Column(
               children: [
-                Text("Weightage percentages",style: TextStyle(fontSize: 18),),
+                Text("Weightage and importance level",style: TextStyle(fontSize: 18),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[

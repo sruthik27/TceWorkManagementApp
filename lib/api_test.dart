@@ -74,8 +74,8 @@ Future<List> getworks(int id) async {
   );
 
   if (response.statusCode == 200) {
-    print("++++++++++++++++++ ${response.data.runtimeType}\n");
-    print(response.data);
+    // print("++++++++++++++++++ ${response.data.runtimeType}\n");
+    // print(response.data);
     return response.data;
   } else {
     print(response.statusMessage);

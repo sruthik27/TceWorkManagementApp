@@ -78,6 +78,9 @@ flutter:
   assets:
     - assets/workers.png
     - assets/completion_pop_up.png
+    - assets/home.png
+    - assets/downloads.png
+    - assets/favs.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

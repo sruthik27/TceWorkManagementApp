@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:work_management_app/homepage.dart';
 import 'package:work_management_app/registration.dart';
 import 'package:dio/dio.dart';
+import 'package:work_management_app/widgets/welcome.dart';
 import 'firebase_options.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
@@ -17,6 +18,7 @@ import 'package:work_management_app/widgets/appColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int worker_id = 0;
+bool first_time = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -401,11 +403,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   bool success = await handleLogin();
                   Navigator.pop(context);  // Dismiss the dialog
                   if (success) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomePage(worker_id)),
-                    );
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    bool? notFirstTime = prefs.getBool('not_first_time');
+                    if(notFirstTime != null && notFirstTime){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePage(worker_id)),
+                      );
+                    }
+                    else{
+                      print('first time');
+                      prefs.setBool('not_first_time', true);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Welcome()),
+                      );
+                    }
                   }
                 }
               },

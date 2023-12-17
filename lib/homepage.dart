@@ -6,6 +6,7 @@ import '../widgets/appImages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_test.dart';
 
+
 class HomePage extends StatefulWidget {
   final int worker_id;
   const HomePage(this.worker_id, {super.key});
@@ -15,6 +16,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  var WorkNameList = [];
+  bool _sortAscending = true;
+  String _sortProperty = 'due_date'; // default sorting property
+  List<String> _sortProperties = ['due_date', 'wage', 'total_subtasks'];
+
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    WorkNameList = await getworks(widget.worker_id);
+    setState(() {}); // Call setState to update the UI after data is fetched
+  }
+
+
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('worker_id');
@@ -26,9 +45,34 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
+  void _sortWorks(bool ascending) {
+    setState(() {
+      _sortAscending = ascending;
+      switch (_sortProperty) {
+        case 'due_date':
+          WorkNameList.sort((a, b) => ascending
+              ? DateTime.parse(a['due_date']).compareTo(DateTime.parse(b['due_date']))
+              : DateTime.parse(b['due_date']).compareTo(DateTime.parse(a['due_date'])));
+          break;
+        case 'wage':
+          WorkNameList.sort((a, b) => ascending
+              ? a['wage'].compareTo(b['wage'])
+              : b['wage'].compareTo(a['wage']));
+          break;
+        case 'total_subtasks':
+          WorkNameList.sort((a, b) => ascending
+              ? a['total_subtasks'].compareTo(b['total_subtasks'])
+              : b['total_subtasks'].compareTo(a['total_subtasks']));
+          break;
+      }
+    });
+    print(WorkNameList);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-    int workerId = widget.worker_id;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -70,12 +114,34 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "WORKS ASSIGNED..",
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 20,
-                    ),
+                  Row(
+                    children: [
+                      const Text(
+                        "WORKS ASSIGNED..",
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 16,
+                        ),
+                      ),DropdownButton<String>(
+                        value: _sortProperty,
+                        items: _sortProperties.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _sortProperty = newValue!;
+                            _sortWorks(_sortAscending);
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.sort),
+                        onPressed: () => _sortWorks(!_sortAscending),
+                      )
+                    ],
                   ),
                   const SizedBox(height: 10),
                   Expanded(
@@ -85,7 +151,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                 () {}); // This will trigger a rebuild of the FutureBuilder
                       },
                       child: FutureBuilder(
-                        future: getworks(workerId),
+                        future: Future.value(WorkNameList),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
                           if (snapshot.connectionState ==
@@ -94,7 +160,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
-                            var WorkNameList = snapshot.data;
+                            WorkNameList = snapshot.data;
                             if (WorkNameList.isEmpty) {
                               return Card(
                                 child: Padding(
