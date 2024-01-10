@@ -261,6 +261,45 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             SizedBox(height: 90,),
+            TextButton(
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'New User? ',
+                      style: TextStyle(
+                        color: AppColors.darkBrown,
+                        fontSize: 20,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'REGISTER',
+                      style: TextStyle(
+                        color: AppColors.darkBrown,
+                        fontSize: 20,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        decoration: TextDecoration.underline,
+                        height: 0,
+                      ),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              onPressed: () {
+                // Navigate to the registration page
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const RegistrationForm(),
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 20,),
             Container(
               height: 480,
               padding: EdgeInsets.only(top: 50),
@@ -499,43 +538,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-            ),TextButton(
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'New User? ',
-                      style: TextStyle(
-                        color: AppColors.darkBrown,
-                        fontSize: 20,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'REGISTER',
-                      style: TextStyle(
-                        color: AppColors.darkBrown,
-                        fontSize: 20,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        decoration: TextDecoration.underline,
-                        height: 0,
-                      ),
-                    ),
-                  ],
-                ),
-                textAlign: TextAlign.center,
-              ),
-              onPressed: () {
-                // Navigate to the registration page
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const RegistrationForm(),
-                  ),
-                );
-              },
             ),
           ],
         ),

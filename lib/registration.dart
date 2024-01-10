@@ -89,6 +89,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
+        foregroundColor: Colors.white,
         title: const Text('Registration'),
       ),
       body: Padding(

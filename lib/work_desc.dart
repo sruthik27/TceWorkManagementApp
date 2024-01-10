@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:work_management_app/main.dart';
 import 'package:work_management_app/widgets/appColors.dart';
 import 'package:work_management_app/widgets/appText.dart';
@@ -20,6 +21,7 @@ ValueNotifier<double> _progressNotifier = ValueNotifier<double>(0);
 
 class WorkDescriptionPage extends StatefulWidget {
   final Map<String, dynamic> work_details;
+
   const WorkDescriptionPage(this.work_details, {super.key});
 
   @override
@@ -31,7 +33,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   final TextEditingController _messageController = TextEditingController();
   List<XFile>? selectedImages;
   final ImagePicker picker = ImagePicker();
-
+  bool isLoading = false;
 
   Future<void> handleQuery(int work, String message) async {
     final jsonData = {
@@ -42,7 +44,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
     final dio = Dio();
     final response = await dio.post(
-      'https://tceworkmanagement.azurewebsites.net/db/addquery', // Replace with your actual API endpoint
+      'https://tceworkmanagement.azurewebsites.net/db/addquery',
+      // Replace with your actual API endpoint
       data: jsonData,
       options: Options(
         contentType: Headers.jsonContentType,
@@ -110,9 +113,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     super.initState();
     var work = widget.work_details;
     setState(() {
-      completed+= work['completed_subtasks'] as int;
+      completed += work['completed_subtasks'] as int;
       print("${completed}");
-      _progressNotifier.value+= completed;
+      _progressNotifier.value += completed;
     });
   }
 
@@ -167,16 +170,16 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-
     Future<Uint8List> compressImage(XFile image) async {
       final Uint8List compressedImage =
-      await FlutterImageCompress.compressWithList(
+          await FlutterImageCompress.compressWithList(
         await image.readAsBytes(),
         minWidth: 1000,
         minHeight: 1000,
         quality: 65,
       );
-      String formattedDateTime = DateFormat("yyyy-MM-dd @ HH:mm").format(DateTime.now());
+      String formattedDateTime =
+          DateFormat("yyyy-MM-dd @ HH:mm").format(DateTime.now());
       // Add the timestamp watermark to the image
       final Uint8List watermarkedImage = await ImageWatermark.addTextWatermark(
         imgBytes: compressedImage,
@@ -241,7 +244,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-    Future<void> updatecompletion(String taskId,int taskWeight) async {
+    Future<void> updatecompletion(String taskId, int taskWeight) async {
       var dio = Dio();
       var response = await dio.request(
         'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$taskId',
@@ -253,9 +256,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       if (response.statusCode == 200) {
         print(json.encode(response.data));
         setState(() {
-          completed+=taskWeight;
+          completed += taskWeight;
           print(completed);
-          _progressNotifier.value = completed*1.0;
+          _progressNotifier.value = completed * 1.0;
         });
         print(_progressNotifier.value);
       } else {
@@ -263,8 +266,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-
-  //pt of failure
+    //pt of failure
     Future<bool> pickImages() async {
       setState(() {
         selectedImages = [];
@@ -282,7 +284,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          final List<XFile> images = await picker.pickMultiImage();
+                          final List<XFile> images =
+                              await picker.pickMultiImage();
                           if (images != null && images.isNotEmpty) {
                             setState(() {
                               selectedImages!.addAll(images);
@@ -293,7 +296,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          final XFile? image = await picker.pickImage(source: ImageSource.camera);
+                          final XFile? image = await picker.pickImage(
+                              source: ImageSource.camera);
                           if (image != null) {
                             setState(() {
                               selectedImages!.add(image);
@@ -303,17 +307,18 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                         child: Text('Take a new photo'),
                       ),
                       Wrap(
-                        spacing: 5.0, // gap between adjacent chips
-                        runSpacing: 5.0, // gap between lines
-                        children: selectedImages!.length>0?selectedImages!.map((image) {
-                          return Image.file(
-                            File(image.path),
-                            width: 50, // width of the image
-                            height: 50, // height of the image
-                            fit: BoxFit.cover,
-                          );
-                        }).toList():[]
-                      ),
+                          spacing: 5.0, // gap between adjacent chips
+                          runSpacing: 5.0, // gap between lines
+                          children: selectedImages!.length > 0
+                              ? selectedImages!.map((image) {
+                                  return Image.file(
+                                    File(image.path),
+                                    width: 50, // width of the image
+                                    height: 50, // height of the image
+                                    fit: BoxFit.cover,
+                                  );
+                                }).toList()
+                              : []),
                     ],
                   ),
                 ),
@@ -338,6 +343,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       );
 
       if (proceed == true) {
+        setState(() {
+          isLoading = true;
+        });
         for (XFile image in selectedImages!) {
           String url = await uploadImage(image);
           print('Image URL: $url');
@@ -346,10 +354,6 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
       return proceed == true;
     }
-
-
-
-
 
     Future<void> showUploadPhotoDialog(BuildContext context, task) async {
       bool uploadSuccess = false;
@@ -394,17 +398,21 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   ),
                   onPressed: () async {
                     Navigator.of(context).pop(); // Close the dialog
-
                     try {
                       bool uploaded = await pickImages();
-                      if(uploaded){
-                      uploadSuccess = true;
-                      await updatecompletion(task['task_id'],task['weightage']);
-                      setState(() {});
+                      if (uploaded) {
+                        uploadSuccess = true;
+                        await updatecompletion(
+                            task['task_id'], task['weightage']);
+                        setState(() {});
                       }
                     } catch (e) {
                       print('Error: $e');
                       uploadSuccess = false;
+                    } finally {
+                      setState(() {
+                        isLoading = false;
+                      });
                     }
                     showDialog(
                       context: _scaffoldKey.currentContext!,
@@ -439,11 +447,17 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   onPressed: () async {
                     Navigator.of(context).pop(); // Close the dialog
                     print(task);
-                    await updatecompletion(task['task_id'],task['weightage']);
+                    await updatecompletion(task['task_id'], task['weightage']);
                     setState(() {});
                   },
                   child: const Text('Skip'),
                 ),
+                const SizedBox(height: 20),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel'))
               ],
             ),
           );
@@ -455,7 +469,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
-          foregroundColor: Colors.white,
+        foregroundColor: Colors.white,
         title: Text("${work['work_name']}"),
       ),
       floatingActionButton: FloatingActionButton(
@@ -471,13 +485,22 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Work Description", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text("Work Description",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             Text("${work['work_description']}", style: TextStyle(fontSize: 16)),
             SizedBox(height: 20),
-            Text("Time Period", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text("Time Period",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
-            Text("${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}", style: TextStyle(fontSize: 16, color: DateTime.parse(work['due_date']).isAfter(DateTime.now()) ? Colors.green : Colors.red)),
+            Text(
+                "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}",
+                style: TextStyle(
+                    fontSize: 16,
+                    color:
+                        DateTime.parse(work['due_date']).isAfter(DateTime.now())
+                            ? Colors.green
+                            : Colors.red)),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -486,18 +509,25 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Total Wage", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text("Total Wage",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: 10),
                     Text("₹${work['wage']}", style: TextStyle(fontSize: 16)),
                     SizedBox(height: 20),
-                    Text("Advance Paid", style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold)),
+                    Text("Advance Paid",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: 10),
-                    Text("${work['advance_paid'] ? "Yes" : "No"}", style: TextStyle(fontSize: 16)),
+                    Text("${work['advance_paid'] ? "Yes" : "No"}",
+                        style: TextStyle(fontSize: 16)),
                   ],
                 ),
                 Column(
                   children: [
-                    Text('Progress %', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text('Progress %',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
                     SizedBox(height: 20),
                     SimpleCircularProgressBar(
                       mergeMode: true,
@@ -514,11 +544,17 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
               ],
             ),
             SizedBox(height: 20),
-            Center(child: Text("Sub Tasks:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+            Center(
+                child: Text("Sub Tasks:",
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
             SizedBox(height: 20),
             Column(
               children: [
-                Text("Weightage and importance level",style: TextStyle(fontSize: 18),),
+                Text(
+                  "Weightage and importance level",
+                  style: TextStyle(fontSize: 18),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -555,113 +591,123 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   ],
                 ),
               ],
-            )
-,
-            Expanded(
-              child: FutureBuilder<List<Map<String, dynamic>>>(
-                future: gettasks(int.parse(work['work_id'])),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return ReorderableListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        var task = snapshot.data![index];
-                        return Column(
-                          key: ValueKey(task['task_id']),
-                          children: [
-                            ListTile(
-                              tileColor: const Color(0xFFFFEAC8),
-                              // key: ValueKey(task['task_id']),
-                              title: Tooltip(child: Text(task['task_name']),message:"${task['weightage']} %",preferBelow: true,triggerMode: TooltipTriggerMode.tap,),
-                              subtitle:
-                        Text(
-                        "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year &&
-                        DateTime.now().month == DateTime.parse(task['due_date']).month &&
-                        DateTime.now().day == DateTime.parse(task['due_date']).day
-                        ? "\u203C"
-                            : ""}",
-                        ),
-                              leading: task['completed']
-                                  ? Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: const Text(
-                                        'Done',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    )
-                                  : IconButton(
-                                      onPressed: () async {
-                                        await showUploadPhotoDialog(
-                                            context, task);
-                                      },
-                                      icon: const Icon(
-                                        Icons.upload,
-                                        color: AppColors.darkBrown,
-                                      )),
-                              trailing: ReorderableDragStartListener(
-                                index: index,
-                                child: const Icon(Icons.drag_handle),
-                              ),
-                            ),
-                        LinearProgressIndicator(
-                          minHeight: 10,
-                          borderRadius: BorderRadius.circular(60),
-                          value: task['weightage']/100,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              task['weightage'] < 30 ? Colors.green :
-                              task['weightage'] < 70 ? Colors.orange :
-                              Colors.red,
-                            ),
-                            backgroundColor: Colors.grey[300]
-                        ),
-                            Container(
-                              // key: ValueKey(task['task_id']),
-                              height: 3,
-                              width: double.infinity,
-                              color: AppColors.darkBrown,
-                            )
-                          ],
-                        );
-                      },
-                      onReorder: (oldIndex, newIndex) async {
-                        setState(() {
-                          if (newIndex > oldIndex) {
-                            newIndex -= 1;
-                          }
-                          final Map<String, dynamic> item =
-                              snapshot.data!.removeAt(oldIndex);
-                          snapshot.data!.insert(newIndex, item);
-                        });
-
-                        // Store all the changeorder requests in a list
-                        List<Future> requests = [];
-                        for (int i = 0; i < snapshot.data!.length; i++) {
-                          requests.add(
-                              changeorder(snapshot.data![i]['task_id'], i));
-                        }
-
-                        // Wait for all the requests to finish
-                        await Future.wait(requests);
-
-                        // Then call gettasks again to refresh the list
-                        setState(() {});
-                      },
-                    );
-                  }
-                },
-              ),
             ),
+            isLoading
+                ? SpinKitFadingCircle(
+                    color: AppColors.darkSandal,
+                    size: 100.0,
+                  )
+                : Expanded(
+                    child: FutureBuilder<List<Map<String, dynamic>>>(
+                      future: gettasks(int.parse(work['work_id'])),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return ReorderableListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              var task = snapshot.data![index];
+                              return Column(
+                                key: ValueKey(task['task_id']),
+                                children: [
+                                  Tooltip(
+                                    message: "${task['weightage']} %",
+                                    preferBelow: true,
+                                    triggerMode: TooltipTriggerMode.tap,
+                                    child: ListTile(
+                                      tileColor: const Color(0xFFFFEAC8),
+                                      // key: ValueKey(task['task_id']),
+                                      title: Text(task['task_name']),
+                                      subtitle: Text(
+                                        "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year && DateTime.now().month == DateTime.parse(task['due_date']).month && DateTime.now().day == DateTime.parse(task['due_date']).day ? " \u203C" : ""}",
+                                      ),
+                                      leading: task['completed']
+                                          ? Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.green,
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                              child: const Text(
+                                                'Done',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            )
+                                          : IconButton(
+                                              onPressed: () async {
+                                                await showUploadPhotoDialog(
+                                                    context, task);
+                                              },
+                                              icon: const Icon(
+                                                Icons.check_circle,
+                                                color: AppColors.darkBrown,
+                                                size: 30,
+                                              )),
+                                      trailing: ReorderableDragStartListener(
+                                        index: index,
+                                        child: const Icon(Icons.drag_handle),
+                                      ),
+                                    ),
+                                  ),
+                                  LinearProgressIndicator(
+                                      minHeight: 10,
+                                      borderRadius: BorderRadius.circular(60),
+                                      value: 100,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        task['weightage'] < 30
+                                            ? Colors.green
+                                            : task['weightage'] < 70
+                                                ? Colors.orange
+                                                : Colors.red,
+                                      ),
+                                      backgroundColor: Colors.grey[300]),
+                                  Container(
+                                    // key: ValueKey(task['task_id']),
+                                    height: 3,
+                                    width: double.infinity,
+                                    color: AppColors.darkBrown,
+                                  )
+                                ],
+                              );
+                            },
+                            onReorder: (oldIndex, newIndex) async {
+                              setState(() {
+                                if (newIndex > oldIndex) {
+                                  newIndex -= 1;
+                                }
+                                final Map<String, dynamic> item =
+                                    snapshot.data!.removeAt(oldIndex);
+                                snapshot.data!.insert(newIndex, item);
+                              });
+
+                              // Store all the changeorder requests in a list
+                              List<Future> requests = [];
+                              for (int i = 0; i < snapshot.data!.length; i++) {
+                                requests.add(changeorder(
+                                    snapshot.data![i]['task_id'], i));
+                              }
+
+                              // Wait for all the requests to finish
+                              await Future.wait(requests);
+
+                              // Then call gettasks again to refresh the list
+                              setState(() {});
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

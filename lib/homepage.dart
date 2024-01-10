@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'package:work_management_app/work_desc.dart';
 import '../main.dart';
 import '../widgets/appColors.dart';
@@ -98,171 +99,182 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.darkBrown,
-          foregroundColor: Colors.white,
-          title: const Text("TCE MDR Platform"),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: logout,
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.darkBrown,
+        foregroundColor: Colors.white,
+        title: const Text("TCE MDR Platform"),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: logout,
+          ),
+        ],
+      ),
+      body: isLoading?
+    Center(
+        child: SpinKitFadingCircle(
+        color: AppColors.darkSandal,
+    size: 100.0,
         ),
-        body: isLoading?
-      Center(
-    child: SpinKitFadingCircle(
-    color: AppColors.darkSandal,
-      size: 100.0,
-    ),
-    ):Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Image.asset(AppImages.workers),
-            Container(
-              padding: const EdgeInsets.all(30),
-              alignment: Alignment.topLeft,
-              child: const Text(
-                "Greetings!!",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontStyle: FontStyle.italic,
-                ),
+        ):Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Image.asset(AppImages.workers),
+          Container(
+            padding: const EdgeInsets.all(30),
+            alignment: Alignment.topLeft,
+            child: const Text(
+              "Greetings!!",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontStyle: FontStyle.italic,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 180),
-              padding: const EdgeInsets.all(20),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        "WORKS ASSIGNED..",
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 16,
-                        ),
-                      ),DropdownButton<String>(
-                        value: _sortProperty,
-                        items: _sortProperties.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _sortProperty = newValue!;
-                            _sortWorks(_sortAscending);
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.sort),
-                        onPressed: () => _sortWorks(!_sortAscending),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        setState(
-                                () {}); // This will trigger a rebuild of the FutureBuilder
-                      },
-                      child: FutureBuilder(
-                        future: Future.value(WorkNameList),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const LinearProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            WorkNameList = snapshot.data;
-                            if (WorkNameList.isEmpty) {
-                              return Card(
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "You have no works currently",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 180),
+            padding: const EdgeInsets.all(20),
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      setState(
+                              () {}); // This will trigger a rebuild of the FutureBuilder
+                    },
+                    child: FutureBuilder(
+                      future: Future.value(WorkNameList),
+                      builder:
+                          (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const LinearProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          WorkNameList = snapshot.data;
+                          if (WorkNameList.isEmpty) {
+                            return Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "You have no works currently",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
                                 ),
-                              );
-                            } else {
-                              return Column(
-                                children: [
-                                  IconButton(icon: Icon(Icons.refresh), onPressed: (){
-                                    fetchData();
-                                    setState(() {
-                                    });
-                                  },),
-                                  Scrollbar(
-                                    thumbVisibility: true,
-                                    child: ListView.separated(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemCount: WorkNameList.length,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                          child: Container(
-                                            color: AppColors.darkSandal,
-                                            child: ListTile(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        WorkDescriptionPage(
-                                                            WorkNameList[index]),
-                                                  ),
-                                                ).whenComplete(() => fetchData());
-                                              },
-                                              title: Text(
-                                                  "${WorkNameList[index]['work_name']}"),
-                                            ),
-                                          ),
+                              ),
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                IconButton(icon: Icon(Icons.refresh), onPressed: (){
+                                  fetchData();
+                                  setState(() {
+                                  });
+                                },),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "WORKS ASSIGNED..",
+                                      style: TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    DropdownButton<String>(
+                                      value: _sortProperty,
+                                      items: _sortProperties.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
                                         );
-                                      },
-                                      separatorBuilder:
-                                          (BuildContext context, int index) {
-                                        return Container(
-                                          color: Colors.white,
-                                          height: 1,
-                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _sortProperty = newValue!;
+                                          _sortWorks(_sortAscending);
+                                        });
                                       },
                                     ),
+                                    IconButton(
+                                      icon: const Icon(Icons.sort),
+                                      onPressed: () => _sortWorks(!_sortAscending),
+                                    )
+                                  ],
+                                ),
+                                Scrollbar(
+                                  thumbVisibility: true,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: WorkNameList.length,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
+                                        child: Container(
+                                          color: AppColors.darkSandal,
+                                          child: ListTile(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      WorkDescriptionPage(
+                                                          WorkNameList[index]),
+                                                ),
+                                              ).whenComplete(() => fetchData());
+                                            },
+                                            title: Text(
+                                                "${WorkNameList[index]['work_name']}"),
+                                            trailing: SimpleCircularProgressBar(
+                                              progressStrokeWidth: 5,
+                                              backStrokeWidth: 6,
+                                              size: 40,
+                                              mergeMode: true,
+                                              progressColors: const [AppColors.darkBrown],
+                                              backColor: AppColors.lightSandal,
+                                              fullProgressColor: Colors.green,
+                                              valueNotifier: ValueNotifier<double>(WorkNameList[index]['completed_subtasks']*1.0),
+                                              onGetText: (double value) {
+                                                return Text('${value.toInt()}%');
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                        color: Colors.white,
+                                        height: 1,
+                                      );
+                                    },
                                   ),
-                                ],
-                              );
-                            }
+                                ),
+                              ],
+                            );
                           }
-                        },
-                      ),
+                        }
+                      },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
