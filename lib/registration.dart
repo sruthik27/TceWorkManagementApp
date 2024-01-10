@@ -103,7 +103,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   controller: nameController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Name',
+                    labelText: 'Agency/Your Name',
                   ),
                 ),
               ),Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:work_management_app/work_desc.dart';
 import '../main.dart';
 import '../widgets/appColors.dart';
@@ -20,17 +21,41 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool _sortAscending = true;
   String _sortProperty = 'due_date'; // default sorting property
   List<String> _sortProperties = ['due_date', 'wage', 'total_subtasks'];
+  bool isLoading = false;
 
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     fetchData();
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      print("App resumed from minimized state");
+      fetchData();
+    }
+  }
+
   void fetchData() async {
-    WorkNameList = await getworks(widget.worker_id);
-    setState(() {}); // Call setState to update the UI after data is fetched
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      WorkNameList = await getworks(widget.worker_id);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
 
@@ -87,7 +112,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
           ],
         ),
-        body: Stack(
+        body: isLoading?
+      Center(
+    child: SpinKitFadingCircle(
+    color: AppColors.darkSandal,
+      size: 100.0,
+    ),
+    ):Stack(
           alignment: Alignment.topCenter,
           children: [
             Image.asset(AppImages.workers),
@@ -171,55 +202,55 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         "You have no works currently",
                                         style: TextStyle(fontSize: 18),
                                       ),
-                                      IconButton(icon: Icon(Icons.refresh), onPressed: (){
-                                        setState(() {
-                                        });
-                                      },)
                                     ],
                                   ),
                                 ),
                               );
                             } else {
-                              return Scrollbar(
-                                thumbVisibility: true,
-                                child: ListView.separated(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: WorkNameList.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      child: Container(
-                                        color: AppColors.darkSandal,
-                                        child: ListTile(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    WorkDescriptionPage(
-                                                        WorkNameList[index]),
-                                              ),
-                                            ).then((_) {
-                                              // This block runs when you have returned back to the 1st Page from 2nd.
-                                              setState(() {
-                                                // Call setState to refresh the page.
-                                              });
-                                            });
-                                          },
-                                          title: Text(
-                                              "${WorkNameList[index]['work_name']}"),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                      color: Colors.white,
-                                      height: 1,
-                                    );
-                                  },
-                                ),
+                              return Column(
+                                children: [
+                                  IconButton(icon: Icon(Icons.refresh), onPressed: (){
+                                    fetchData();
+                                    setState(() {
+                                    });
+                                  },),
+                                  Scrollbar(
+                                    thumbVisibility: true,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount: WorkNameList.length,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          child: Container(
+                                            color: AppColors.darkSandal,
+                                            child: ListTile(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        WorkDescriptionPage(
+                                                            WorkNameList[index]),
+                                                  ),
+                                                ).whenComplete(() => fetchData());
+                                              },
+                                              title: Text(
+                                                  "${WorkNameList[index]['work_name']}"),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return Container(
+                                          color: Colors.white,
+                                          height: 1,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               );
                             }
                           }

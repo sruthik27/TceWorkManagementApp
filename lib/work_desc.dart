@@ -17,7 +17,6 @@ import 'package:intl/intl.dart';
 
 int completed = 0;
 ValueNotifier<double> _progressNotifier = ValueNotifier<double>(0);
-List<XFile>? selectedImages;
 
 class WorkDescriptionPage extends StatefulWidget {
   final Map<String, dynamic> work_details;
@@ -30,6 +29,8 @@ class WorkDescriptionPage extends StatefulWidget {
 class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _messageController = TextEditingController();
+  List<XFile>? selectedImages;
+  final ImagePicker picker = ImagePicker();
 
 
   Future<void> handleQuery(int work, String message) async {
@@ -262,49 +263,56 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
     }
 
-    List<XFile>? selectedImages;
-    final ImagePicker picker = ImagePicker();
-  //point of failure
+
+  //pt of failure
     Future<bool> pickImages() async {
-      final List<XFile> images = await picker.pickMultiImage();
-      if (images == null || images.isEmpty) {
-        print('No images were selected.');
-        return false;
-      }
-      selectedImages = images;
+      setState(() {
+        selectedImages = [];
+      });
       bool proceed = await showDialog(
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                title: Text('Proceed with these images?'),
+                title: Text('Choose an option'),
                 content: Container(
                   width: double.maxFinite,
                   child: Column(
                     children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          final List<XFile> images = await picker.pickMultiImage();
+                          if (images != null && images.isNotEmpty) {
+                            setState(() {
+                              selectedImages!.addAll(images);
+                            });
+                          }
+                        },
+                        child: Text('Select from gallery'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final XFile? image = await picker.pickImage(source: ImageSource.camera);
+                          if (image != null) {
+                            setState(() {
+                              selectedImages!.add(image);
+                            });
+                          }
+                        },
+                        child: Text('Take a new photo'),
+                      ),
                       Wrap(
                         spacing: 5.0, // gap between adjacent chips
                         runSpacing: 5.0, // gap between lines
-                        children: selectedImages!.map((image) {
+                        children: selectedImages!.length>0?selectedImages!.map((image) {
                           return Image.file(
                             File(image.path),
                             width: 50, // width of the image
                             height: 50, // height of the image
                             fit: BoxFit.cover,
                           );
-                        }).toList(),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final List<XFile> newImages = await picker.pickMultiImage();
-                          if (newImages != null && newImages.isNotEmpty) {
-                            setState(() {
-                              selectedImages!.addAll(newImages);
-                            });
-                          }
-                        },
-                        child: Text('Add more images'),
+                        }).toList():[]
                       ),
                     ],
                   ),
@@ -328,6 +336,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
           );
         },
       );
+
       if (proceed == true) {
         for (XFile image in selectedImages!) {
           String url = await uploadImage(image);
@@ -337,6 +346,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
       return proceed == true;
     }
+
+
 
 
 

@@ -189,23 +189,5 @@ Future<void> handleQuery(int work, String message) async {
 
 
 Future<void> main() async {
-  EmailOTP myAuth = EmailOTP();
-  var otpGeneratedTime = DateTime.now();
-  await myAuth.setSMTP(
-      host: "smtp-relay.brevo.com",
-      auth: true,
-      username: "sruthik2016@gmail.com",
-      password: "a4BrdMsQJXLkcyYE",
-      secure: "SSL",
-      port: 587
-  );
-  await myAuth.setConfig(
-    appEmail: "insomniadevs007@gmail.com",
-    appName: "TCE MDR",
-    userEmail: "issacpremdass@gmail.com",
-    otpLength: 6,
-    otpType: OTPType.digitsOnly,
-  );
-  var res = await myAuth.sendOTP();
-  print("-----------------------"+"sent email"+"------------------"+res.toString());
+
 }
