@@ -37,7 +37,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://tceworkmanagement.azurewebsites.net/db/addworker',
+      'https://tcedmdrportal.onrender.com/db/addworker',
       options: Options(
         method: 'POST',
       ),

@@ -13,7 +13,7 @@ Future<void> handleRegister() async {
 
   var dio = Dio();
   var response = await dio.request(
-    'https://tceworkmanagement.azurewebsites.net/db/addworker',
+    'https://tcedmdrportal.onrender.com/db/addworker',
     options: Options(
       method: 'POST',
     ),
@@ -36,7 +36,7 @@ Future<void> handleLogin() async {
   var dio = Dio();
   try {
     var response = await dio.request(
-      'https://tceworkmanagement.azurewebsites.net/db/workerlogin',
+      'https://tcedmdrportal.onrender.com/db/workerlogin',
       options: Options(
         method: 'POST',
       ),
@@ -67,7 +67,7 @@ Future<void> handleLogin() async {
 Future<List> getworks(int id) async {
   var dio = Dio();
   var response = await dio.request(
-    'https://tceworkmanagement.azurewebsites.net/db/getworksbyid?workerid=$id',
+    'https://tcedmdrportal.onrender.com/db/getworksbyid?workerid=$id',
     options: Options(
       method: 'GET',
     ),
@@ -86,7 +86,7 @@ Future<List> getworks(int id) async {
 Future<void> gettasks(int workid) async {
   var dio = Dio();
   var response = await dio.request(
-    'https://tceworkmanagement.azurewebsites.net/db/gettasks?n=$workid',
+    'https://tcedmdrportal.onrender.com/db/gettasks?n=$workid',
     options: Options(
       method: 'GET',
     ),
@@ -103,7 +103,7 @@ Future<void> gettasks(int workid) async {
 Future<void> changeorder(int taskId,int newOrder) async{
   var dio = Dio();
   var response = await dio.request(
-    'https://tceworkmanagement.azurewebsites.net/db/updateorder?task_id=$taskId&new_order=$newOrder',
+    'https://tcedmdrportal.onrender.com/db/updateorder?task_id=$taskId&new_order=$newOrder',
     options: Options(
       method: 'PUT',
     ),
@@ -120,7 +120,7 @@ Future<void> changeorder(int taskId,int newOrder) async{
 Future<void> updatecompletion(int taskId) async {
   var dio = Dio();
   var response = await dio.request(
-    'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$taskId',
+    'https://tcedmdrportal.onrender.com/db/updatetaskcompletion?task_id=$taskId',
     options: Options(
       method: 'PUT',
     ),
@@ -144,7 +144,7 @@ Future<void> addimageurl(String id, String url) async {
 
   try {
     final response = await dio.put(
-      'https://tceworkmanagement.azurewebsites.net/db/appendimage',
+      'https://tcedmdrportal.onrender.com/db/appendimage',
       options: Options(
         method: 'PUT',
         headers: {
@@ -173,7 +173,7 @@ Future<void> handleQuery(int work, String message) async {
   
   final dio = Dio();
   final response = await dio.post(
-    'https://tceworkmanagement.azurewebsites.net/db/addquery', // Replace with your actual API endpoint
+    'https://tcedmdrportal.onrender.com/db/addquery', // Replace with your actual API endpoint
     data: jsonData,
     options: Options(
       contentType: Headers.jsonContentType,

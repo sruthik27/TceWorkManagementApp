@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var dio = Dio();
     try {
       var response = await dio.request(
-        'https://tceworkmanagement.azurewebsites.net/db/workerlogin',
+        'https://tcedmdrportal.onrender.com/db/workerlogin',
         options: Options(
           method: 'POST',
         ),
@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       isLoading = true;
     });
-    String url = 'https://tceworkmanagement.azurewebsites.net/db/resetpass';
+    String url = 'https://tcedmdrportal.onrender.com/db/resetpass';
     try {
       var headers = {'Content-Type': 'application/json'};
       var data = json.encode({
@@ -189,14 +189,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> generateOtpAndSendEmail() async {
     otpGeneratedTime = DateTime.now();
-    // await myAuth.setSMTP(
-    //     host: "smtp.gmail.com",
-    //     auth: true,
-    //     username: "insomniadevs007@gmail.com",
-    //     password: "lzhyecgavxzkcgvg",
-    //     secure: "SSL",
-    //     port: 587
-    // );
+    await myAuth.setSMTP(
+        host: "smtp.gmail.com",
+        auth: true,
+        username: "insomniadevs007@gmail.com",
+        password: "lzhyecgavxzkcgvg",
+        secure: "SSL",
+        port: 587
+    );
     await myAuth.setConfig(
       appEmail: "insomniadevs007@gmail.com",
       appName: "TCE MDR",

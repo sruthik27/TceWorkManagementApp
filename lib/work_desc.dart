@@ -44,7 +44,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
     final dio = Dio();
     final response = await dio.post(
-      'https://tceworkmanagement.azurewebsites.net/db/addquery',
+      'https://tcedmdrportal.onrender.com/db/addquery',
       // Replace with your actual API endpoint
       data: jsonData,
       options: Options(
@@ -140,7 +140,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     Future<List<Map<String, dynamic>>> gettasks(int workid) async {
       var dio = Dio();
       var response = await dio.request(
-        'https://tceworkmanagement.azurewebsites.net/db/gettasks?n=$workid',
+        'https://tcedmdrportal.onrender.com/db/gettasks?n=$workid',
         options: Options(
           method: 'GET',
         ),
@@ -157,7 +157,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     Future<void> changeorder(String taskId, int newOrder) async {
       var dio = Dio();
       var response = await dio.request(
-        'https://tceworkmanagement.azurewebsites.net/db/updateorder?task_id=$taskId&new_order=$newOrder',
+        'https://tcedmdrportal.onrender.com/db/updateorder?task_id=$taskId&new_order=$newOrder',
         options: Options(
           method: 'PUT',
         ),
@@ -224,7 +224,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
 
       try {
         final response = await dio.put(
-          'https://tceworkmanagement.azurewebsites.net/db/appendimage',
+          'https://tcedmdrportal.onrender.com/db/appendimage',
           options: Options(
             method: 'PUT',
             headers: {
@@ -247,7 +247,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     Future<void> updatecompletion(String taskId, int taskWeight) async {
       var dio = Dio();
       var response = await dio.request(
-        'https://tceworkmanagement.azurewebsites.net/db/updatetaskcompletion?task_id=$taskId',
+        'https://tcedmdrportal.onrender.com/db/updatetaskcompletion?task_id=$taskId',
         options: Options(
           method: 'PUT',
         ),
