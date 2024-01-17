@@ -561,9 +561,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Column(
                       children: <Widget>[
                         Container(
-                          width: 25,
-                          height: 25,
-                          color: Colors.green,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.green, // Set your desired outer border color
+                                  width: 7.0, // Set your desired outer border width
+                                )                   ),
+                            width: 25,
+                            height: 25
                         ),
                         Text('Low(< 30%)'),
                       ],
@@ -571,9 +575,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Column(
                       children: <Widget>[
                         Container(
-                          width: 25,
-                          height: 25,
-                          color: Colors.orange,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.orange, // Set your desired outer border color
+                                  width: 7.0, // Set your desired outer border width
+                                )                   ),
+                            width: 25,
+                            height: 25
                         ),
                         Text('Medium(<70%)'),
                       ],
@@ -581,9 +589,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Column(
                       children: <Widget>[
                         Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.red, // Set your desired outer border color
+                              width: 7.0, // Set your desired outer border width
+                            )                   ),
                           width: 25,
-                          height: 25,
-                          color: Colors.red,
+                          height: 25
                         ),
                         Text('High(>70%)'),
                       ],
@@ -614,69 +626,66 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                               return Column(
                                 key: ValueKey(task['task_id']),
                                 children: [
-                                  Tooltip(
-                                    message: "${task['weightage']} %",
-                                    preferBelow: true,
-                                    triggerMode: TooltipTriggerMode.tap,
-                                    child: ListTile(
-                                      tileColor: const Color(0xFFFFEAC8),
-                                      // key: ValueKey(task['task_id']),
-                                      title: Text(task['task_name']),
-                                      subtitle: Text(
-                                        "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year && DateTime.now().month == DateTime.parse(task['due_date']).month && DateTime.now().day == DateTime.parse(task['due_date']).day ? " \u203C" : ""}",
-                                      ),
-                                      leading: task['completed']
-                                          ? Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 4),
-                                              decoration: BoxDecoration(
-                                                color: Colors.green,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              child: const Text(
-                                                'Done',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            )
-                                          : IconButton(
-                                              onPressed: () async {
-                                                await showUploadPhotoDialog(
-                                                    context, task);
-                                              },
-                                              icon: const Icon(
-                                                Icons.check_circle,
-                                                color: AppColors.darkBrown,
-                                                size: 30,
-                                              )),
-                                      trailing: ReorderableDragStartListener(
-                                        index: index,
-                                        child: const Icon(Icons.drag_handle),
-                                      ),
-                                    ),
-                                  ),
-                                  LinearProgressIndicator(
-                                      minHeight: 10,
-                                      borderRadius: BorderRadius.circular(60),
-                                      value: 100,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        task['weightage'] < 30
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: task['weightage'] < 30
                                             ? Colors.green
                                             : task['weightage'] < 70
-                                                ? Colors.orange
-                                                : Colors.red,
+                                            ? Colors.orange
+                                            : Colors.red,
+                                        width: 3.0, // Set your desired border width here
                                       ),
-                                      backgroundColor: Colors.grey[300]),
-                                  Container(
-                                    // key: ValueKey(task['task_id']),
-                                    height: 3,
-                                    width: double.infinity,
-                                    color: AppColors.darkBrown,
-                                  )
+                                      borderRadius: BorderRadius.circular(8.0), // Set your desired border radius here
+                                    ),
+                                    child:
+                                      Tooltip(
+                                        message: "${task['weightage']} %",
+                                        preferBelow: true,
+                                        triggerMode: TooltipTriggerMode.tap,
+                                        child: ListTile(
+                                          tileColor: const Color(0xFFFFEAC8),
+                                          // key: ValueKey(task['task_id']),
+                                          title: Text(task['task_name']),
+                                          subtitle: Text(
+                                            "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year && DateTime.now().month == DateTime.parse(task['due_date']).month && DateTime.now().day == DateTime.parse(task['due_date']).day ? " \u203C" : ""}",
+                                          ),
+                                          leading: task['completed']
+                                              ? Container(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.green,
+                                                    borderRadius:
+                                                        BorderRadius.circular(15),
+                                                  ),
+                                                  child: const Text(
+                                                    'Done',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                )
+                                              : IconButton(
+                                                  onPressed: () async {
+                                                    await showUploadPhotoDialog(
+                                                        context, task);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.check_circle,
+                                                    color: AppColors.darkBrown,
+                                                    size: 30,
+                                                  )),
+                                          trailing: ReorderableDragStartListener(
+                                            index: index,
+                                            child: const Icon(Icons.drag_handle),
+                                          ),
+                                        ),
+                                      ),
+                                  ),
+                                  SizedBox(height: 6,)
                                 ],
                               );
                             },

@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   var WorkNameList = [];
-  bool _sortAscending = true;
   String _sortProperty = 'due_date'; // default sorting property
   List<String> _sortProperties = ['due_date', 'wage', 'total_subtasks'];
   bool isLoading = false;
@@ -67,32 +66,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (context) => const MyHomePage(title: 'TCE Work Management')),
+          builder: (context) => const MyHomePage(title: 'TCE DMDR')),
     );
   }
 
-  void _sortWorks(bool ascending) {
+  void _sortWorks() {
     setState(() {
-      _sortAscending = ascending;
       switch (_sortProperty) {
         case 'due_date':
-          WorkNameList.sort((a, b) => ascending
-              ? DateTime.parse(a['due_date']).compareTo(DateTime.parse(b['due_date']))
-              : DateTime.parse(b['due_date']).compareTo(DateTime.parse(a['due_date'])));
+          WorkNameList.sort((a, b) => DateTime.parse(a['due_date']).compareTo(DateTime.parse(b['due_date'])));
           break;
         case 'wage':
-          WorkNameList.sort((a, b) => ascending
-              ? a['wage'].compareTo(b['wage'])
-              : b['wage'].compareTo(a['wage']));
+          WorkNameList.sort((a, b) => DateTime.parse(a['wage']).compareTo(DateTime.parse(b['wage'])));
           break;
         case 'total_subtasks':
-          WorkNameList.sort((a, b) => ascending
-              ? a['total_subtasks'].compareTo(b['total_subtasks'])
-              : b['total_subtasks'].compareTo(a['total_subtasks']));
+          WorkNameList.sort((a, b) => DateTime.parse(a['total_subtasks']).compareTo(DateTime.parse(b['total_subtasks'])));
           break;
       }
     });
-    print(WorkNameList);
   }
 
 
@@ -103,7 +94,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
         foregroundColor: Colors.white,
-        title: const Text("TCE MDR Platform"),
+        title: const Text("TCE DMDR Platform"),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
@@ -123,14 +114,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           Image.asset(AppImages.workers),
           Container(
             padding: const EdgeInsets.all(30),
-            alignment: Alignment.topLeft,
-            child: const Text(
-              "Greetings!!",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
-                fontStyle: FontStyle.italic,
-              ),
+            child: Column(
+              children: [
+                const Text(
+                  "Greetings from TCE!!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                const Text(
+                    "\"வினையே உயிர்\"",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize:16,
+                  ),
+                ),
+              ],
             ),
           ),
           Container(
@@ -185,6 +186,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                   });
                                 },),
                                 Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
                                       "WORKS ASSIGNED..",
@@ -193,25 +196,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         fontSize: 16,
                                       ),
                                     ),
-                                    DropdownButton<String>(
-                                      value: _sortProperty,
-                                      items: _sortProperties.map((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          _sortProperty = newValue!;
-                                          _sortWorks(_sortAscending);
-                                        });
-                                      },
+                                    Row(
+                                      children: [
+                                        Text('Sort by:'),
+                                        DropdownButton<String>(
+                                          alignment: AlignmentDirectional.bottomStart,
+                                          value: _sortProperty,
+                                          items: _sortProperties.map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              _sortProperty = newValue!;
+                                            });
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    IconButton(
-                                      icon: const Icon(Icons.sort),
-                                      onPressed: () => _sortWorks(!_sortAscending),
-                                    )
                                   ],
                                 ),
                                 Scrollbar(
