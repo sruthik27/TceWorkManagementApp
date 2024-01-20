@@ -34,12 +34,6 @@ void main() async {
     theme: ThemeData(
       colorScheme: ColorScheme.light(
         primary: AppColors.mediumBrown,
-        secondary: AppColors.darkBrown// Secondary is the equivalent of the old accentColor
-      ),
-      textTheme: TextTheme(
-        bodyLarge: TextStyle(color: AppColors.darkBrown),
-        bodyMedium: TextStyle(color: AppColors.darkBrown),
-        // Add other text styles if needed
       ),
       iconTheme: IconThemeData(
         color: AppColors.darkBrown,
@@ -126,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Problem in backend'),
+              content: Text('Cannot connect'),
             ),
           );
           print('An error occurred: ${e.toString()}');
@@ -250,6 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
         title: const Text('TCE DMDR WORKERS PORTAL'),

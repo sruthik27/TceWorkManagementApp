@@ -92,148 +92,158 @@ class _RegistrationFormState extends State<RegistrationForm> {
         foregroundColor: Colors.white,
         title: const Text('Registration'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Agency/Your Name',
-                  ),
-                ),
-              ),Container(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Phone',
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email (existing active one)',
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  obscureText: !passwordVisible1,
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        passwordVisible1 ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          passwordVisible1 = !passwordVisible1;
-                        });
-                      },
+      body: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('WELCOME',style: TextStyle(
+                  color: AppColors.darkBrown,
+                  fontSize: 25,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500,
+                ),),
+                Text('Enter your details and submit to register as an official agency in TCE DMDR',textAlign: TextAlign.center,),
+                SizedBox(height: 10,),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Agency/Your Name',
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
-                    }
-                    if (value != confirmPasswordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  obscureText: !passwordVisible1,
-                  controller: confirmPasswordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirm Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        passwordVisible1 ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          passwordVisible1 = !passwordVisible1;
-                        });
-                      },
+                ),Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: phoneController,
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Phone',
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    }
-                    if (value != passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              SizedBox(height: 20,),
-              Column(
-                children: <Widget>[
-                  Text('Verification Code (get from TCE MDR head to sign up)'),
-                  OtpTextField(
-                    enabledBorderColor: Colors.grey,
-                    numberOfFields: 4,
-                    borderColor: AppColors.darkBrown,
-                    borderWidth: 3.0,
-                    borderRadius: BorderRadius.circular(10),
-                    fieldWidth: 40,
-                    onSubmit: (String verificationCode) {
-                      setState(() {
-                        verifyController.text = verificationCode;
-                      });
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email (existing active one)',
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    obscureText: !passwordVisible1,
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          passwordVisible1 ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            passwordVisible1 = !passwordVisible1;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 6 characters long';
+                      }
+                      if (value != confirmPasswordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
                     },
                   ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                  child: const Text('Register'),style: ElevatedButton.styleFrom(
-                  foregroundColor: AppColors.lightSandal,
-                  backgroundColor: AppColors.darkBrown, // Set the text color
-                  // You can customize other properties like padding, elevation, shape, etc.
                 ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      handleRegister();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const MyHomePage(title: 'Login page'),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    obscureText: !passwordVisible1,
+                    controller: confirmPasswordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Confirm Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          passwordVisible1 ? Icons.visibility : Icons.visibility_off,
                         ),
-                      );
-                    }
-                  },
+                        onPressed: () {
+                          setState(() {
+                            passwordVisible1 = !passwordVisible1;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20,),
+                Column(
+                  children: <Widget>[
+                    Text('Verification Code (get from TCE MDR head to sign up)'),
+                    OtpTextField(
+                      enabledBorderColor: Colors.grey,
+                      numberOfFields: 4,
+                      borderColor: AppColors.darkBrown,
+                      borderWidth: 3.0,
+                      borderRadius: BorderRadius.circular(10),
+                      fieldWidth: 40,
+                      onSubmit: (String verificationCode) {
+                        setState(() {
+                          verifyController.text = verificationCode;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: ElevatedButton(
+                    child: const Text('Register'),style: ElevatedButton.styleFrom(
+                    foregroundColor: AppColors.lightSandal,
+                    backgroundColor: AppColors.darkBrown, // Set the text color
+                    // You can customize other properties like padding, elevation, shape, etc.
+                  ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        handleRegister();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const MyHomePage(title: 'Login page'),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

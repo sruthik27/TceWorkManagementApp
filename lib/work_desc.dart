@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:work_management_app/main.dart';
 import 'package:work_management_app/widgets/appColors.dart';
 import 'package:work_management_app/widgets/appText.dart';
@@ -92,11 +93,19 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.darkBrown,
+                    backgroundColor: AppColors.darkBrown,foregroundColor: Colors.white,
                   ),
                   onPressed: () async {
                     await handleQuery(workId, _messageController.text);
                     Navigator.of(context).pop();
+                    Fluttertoast.showToast(
+                        msg: "SENT SUCCESSFULLY",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 3,
+                        backgroundColor: Colors.green,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
                   },
                   child: const Text('Submit'),
                 ),
@@ -271,55 +280,94 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       setState(() {
         selectedImages = [];
       });
+
+      Future<File> getImageFile(String path) async {
+        return File(path);
+      }
       bool proceed = await showDialog(
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
-                title: Text('Choose an option'),
+                backgroundColor: AppColors.lightSandal,
+                title: Text('Upload work completion proofs'),
                 content: Container(
-                  width: double.maxFinite,
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          final List<XFile> images =
-                              await picker.pickMultiImage();
-                          if (images != null && images.isNotEmpty) {
-                            setState(() {
-                              selectedImages!.addAll(images);
-                            });
-                          }
-                        },
-                        child: Text('Select from gallery'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final XFile? image = await picker.pickImage(
-                              source: ImageSource.camera);
-                          if (image != null) {
-                            setState(() {
-                              selectedImages!.add(image);
-                            });
-                          }
-                        },
-                        child: Text('Take a new photo'),
-                      ),
-                      Wrap(
-                          spacing: 5.0, // gap between adjacent chips
-                          runSpacing: 5.0, // gap between lines
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            final List<XFile> images = await picker.pickMultiImage();
+                            if (images != null && images.isNotEmpty) {
+                              setState(() {
+                                selectedImages!.addAll(images);
+                              });
+                            }
+                          },
+                          child: Text('Select from gallery'),
+                          style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.darkBrown,
+                    foregroundColor: Colors.white,
+                  ),
+                        ),
+                        SizedBox(height:10),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final XFile? image = await picker.pickImage(
+                              source: ImageSource.camera,
+                            );
+                            if (image != null) {
+                              setState(() {
+                                selectedImages!.add(image);
+                              });
+                            }
+                          },
+                          child: Text('Take a new photo'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.darkBrown,
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height:10),
+                        Wrap(
+                          spacing: 5.0,
+                          runSpacing: 5.0,
                           children: selectedImages!.length > 0
-                              ? selectedImages!.map((image) {
-                                  return Image.file(
-                                    File(image.path),
-                                    width: 50, // width of the image
-                                    height: 50, // height of the image
-                                    fit: BoxFit.cover,
+                              ? selectedImages!
+                              .map(
+                                (image) => FutureBuilder<File>(
+                              future: getImageFile(image.path),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: AppColors.darkBrown, // Set the border color here
+                                        width: 2.0, // Set the border width here
+                                      ),
+                                    ),
+                                    child: Image.file(
+                                      snapshot.data!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
                                   );
-                                }).toList()
-                              : []),
-                    ],
+                                }
+                                else {
+                                  return Container(width: 100,height: 100,color: Colors.grey,child: CircularProgressIndicator(),); // Placeholder or loading indicator
+                                }
+                              },
+                            ),
+                          )
+                              .toList()
+                              : [],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 actions: <Widget>[
@@ -355,110 +403,103 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       return proceed == true;
     }
 
+
+
+
     Future<void> showUploadPhotoDialog(BuildContext context, task) async {
       bool uploadSuccess = false;
-
       showDialog(
         context: _scaffoldKey.currentContext!,
         builder: (BuildContext context) {
           return Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppImages.pop_up),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  work['work_name'],
-                  style: const TextStyle(
-                    decorationThickness: 0.001,
-                    color: AppColors.darkBrown,
-                    fontSize: 20,
+            margin: EdgeInsets.symmetric(horizontal: 20,vertical: 220),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [Image.asset(AppImages.pop_up), Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 30,),
+                  const Text(
+                    "Completed?",
+                    style: TextStyle(
+                      decorationThickness: 0.001,
+                      color: AppColors.darkBrown,
+                      fontSize: 30,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 50),
-                const Text(
-                  "Completed?",
-                  style: TextStyle(
-                    decorationThickness: 0.001,
-                    color: AppColors.darkBrown,
-                    fontSize: 30,
-                  ),
-                ),
-                const SizedBox(height: 50),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.darkBrown,
-                  ),
-                  onPressed: () async {
-                    Navigator.of(context).pop(); // Close the dialog
-                    try {
-                      bool uploaded = await pickImages();
-                      if (uploaded) {
-                        uploadSuccess = true;
-                        await updatecompletion(
-                            task['task_id'], task['weightage']);
-                        setState(() {});
+                  SizedBox(height: 70,),                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.darkBrown,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () async {
+                      Navigator.of(context).pop(); // Close the dialog
+                      try {
+                        bool uploaded = await pickImages();
+                        if (uploaded) {
+                          uploadSuccess = true;
+                          await updatecompletion(
+                              task['task_id'], task['weightage']);
+                          setState(() {});
+                        }
+                      } catch (e) {
+                        print('Error: $e');
+                        uploadSuccess = false;
+                      } finally {
+                        setState(() {
+                          isLoading = false;
+                        });
                       }
-                    } catch (e) {
-                      print('Error: $e');
-                      uploadSuccess = false;
-                    } finally {
-                      setState(() {
-                        isLoading = false;
-                      });
-                    }
-                    showDialog(
-                      context: _scaffoldKey.currentContext!,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Upload Status'),
-                          content: Text(
-                            uploadSuccess
-                                ? 'Uploaded successfully'
-                                : 'Upload failed',
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('OK'),
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pop(); // Close the status dialog
-                              },
+                      showDialog(
+                        context: _scaffoldKey.currentContext!,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: AppColors.lightSandal,
+                            title: const Text('Upload Status'),
+                            content: Text(
+                              uploadSuccess
+                                  ? 'Uploaded successfully'
+                                  : 'Upload failed',
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: const Text("Upload Attachments"),
-                ),
-                const SizedBox(height: 50),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.darkBrown,
-                  ),
-                  onPressed: () async {
-                    Navigator.of(context).pop(); // Close the dialog
-                    print(task);
-                    await updatecompletion(task['task_id'], task['weightage']);
-                    setState(() {});
-                  },
-                  child: const Text('Skip'),
-                ),
-                const SizedBox(height: 20),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                            actions: <Widget>[
+                              TextButton(style: TextButton.styleFrom(
+                            backgroundColor: AppColors.darkBrown,foregroundColor: Colors.white,
+                          ),
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the status dialog
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
-                    child: Text('Cancel'))
-              ],
+                    child: const Text("Upload Attachments"),
+                  ),
+                  SizedBox(height: 30,),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.darkBrown,
+                      foregroundColor: Colors.white
+                    ),
+                    onPressed: () async {
+                      Navigator.of(context).pop(); // Close the dialog
+                      print(task);
+                      await updatecompletion(task['task_id'], task['weightage']);
+                      setState(() {});
+                    },
+                    child: const Text('Skip'),
+                  ),
+                  SizedBox(height: 15,),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Cancel'))
+                ],
+              ),]
             ),
           );
         },
@@ -487,12 +528,12 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
           children: [
             Text("Work Description",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            SizedBox(height: 5),
             Text("${work['work_description']}", style: TextStyle(fontSize: 16)),
             SizedBox(height: 20),
             Text("Time Period",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            SizedBox(height: 5),
             Text(
                 "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}",
                 style: TextStyle(
@@ -512,13 +553,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Text("Total Wage",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
+                    SizedBox(height: 5),
                     Text("₹${work['wage']}", style: TextStyle(fontSize: 16)),
                     SizedBox(height: 20),
                     Text("Advance Paid",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
+                    SizedBox(height: 5),
                     Text("${work['advance_paid'] ? "Yes" : "No"}",
                         style: TextStyle(fontSize: 16)),
                   ],
@@ -528,7 +569,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Text('Progress %',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 20),
+                    SizedBox(height: 15),
                     SimpleCircularProgressBar(
                       mergeMode: true,
                       progressColors: const [AppColors.darkBrown],
@@ -543,12 +584,12 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Center(
                 child: Text("Sub Tasks:",
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
-            SizedBox(height: 20),
+            SizedBox(height: 4),
             Column(
               children: [
                 Text(
@@ -604,6 +645,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 ),
               ],
             ),
+            SizedBox(height: 10,),
             isLoading
                 ? SpinKitFadingCircle(
                     color: AppColors.darkSandal,
@@ -619,99 +661,101 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
-                          return ReorderableListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              var task = snapshot.data![index];
-                              return Column(
-                                key: ValueKey(task['task_id']),
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: task['weightage'] < 30
-                                            ? Colors.green
-                                            : task['weightage'] < 70
-                                            ? Colors.orange
-                                            : Colors.red,
-                                        width: 3.0, // Set your desired border width here
+                          return Material(
+                            child: ReorderableListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                var task = snapshot.data![index];
+                                return Column(
+                                  key: ValueKey(task['task_id']),
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: task['weightage'] < 30
+                                              ? Colors.green
+                                              : task['weightage'] < 70
+                                              ? Colors.orange
+                                              : Colors.red,
+                                          width: 3.0, // Set your desired border width here
+                                        ),
+                                        borderRadius: BorderRadius.circular(8.0), // Set your desired border radius here
                                       ),
-                                      borderRadius: BorderRadius.circular(8.0), // Set your desired border radius here
-                                    ),
-                                    child:
-                                      Tooltip(
-                                        message: "${task['weightage']} %",
-                                        preferBelow: true,
-                                        triggerMode: TooltipTriggerMode.tap,
-                                        child: ListTile(
-                                          tileColor: const Color(0xFFFFEAC8),
-                                          // key: ValueKey(task['task_id']),
-                                          title: Text(task['task_name']),
-                                          subtitle: Text(
-                                            "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year && DateTime.now().month == DateTime.parse(task['due_date']).month && DateTime.now().day == DateTime.parse(task['due_date']).day ? " \u203C" : ""}",
-                                          ),
-                                          leading: task['completed']
-                                              ? Container(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 8,
-                                                          vertical: 4),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.green,
-                                                    borderRadius:
-                                                        BorderRadius.circular(15),
-                                                  ),
-                                                  child: const Text(
-                                                    'Done',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
+                                      child:
+                                        Tooltip(
+                                          message: "${task['weightage']} %",
+                                          preferBelow: true,
+                                          triggerMode: TooltipTriggerMode.tap,
+                                          child: ListTile(
+                                            tileColor: const Color(0xFFFFEAC8),
+                                            // key: ValueKey(task['task_id']),
+                                            title: Text(task['task_name']),
+                                            subtitle: Text(
+                                              "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year && DateTime.now().month == DateTime.parse(task['due_date']).month && DateTime.now().day == DateTime.parse(task['due_date']).day ? " \u203C" : ""}",
+                                            ),
+                                            leading: task['completed']
+                                                ? Container(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 4),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.green,
+                                                      borderRadius:
+                                                          BorderRadius.circular(15),
                                                     ),
-                                                  ),
-                                                )
-                                              : IconButton(
-                                                  onPressed: () async {
-                                                    await showUploadPhotoDialog(
-                                                        context, task);
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.check_circle,
-                                                    color: AppColors.darkBrown,
-                                                    size: 30,
-                                                  )),
-                                          trailing: ReorderableDragStartListener(
-                                            index: index,
-                                            child: const Icon(Icons.drag_handle),
+                                                    child: const Text(
+                                                      'Done',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : IconButton(
+                                                    onPressed: () async {
+                                                      await showUploadPhotoDialog(
+                                                          context, task);
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.check_circle,
+                                                      color: AppColors.darkBrown,
+                                                      size: 30,
+                                                    )),
+                                            trailing: ReorderableDragStartListener(
+                                              index: index,
+                                              child: const Icon(Icons.drag_handle),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                  ),
-                                  SizedBox(height: 6,)
-                                ],
-                              );
-                            },
-                            onReorder: (oldIndex, newIndex) async {
-                              setState(() {
-                                if (newIndex > oldIndex) {
-                                  newIndex -= 1;
+                                    ),
+                                    Divider(height: 10,color: AppColors.darkBrown,)
+                                  ],
+                                );
+                              },
+                              onReorder: (oldIndex, newIndex) async {
+                                setState(() {
+                                  if (newIndex > oldIndex) {
+                                    newIndex -= 1;
+                                  }
+                                  final Map<String, dynamic> item =
+                                      snapshot.data!.removeAt(oldIndex);
+                                  snapshot.data!.insert(newIndex, item);
+                                });
+                            
+                                // Store all the changeorder requests in a list
+                                List<Future> requests = [];
+                                for (int i = 0; i < snapshot.data!.length; i++) {
+                                  requests.add(changeorder(
+                                      snapshot.data![i]['task_id'], i));
                                 }
-                                final Map<String, dynamic> item =
-                                    snapshot.data!.removeAt(oldIndex);
-                                snapshot.data!.insert(newIndex, item);
-                              });
-
-                              // Store all the changeorder requests in a list
-                              List<Future> requests = [];
-                              for (int i = 0; i < snapshot.data!.length; i++) {
-                                requests.add(changeorder(
-                                    snapshot.data![i]['task_id'], i));
-                              }
-
-                              // Wait for all the requests to finish
-                              await Future.wait(requests);
-
-                              // Then call gettasks again to refresh the list
-                              setState(() {});
-                            },
+                            
+                                // Wait for all the requests to finish
+                                await Future.wait(requests);
+                            
+                                // Then call gettasks again to refresh the list
+                                setState(() {});
+                              },
+                            ),
                           );
                         }
                       },
