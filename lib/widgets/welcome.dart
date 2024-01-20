@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:work_management_app/widgets/appColors.dart';
 
 import '../homepage.dart';
 import '../main.dart';
@@ -28,13 +29,13 @@ class _WelcomeState extends State<Welcome> {
     var count = '';
     if (_counter == 0) {
       count =
-      'View your works and all available work.\n Complete your tasks as per the given due date.';
+      '✅ View your works and allocated tasks.\n\n ✅ Track your progress on active works.';
     } else if (_counter == 1) {
       count =
-      'Upload the proofs for your works and get verified.\nTrack your progress throughout the work.';
+      '✅ Update completion of each task. \n\n ✅ Upload image proofs for your completed works.';
     } else if (_counter == 2) {
       count =
-      'Ask any queries or feedback on your assigned work.';
+      '✅ Reorder subtasks\n\n✅ Ask any queries \n\n✅ Report problems';
     }
     return count;
   }
@@ -57,7 +58,7 @@ class _WelcomeState extends State<Welcome> {
     final mediaQuery = MediaQuery.of(context);
     final pWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: (Color.fromRGBO(45, 62, 95, 1)),
+      backgroundColor: AppColors.lightSandal,
       body: Stack(
         children: [
           Container(
@@ -70,33 +71,44 @@ class _WelcomeState extends State<Welcome> {
                   padding:
                   EdgeInsets.only(right: pWidth * 0.4, top: pHeight * 0.04),
                   child: Text(
-                    'TUTORIAL',
-                    textAlign: TextAlign.left,
+                    'WELCOME',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: pHeight * 0.04,
-                      color: Colors.white,
+                      color: AppColors.darkBrown,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Merienda',
                     ),
                   ),
                 ),
-                Container(
-                  height: (pHeight - mediaQuery.padding.top) * 0.55,
-                  child: Image.asset(
-                    'assets/$pics.png',
-                    width: pWidth * 1,
-                    height: pHeight * 0.2,
-                    alignment: Alignment.center,
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    height: (pHeight - mediaQuery.padding.top) * 0.50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30), // Adjust the value for the desired corner radius
+                      color: AppColors.darkSandal, // Your desired background color
+                    ),
+                    child: Image.asset(
+                      'assets/$pics.png',
+                      width: pWidth * 1,
+                      height: pHeight * 0.2,
+                      alignment: Alignment.center,
+                    ),
                   ),
                 ),
-                Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Merienda',
-                    fontSize: pHeight * 0.027,
+                SizedBox(height: 20,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: AppColors.darkBrown,
+                      fontFamily: 'Merienda',
+                      fontSize: pHeight * 0.027,
+                    ),
+                    textAlign: TextAlign.justify,
                   ),
-                  textAlign: TextAlign.left,
                 ),
               ],
             ),
@@ -111,18 +123,17 @@ class _WelcomeState extends State<Welcome> {
                   const EdgeInsets.symmetric(horizontal: 22, vertical: 7),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(48),
-                    side: BorderSide(color: Colors.black, width: 3),
+                    side: BorderSide(color: AppColors.darkBrown, width: 3),
                   ),
                   child: Text(
                     'SKIP',
                     style: TextStyle(
                       fontSize: pHeight * 0.027,
-                      color: Colors.white,
+                      color: AppColors.mediumBrown,
                       fontFamily: 'Merienda',
                     ),
                   ),
-                  color: Colors.lightBlue,
-                  textColor: Colors.white,
+                  color: AppColors.darkSandal,
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
@@ -136,12 +147,12 @@ class _WelcomeState extends State<Welcome> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: _counter == 0
-                          ? Color.fromRGBO(46, 207, 9, 1)
+                          ? AppColors.darkBrown
                           : Colors.transparent,
                       //green : grey
                       width: pWidth * 0.006,
                     ),
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: AppColors.darkSandal,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -153,11 +164,11 @@ class _WelcomeState extends State<Welcome> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: _counter == 1
-                          ? Color.fromRGBO(46, 207, 9, 1)
+                          ? AppColors.darkBrown
                           : Colors.transparent,
                       width: pWidth * 0.006,
                     ),
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: AppColors.darkSandal,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -169,11 +180,11 @@ class _WelcomeState extends State<Welcome> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: _counter == 2
-                          ? Color.fromRGBO(46, 207, 9, 1)
+                          ? AppColors.darkBrown
                           : Colors.transparent,
                       width: pWidth * 0.006,
                     ),
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: AppColors.darkSandal,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -181,18 +192,17 @@ class _WelcomeState extends State<Welcome> {
                   padding: EdgeInsets.symmetric(horizontal: 22, vertical: 7),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(48),
-                    side: BorderSide(color: Colors.black, width: 3),
+                    side: BorderSide(color: AppColors.darkBrown, width: 3),
                   ),
                   child: Text(
                     'NEXT',
                     style: TextStyle(
                       fontSize: pHeight * 0.027,
-                      color: Colors.white,
+                      color: AppColors.mediumBrown,
                       fontFamily: 'Merienda',
                     ),
                   ),
-                  color: Color.fromRGBO(48, 230, 91, 1),
-                  textColor: Colors.white,
+                  color: AppColors.darkSandal,
                   onPressed: _increaseCounter,
                 ),
               ],

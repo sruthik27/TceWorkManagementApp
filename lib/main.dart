@@ -30,7 +30,7 @@ void main() async {
     title: 'TCE Work Management',
     home: isLoggedIn
         ? HomePage(workerId)
-        : const MyHomePage(title: 'TCE Work Management'),
+        : MyHomePage(title: 'TCE Work Management'),
     theme: ThemeData(
       colorScheme: ColorScheme.light(
         primary: AppColors.mediumBrown,
@@ -45,6 +45,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -77,6 +78,29 @@ class _MyHomePageState extends State<MyHomePage> {
   String? generatedOtp;
   DateTime? otpGeneratedTime;
   EmailOTP myAuth = EmailOTP();
+  FocusNode myFocusNode = new FocusNode();
+  FocusNode myFocusNode2 = new FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    myFocusNode.addListener(() {
+      setState(() {});
+    });
+    myFocusNode2.addListener(() {
+      setState(() {});
+    });
+  }
+
+  bool isValidEmail(String email) {
+    // Define a regular expression pattern for a valid email address
+    final RegExp emailRegex = RegExp(
+      r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
+    );
+    // Check if the provided email matches the pattern
+    return emailRegex.hasMatch(email);
+  }
+
 
   Future<bool> handleLogin() async {
     var data = {
@@ -207,8 +231,8 @@ class _MyHomePageState extends State<MyHomePage> {
         DateTime.now().difference(otpGeneratedTime!).inMinutes < 5) {
       if (newPasswordController.text == confirmNewPasswordController.text) {
         print('----------verified------------');
-        await changepass();
         Navigator.of(context).pop();
+        await changepass();
         Fluttertoast.showToast(
             msg: "PASSWORD CHANGED",
             toastLength: Toast.LENGTH_SHORT,
@@ -339,6 +363,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: TextFormField(
+                        focusNode: myFocusNode,
                         controller: emailController,
                         decoration: InputDecoration(
                           filled: true,
@@ -347,7 +372,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               borderRadius: BorderRadius.circular(12.0)),
                           labelText: 'Email',
                           labelStyle: TextStyle(
-                            color: Colors.grey, // Change the color as needed
+                              color: myFocusNode.hasFocus ? AppColors.darkBrown : Colors.grey // Change the color as needed
+                          ),
+                          errorStyle: TextStyle(
+                              color: AppColors.lightSandal
                           ),
                         ),
                         validator: (value) {
@@ -361,6 +389,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: TextFormField(
+                        focusNode: myFocusNode2,
                         obscureText: !passwordVisible,
                         controller: passwordController,
                         decoration: InputDecoration(
@@ -371,7 +400,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           labelText: 'Password',
                           labelStyle: TextStyle(
-                            color: Colors.grey, // Change the color as needed
+                            color: myFocusNode2.hasFocus ? AppColors.darkBrown : Colors.grey, // Change the color as needed
+                          ),
+                          errorStyle: TextStyle(
+                            color: AppColors.lightSandal
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -408,7 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       onPressed: () async {
-                        if (emailController.text != "") {
+                        if (emailController.text != "" && isValidEmail(emailController.text)) {
                           await generateOtpAndSendEmail();
                           showDialog(
                             context: context,
@@ -416,15 +448,20 @@ class _MyHomePageState extends State<MyHomePage> {
                               return StatefulBuilder(builder:
                                   (BuildContext context, StateSetter setState) {
                                 return AlertDialog(
-                                  title: Text('Enter OTP and New Password'),
+                                  backgroundColor: AppColors.lightSandal,
+                                  title: Text('CHANGE PASSWORD'),
                                   content: Column(
+                                    mainAxisSize: MainAxisSize.min ,
                                     children: <Widget>[
+                                      Text('OTP sent to ${emailController.text}'),
                                       TextField(
                                         controller: otpController,
                                         decoration: InputDecoration(
                                           hintText: 'Enter OTP',
+                                          hintStyle: TextStyle(color: Colors.brown),
                                         ),
                                       ),
+                                      SizedBox(height: 10,),
                                       TimerCountdown(
                                         format: CountDownTimerFormat.minutesSeconds,
                                         endTime:
@@ -439,36 +476,42 @@ class _MyHomePageState extends State<MyHomePage> {
                                           color: Colors.red,
                                         ),
                                       ),
+                                      SizedBox(height: 10,),
                                       TextField(
                                         controller: newPasswordController,
                                         decoration: InputDecoration(
                                           hintText: 'Enter new password',
+                                          hintStyle: TextStyle(color: Colors.brown),
                                         ),
                                       ),
                                       TextField(
                                         controller: confirmNewPasswordController,
                                         decoration: InputDecoration(
                                           hintText: 'Confirm new password',
+                                          hintStyle: TextStyle(color: Colors.brown),
                                         ),
                                       ),
+                                      SizedBox(height: 10,),
+                                      ElevatedButton(
+                                        child: Text('Submit'),
+                                        onPressed: () {
+                                          verifyOtpAndChangePassword();
+                                        },
+                                        style: ElevatedButton.styleFrom(backgroundColor:AppColors.darkBrown,foregroundColor: Colors.white),
+                                      ),
+                                      SizedBox(height: 5,),
+                                      TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel'))
                                     ],
                                   ),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: Text('Submit'),
-                                      onPressed: () {
-                                        verifyOtpAndChangePassword();
-                                      },
-                                    ),
-                                  ],
                                 );
                               });
                             },
                           );
                         } else {
+                          FocusScope.of(context).unfocus();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Fill the email field and click forgot'),
+                              content: Text('Fill email field with proper email'),
                             ),
                           );
                         }
@@ -507,7 +550,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       builder: (context) => HomePage(worker_id)),
                                 );
                               } else {
-                                print('first time');
                                 prefs.setBool('not_first_time', true);
                                 Navigator.push(
                                   context,

@@ -35,6 +35,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   List<XFile>? selectedImages;
   final ImagePicker picker = ImagePicker();
   bool isLoading = false;
+  bool isExpanded = false;
 
   Future<void> handleQuery(int work, String message) async {
     final jsonData = {
@@ -105,7 +106,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                         timeInSecForIosWeb: 3,
                         backgroundColor: Colors.green,
                         textColor: Colors.white,
-                        fontSize: 16.0);
+                        fontSize: 17.0);
                   },
                   child: const Text('Submit'),
                 ),
@@ -143,8 +144,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       DateTime time = DateTime.parse(isoDate);
       String formattedDate = DateFormat('MMMM dd, y').format(time);
 
-      return formattedDate; // Output: October 15, 2023
+      return formattedDate;
     }
+
 
     Future<List<Map<String, dynamic>>> gettasks(int workid) async {
       var dio = Dio();
@@ -162,6 +164,33 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         return [];
       }
     }
+
+    Future<String> advanceamt(int workid) async {
+      var dio = Dio();
+      try {
+        var response = await dio.request(
+          'https://dmdrtce.in/db/getpayments?workid=$workid',
+          options: Options(
+            method: 'GET',
+          ),
+        );
+        if (response.statusCode == 200) {
+          var payments = await (response.data);
+          for (var payment in payments) {
+            if (payment['payment_type'] == "A") {
+              print(payment['paid_amount']);
+              return payment['paid_amount'].toString();
+            }
+          }
+        } else {
+          print(response.statusMessage);
+        }
+      } catch (error) {
+        print('Error: $error');
+      }
+      return ""; // Return an empty string as a default value
+    }
+
 
     Future<void> changeorder(String taskId, int newOrder) async {
       var dio = Dio();
@@ -511,7 +540,15 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
         foregroundColor: Colors.white,
-        title: Text("${work['work_name']}"),
+        title: Tooltip(
+          message: work['work_name'],
+          child: Text(
+            "${work['work_name']}",
+            overflow: TextOverflow.ellipsis, // Optional: Handle overflow with ellipsis
+            style: TextStyle(fontFamily: 'LexendDeca'),
+          ),
+          triggerMode: TooltipTriggerMode.tap,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -527,17 +564,18 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Work Description",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
             SizedBox(height: 5),
-            Text("${work['work_description']}", style: TextStyle(fontSize: 16)),
+            Text("${work['work_description']}", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca')),
             SizedBox(height: 20),
             Text("Time Period",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
             SizedBox(height: 5),
             Text(
                 "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}",
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 17,
+                    fontFamily: 'LexendDeca',
                     color:
                         DateTime.parse(work['due_date']).isAfter(DateTime.now())
                             ? Colors.green
@@ -552,23 +590,41 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   children: [
                     Text("Total Wage",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                            fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
                     SizedBox(height: 5),
-                    Text("₹${work['wage']}", style: TextStyle(fontSize: 16)),
+                    Text("₹${work['wage']}", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca')),
                     SizedBox(height: 20),
                     Text("Advance Paid",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                            fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
                     SizedBox(height: 5),
-                    Text("${work['advance_paid'] ? "Yes" : "No"}",
-                        style: TextStyle(fontSize: 16)),
+                    (work['advance_paid']
+                        ? FutureBuilder<String>(
+                      future: advanceamt(int.parse(work['work_id'])),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.hasError) {
+                            // Handle error
+                            return Text("Error: ${snapshot.error}");
+                          }
+                          // Display the result
+                          return Text("${work['advance_paid'] ? "Yes - ₹" : "No"} ${snapshot.data}",
+                              style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca'));
+                        } else {
+                          // Show a loading indicator while waiting for the Future to complete
+                          return CircularProgressIndicator();
+                        }
+                      },
+                    )
+                        : Text("No", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca'))
+                    ),
                   ],
                 ),
                 Column(
                   children: [
                     Text('Progress %',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                            fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
                     SizedBox(height: 15),
                     SimpleCircularProgressBar(
                       mergeMode: true,
@@ -577,7 +633,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       fullProgressColor: Colors.green,
                       valueNotifier: _progressNotifier,
                       onGetText: (double value) {
-                        return Text('${value.toInt()}%');
+                        return Text('${value.toInt()}%',style: TextStyle(fontFamily: 'LexendDeca',fontWeight: FontWeight.bold,fontSize: 18),);
                       },
                     ),
                   ],
@@ -588,7 +644,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             Center(
                 child: Text("Sub Tasks:",
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca'))),
             SizedBox(height: 4),
             Column(
               children: [
@@ -685,11 +741,18 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                         Tooltip(
                                           message: "${task['weightage']} %",
                                           preferBelow: true,
-                                          triggerMode: TooltipTriggerMode.tap,
+                                          triggerMode: TooltipTriggerMode.longPress,
                                           child: ListTile(
                                             tileColor: const Color(0xFFFFEAC8),
                                             // key: ValueKey(task['task_id']),
-                                            title: Text(task['task_name']),
+                                            title: GestureDetector(onTap: () {
+                                              setState(() {
+                                                isExpanded = !isExpanded;
+                                              });
+                                            },child: Text(task['task_name'],
+                                              maxLines: isExpanded ? null : 1,
+                                              overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                                            ),),
                                             subtitle: Text(
                                               "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year && DateTime.now().month == DateTime.parse(task['due_date']).month && DateTime.now().day == DateTime.parse(task['due_date']).day ? " \u203C" : ""}",
                                             ),

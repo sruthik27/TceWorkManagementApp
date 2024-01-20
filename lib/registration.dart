@@ -235,7 +235,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         handleRegister();
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const MyHomePage(title: 'Login page'),
+                            builder: (context) => MyHomePage(title: 'Login page'),
                           ),
                         );
                       }

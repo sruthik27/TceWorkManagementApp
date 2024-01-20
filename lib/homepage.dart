@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-          builder: (context) => const MyHomePage(title: 'TCE DMDR')),
+          builder: (context) =>  MyHomePage(title: 'TCE DMDR')),
     );
   }
 
@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           width: 150,
                                           child: DecoratedBox(
                                             decoration: BoxDecoration(
-                                              color: Colors.amberAccent,
+                                              color: Color.fromRGBO(248, 204, 29, 1.0),
                                               // Background color of dropdown button
                                               border: Border.all(
                                                   color: Colors.black38,
@@ -251,7 +251,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       padding:EdgeInsets.only(left: 10),
                                                       child: Text(
                                                         'Sort by',
-                                                        style: TextStyle(color: Colors.black, fontSize: 16),
+                                                        style: TextStyle(color: AppColors.darkBrown, fontSize: 16),
                                                       ),
                                                     ),
                                                   ),
@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       child: Center(
                                                         child: Text(
                                                           value,
-                                                          style: TextStyle(color: Colors.black, fontSize: 16),
+                                                          style: TextStyle(color: AppColors.darkBrown, fontSize: 16),
                                                         ),
                                                       ),
                                                     );
@@ -278,15 +278,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 hint: _sortProperty == null // This hint will be displayed when _sortProperty is null
                                                     ? Text(
                                                   'Sort by',
-                                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                                  style: TextStyle(color: AppColors.darkBrown, fontSize: 16),
                                                 )
                                                     : null,
-                                                icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                                                icon: Icon(Icons.arrow_drop_down, color: AppColors.darkBrown),
                                                 iconSize: 34,
-                                                dropdownColor: Colors.amberAccent,
+                                                dropdownColor: Color.fromRGBO(248, 204, 29, 1.0),
                                                 isExpanded: true,
+                                                underline: SizedBox(),
                                               ),
-                
                                             ),
                                           ),
                                         )
@@ -301,12 +301,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         itemCount: WorkNameList.length,
                                         itemBuilder: (context, index) {
                                           return Container(
-                                            height: 75,
                                             decoration: BoxDecoration(
                                               color: AppColors.darkSandal,
                                               borderRadius: BorderRadius.circular(5), // Adjust the value for the desired corner radius
                                             ),
-                                            child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 12),
                                               child: ListTile(
                                                 onTap: () {
                                                   Navigator.push(
@@ -321,7 +321,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                           () => fetchData());
                                                 },
                                                 title: Text(
-                                                    "${WorkNameList[index]['work_name']}"),
+                                                    "${WorkNameList[index]['work_name']}", style: TextStyle(
+                                                  fontFamily: 'LexendDeca', // Replace 'YourFontFamily' with the desired font family
+                                                  fontSize: 16, // Adjust the font size as needed
+                                                  fontWeight: FontWeight.bold, // Specify the font weight if needed
+                                                  // other text styling properties...
+                                                ),),
                                                 trailing:
                                                 SimpleCircularProgressBar(
                                                   progressStrokeWidth: 5,
