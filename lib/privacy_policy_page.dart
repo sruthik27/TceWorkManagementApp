@@ -32,6 +32,8 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
     ));
+    final pHeight = MediaQuery.of(context).size.height;
+    final pWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
@@ -60,7 +62,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
                   },
                 ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: pHeight*0.01),
               _buildSectionTitle('Introduction'),
               _buildSectionContent(
                   'This privacy policy applies to the TCE DMDR App, which is designed to manage third party works at Thiagarajar college of engineering. This app is provided by TCE and is responsible for protecting your privacy.'
@@ -79,7 +81,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
               _buildSectionContent('We take security seriously and use a variety of measures to protect your personal information from unauthorized access, use, or disclosure. These measures include: Secure databases,Encrypted transmission of data,Access controls,User Rights'),
               _buildSectionTitle('Compliance'),
               _buildSectionContent('We comply with all applicable data privacy laws and regulations.'),
-              SizedBox(height: 10),
+              SizedBox(height: pHeight*0.01),
               _buildSectionContent('By clicking continue you agree to the privacy policy of TCE DMDR'),
               Align(
                 alignment: Alignment.center,

@@ -87,6 +87,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
     ));
+    final pHeight = MediaQuery.of(context).size.height;
+    final pWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
@@ -111,7 +113,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text('Register to join as a TCE DMDR agency',textAlign: TextAlign.center,style: TextStyle(fontFamily: 'NotoSans',fontWeight: FontWeight.bold),),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: pHeight*0.02,),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: TextField(
@@ -211,7 +213,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     },
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: pHeight*0.025,),
                 Column(
                   children: <Widget>[
                     Padding(
@@ -233,10 +235,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     ),
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: pHeight*0.03),
                 Container(
-                  height: 50,
-                  width: 300,
+                  height: pHeight*0.065,
+                  width: pWidth*0.65,
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     child: const Text('Register',style: TextStyle(fontFamily: 'Inter',fontWeight: FontWeight.bold,fontSize: 24),),style: ElevatedButton.styleFrom(

@@ -21,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 int worker_id = 0;
 bool first_time = false;
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -274,6 +275,8 @@ class _MyHomePageState extends State<MyHomePage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
     ));
+    final pHeight = MediaQuery.of(context).size.height;
+    final pWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
@@ -286,7 +289,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              SizedBox(height: 90,),
+              SizedBox(height: pHeight*0.10,),
               TextButton(
                 child: Text.rich(
                   TextSpan(
@@ -325,9 +328,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: pHeight*0.05,),
               Container(
-                height: 480,
+                height: pHeight*0.5,
                 padding: EdgeInsets.only(top: 50),
                 decoration: ShapeDecoration(
                   gradient: LinearGradient(
@@ -352,8 +355,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        width: 214,
-                        height: 42,
+                        width: pWidth*0.4,
+                        height: pHeight*0.05,
                         child: Text(
                           'LOGIN',
                           textAlign: TextAlign.center,
@@ -468,7 +471,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             hintStyle: TextStyle(color: Colors.brown,fontFamily: 'Inter'),
                                           ),
                                         ),
-                                        SizedBox(height: 10,),
+                                        SizedBox(height: pHeight*0.02,),
                                         TimerCountdown(
                                           format: CountDownTimerFormat.minutesSeconds,
                                           endTime:
@@ -483,7 +486,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             color: Colors.red,
                                           ),
                                         ),
-                                        SizedBox(height: 10,),
+                                        SizedBox(height: pHeight*0.02,),
                                         TextField(
                                           controller: newPasswordController,
                                           decoration: InputDecoration(
@@ -498,7 +501,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             hintStyle: TextStyle(color: Colors.brown,fontFamily: 'Inter'),
                                           ),
                                         ),
-                                        SizedBox(height: 10,),
+                                        SizedBox(height: pHeight*0.03),
                                         ElevatedButton(
                                           child: Text('Submit',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
                                           onPressed: () {
@@ -508,7 +511,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             borderRadius: BorderRadius.circular(5.0), // Adjust the value for the desired corner radius
                                           ),),
                                         ),
-                                        SizedBox(height: 5,),
+                                        SizedBox(height: pHeight*0.01,),
                                         TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel',style:TextStyle(fontFamily: 'Inter',fontSize: 16)))
                                       ],
                                     ),
@@ -530,12 +533,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         Center(
                           child: SpinKitFadingCircle(
                             color: AppColors.darkSandal,
-                            size: 100.0,
+                            size: pWidth*0.5,
                           ),
                         ),
                       Container(
-                        width: 300,
-                        height: 50,
+                        width: pWidth*0.65,
+                        height: pHeight*0.07,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               elevation: 8,

@@ -151,6 +151,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   Widget build(BuildContext context) {
     var work = widget.work_details;
     int total = work['total_subtasks'];
+    final pHeight = MediaQuery.of(context).size.height;
+    final pWidth = MediaQuery.of(context).size.width;
+
     String dateTime(String isoDate) {
       DateTime time = DateTime.parse(isoDate);
       String formattedDate = DateFormat('MMMM dd, y').format(time);
@@ -348,7 +351,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
-                            child: Text('Select from gallery',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                            child: Text('Add from gallery',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
                           ),
                           style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.darkBrown,
@@ -358,7 +361,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             ),
                   ),
                         ),
-                        SizedBox(height:10),
+                        SizedBox(height:pHeight*0.02),
                         ElevatedButton(
                           onPressed: () async {
                             final XFile? image = await picker.pickImage(
@@ -382,7 +385,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height:10),
+                        SizedBox(height:pHeight*0.02),
                         Wrap(
                           spacing: 5.0,
                           runSpacing: 5.0,
@@ -403,14 +406,14 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                     ),
                                     child: Image.file(
                                       snapshot.data!,
-                                      width: 100,
-                                      height: 100,
+                                      width: pWidth*0.3,
+                                      height: pWidth*0.3,
                                       fit: BoxFit.cover,
                                     ),
                                   );
                                 }
                                 else {
-                                  return Container(width: 100,height: 100,color: Colors.grey,child: CircularProgressIndicator(),); // Placeholder or loading indicator
+                                  return Container(width: pWidth*0.3,height: pWidth*0.3,color: Colors.grey,child: CircularProgressIndicator(),); // Placeholder or loading indicator
                                 }
                               },
                             ),
@@ -471,7 +474,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
               children: [Image.asset(AppImages.pop_up), Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 30,),
+                  SizedBox(height: pHeight*0.04,),
                   const Text(
                     "Completed?",
                     style: TextStyle(
@@ -481,7 +484,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       fontFamily: 'Montserrat'
                     ),
                   ),
-                  SizedBox(height: 70,),                  ElevatedButton(
+                  SizedBox(height: pHeight*0.07,),
+                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.darkBrown,
                       foregroundColor: Colors.white,
@@ -538,7 +542,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       child: const Text("Upload Attachments",style:TextStyle(fontFamily: 'Inter',fontSize: 18)),
                     ),
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(height: pHeight*0.03,),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -558,7 +562,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       child: const Text('Skip',style:TextStyle(fontFamily: 'Inter',fontSize: 18)),
                     ),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(height: pHeight*0.04,),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -574,6 +578,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
     ));
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(250, 253, 255, 1),
       key: _scaffoldKey,
@@ -605,12 +610,12 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
           children: [
             Text("Work Description",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
-            SizedBox(height: 5),
+            SizedBox(height: pHeight*0.008),
             Text("${work['work_description']}", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca')),
-            SizedBox(height: 20),
+            SizedBox(height: pHeight*0.025),
             Text("Time Period",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
-            SizedBox(height: 5),
+            SizedBox(height: pHeight*0.008),
             Text(
                 "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}",
                 style: TextStyle(
@@ -620,7 +625,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                         DateTime.parse(work['due_date']).isAfter(DateTime.now())
                             ? Colors.green
                             : Colors.red)),
-            SizedBox(height: 20),
+            SizedBox(height: pHeight*0.025),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -631,13 +636,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Text("Total Wage",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
-                    SizedBox(height: 5),
+                    SizedBox(height: pHeight*0.008),
                     Text("₹${work['wage']}", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca')),
-                    SizedBox(height: 20),
+                    SizedBox(height: pHeight*0.025),
                     Text("Advance Paid",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
-                    SizedBox(height: 5),
+                    SizedBox(height: pHeight*0.008),
                     (work['advance_paid']
                         ? FutureBuilder<String>(
                       future: advanceamt(int.parse(work['work_id'])),
@@ -665,7 +670,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                     Text('Progress %',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
-                    SizedBox(height: 15),
+                    SizedBox(height: pHeight*0.02),
                     SimpleCircularProgressBar(
                       mergeMode: true,
                       progressColors: const [AppColors.darkBrown],
@@ -680,12 +685,12 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            SizedBox(height: pHeight*0.01),
             Center(
                 child: Text("Sub Tasks:",
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca'))),
-            SizedBox(height: 4),
+            SizedBox(height: pHeight*0.005),
             Column(
               children: [
                 Text(
@@ -701,10 +706,10 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.green, // Set your desired outer border color
-                                  width: 7.0, // Set your desired outer border width
+                                  width: pWidth*0.015, // Set your desired outer border width
                                 )                   ),
-                            width: 25,
-                            height: 25
+                            width: pWidth*0.06,
+                            height: pWidth*0.06
                         ),
                         Text('Low(< 30%)'),
                       ],
@@ -715,10 +720,10 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.orange, // Set your desired outer border color
-                                  width: 7.0, // Set your desired outer border width
+                                  width: pWidth*0.015, // Set your desired outer border width
                                 )                   ),
-                            width: 25,
-                            height: 25
+                            width: pWidth*0.06,
+                            height: pWidth*0.06
                         ),
                         Text('Medium(<70%)'),
                       ],
@@ -729,10 +734,10 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.red, // Set your desired outer border color
-                              width: 7.0, // Set your desired outer border width
+                              width: pWidth*0.015, // Set your desired outer border width
                             )                   ),
-                          width: 25,
-                          height: 25
+                          width: pWidth*0.06,
+                          height: pWidth*0.06
                         ),
                         Text('High(>70%)'),
                       ],
@@ -741,7 +746,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 ),
               ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: pHeight*0.02,),
             isLoading
                 ? SpinKitFadingCircle(
                     color: AppColors.darkSandal,
@@ -774,7 +779,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                               : task['weightage'] < 70
                                               ? Colors.orange
                                               : Colors.red,
-                                          width: 3.0, // Set your desired border width here
+                                          width: pWidth*0.01, // Set your desired border width here
                                         ),
                                         borderRadius: BorderRadius.circular(8.0), // Set your desired border radius here
                                       ),
@@ -833,7 +838,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                           ),
                                         ),
                                     ),
-                                    Divider(height: 10,color: AppColors.darkBrown,)
+                                    Divider(height: pHeight*0.014,color: AppColors.darkBrown,)
                                   ],
                                 );
                               },

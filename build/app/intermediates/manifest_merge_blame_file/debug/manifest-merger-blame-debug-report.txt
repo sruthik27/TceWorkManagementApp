@@ -46,7 +46,7 @@
 30-->[androidx.core:core:1.10.1] C:\Users\sruth\.gradle\caches\transforms-3\c4988ff80110f75080a936fc6f044848\transformed\core-1.10.1\AndroidManifest.xml:28:18-86
 31        android:debuggable="true"
 32        android:icon="@mipmap/ic_launcher"
-33        android:label="work_management_app" >
+33        android:label="tce_dmdr" >
 34        <activity
 35            android:name="com.tce.work_management_app.MainActivity"
 36            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

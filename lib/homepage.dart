@@ -92,6 +92,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
     ));
+    final pHeight = MediaQuery.of(context).size.height;
+    final pWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mediumBrown,
       appBar: AppBar(
@@ -110,7 +112,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ? Center(
               child: SpinKitFadingCircle(
                 color: AppColors.darkSandal,
-                size: 100.0,
+                size: pWidth*0.25,
               ),
             )
           : Column(
@@ -158,7 +160,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
+                      SizedBox(height: pHeight*0.02),
                       RefreshIndicator(
                         onRefresh: () async {
                           setState(
@@ -232,8 +234,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                                         ),
                                         SizedBox(
-                                          height: 45,
-                                          width: 140,
+                                          height: pHeight*0.055,
+                                          width: pWidth*0.3,
                                           child: DecoratedBox(
                                             decoration: BoxDecoration(
                                               color: Color.fromRGBO(248, 204, 29, 1.0),
@@ -311,7 +313,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         )
                                       ],
                                     ),
-                                    SizedBox(height: 20,),
+                                    SizedBox(height: pHeight*0.035,),
                                     Scrollbar(
                                       thumbVisibility: true,
                                       child: ListView.separated(
@@ -378,7 +380,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                             int index) {
                                           return Container(
                                             color: AppColors.mediumBrown,
-                                            height: 5,
+                                            height: pHeight*0.008,
                                           );
                                         },
                                       ),
