@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:work_management_app/widgets/appColors.dart';
+import 'package:flutter/services.dart';
+import 'package:tce_dmdr/widgets/appColors.dart';
 
 import '../homepage.dart';
 import '../main.dart';
@@ -57,6 +58,9 @@ class _WelcomeState extends State<Welcome> {
     final pHeight = MediaQuery.of(context).size.height;
     final mediaQuery = MediaQuery.of(context);
     final pWidth = MediaQuery.of(context).size.width;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
+    ));
     return Scaffold(
       backgroundColor: AppColors.lightSandal,
       body: Stack(
@@ -77,7 +81,7 @@ class _WelcomeState extends State<Welcome> {
                       fontSize: pHeight * 0.04,
                       color: AppColors.darkBrown,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Merienda',
+                      fontFamily: 'LexcendDeca',
                     ),
                   ),
                 ),

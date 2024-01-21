@@ -4,9 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:work_management_app/main.dart';
+import 'package:tce_dmdr/widgets/appColors.dart';
+import 'package:tce_dmdr/main.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:work_management_app/widgets/appColors.dart';
+import 'package:tce_dmdr/widgets/appColors.dart';
 
 
 class RegistrationForm extends StatefulWidget {
@@ -64,19 +65,17 @@ class _RegistrationFormState extends State<RegistrationForm> {
           },
         );
       }
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //       content: Text('REGISTERED'),
-      //     ));
-      Fluttertoast.showToast(
-          msg: "REGISTERED",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
+      else{
+        Fluttertoast.showToast(
+            msg: "REGISTERED",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
     }
     else {
       print(response.statusMessage);
@@ -85,12 +84,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
+    ));
     return Scaffold(
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
         foregroundColor: Colors.white,
-        title: const Text('Registration'),
+        title: const Text('REGISTRATION',style: TextStyle(fontFamily: 'LexendDeca'),),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -101,11 +103,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
               children: <Widget>[
                 Text('WELCOME',style: TextStyle(
                   color: AppColors.darkBrown,
-                  fontSize: 25,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
+                  fontSize: 27,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.bold,
                 ),),
-                Text('Enter your details and submit to register as an official agency in TCE DMDR',textAlign: TextAlign.center,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text('Register to join as a TCE DMDR agency',textAlign: TextAlign.center,style: TextStyle(fontFamily: 'NotoSans',fontWeight: FontWeight.bold),),
+                ),
                 SizedBox(height: 10,),
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -114,6 +119,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Agency/Your Name',
+                      labelStyle: TextStyle(fontFamily: 'Inter')
                     ),
                   ),
                 ),Container(
@@ -124,7 +130,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Phone',
+                      labelText: 'Your Phone',
+                        labelStyle: TextStyle(fontFamily: 'Inter')
                     ),
                   ),
                 ),
@@ -134,7 +141,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     controller: emailController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Email (existing active one)',
+                      labelText: 'Your Email',
+                        labelStyle: TextStyle(fontFamily: 'Inter')
                     ),
                   ),
                 ),
@@ -145,7 +153,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Password',
+                      labelText: 'Set Password',
+                      labelStyle: TextStyle(fontFamily: 'Inter'),
                       suffixIcon: IconButton(
                         icon: Icon(
                           passwordVisible1 ? Icons.visibility : Icons.visibility_off,
@@ -179,6 +188,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Confirm Password',
+                      labelStyle: TextStyle(fontFamily: 'Inter'),
                       suffixIcon: IconButton(
                         icon: Icon(
                           passwordVisible1 ? Icons.visibility : Icons.visibility_off,
@@ -204,7 +214,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 SizedBox(height: 20,),
                 Column(
                   children: <Widget>[
-                    Text('Verification Code (get from TCE MDR head to sign up)'),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text('Verification Code (get from TCE-DMDR head)',style: TextStyle(fontFamily: 'NotoSans',fontWeight: FontWeight.bold,fontSize: 16),textAlign:TextAlign.center),
+                    ),
                     OtpTextField(
                       enabledBorderColor: Colors.grey,
                       numberOfFields: 4,
@@ -220,13 +233,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
                 Container(
                   height: 50,
+                  width: 300,
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
-                    child: const Text('Register'),style: ElevatedButton.styleFrom(
-                    foregroundColor: AppColors.lightSandal,
+                    child: const Text('Register',style: TextStyle(fontFamily: 'Inter',fontWeight: FontWeight.bold,fontSize: 24),),style: ElevatedButton.styleFrom(
+                    foregroundColor: AppColors.darkSandal,
                     backgroundColor: AppColors.darkBrown, // Set the text color
                     // You can customize other properties like padding, elevation, shape, etc.
                   ),

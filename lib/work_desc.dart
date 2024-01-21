@@ -3,11 +3,12 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:work_management_app/main.dart';
-import 'package:work_management_app/widgets/appColors.dart';
-import 'package:work_management_app/widgets/appText.dart';
+import 'package:tce_dmdr/main.dart';
+import 'package:tce_dmdr/widgets/appColors.dart';
+import 'package:tce_dmdr/widgets/appText.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -65,53 +66,63 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          color: AppColors.lightSandal,
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                'Share any update or ask queries:',
-                style: TextStyle(
-                  color: AppColors.darkBrown,
-                  fontSize: 20,
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _messageController,
-                maxLines: 10,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(
+        return SingleChildScrollView(
+          child: Container(
+            color: AppColors.lightSandal,
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text(
+                  'Share any update or ask queries:',
+                  style: TextStyle(
                     color: AppColors.darkBrown,
-                  )),
-                  hintText: 'Enter your message here',
-                ),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.darkBrown,foregroundColor: Colors.white,
+                    fontSize: 20,
+                    fontFamily: 'NotoSans'
                   ),
-                  onPressed: () async {
-                    await handleQuery(workId, _messageController.text);
-                    Navigator.of(context).pop();
-                    Fluttertoast.showToast(
-                        msg: "SENT SUCCESSFULLY",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 3,
-                        backgroundColor: Colors.green,
-                        textColor: Colors.white,
-                        fontSize: 17.0);
-                  },
-                  child: const Text('Submit'),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _messageController,
+                  maxLines: 10,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                      color: AppColors.darkBrown,
+                    )),
+                    hintText: 'Enter your message here',
+                    hintStyle: TextStyle(fontFamily: 'Inter',fontSize: 18)
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.darkBrown,foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0), // Adjust the value for the desired corner radius
+                      ),
+                    ),
+                    onPressed: () async {
+                      await handleQuery(workId, _messageController.text);
+                      Navigator.of(context).pop();
+                      Fluttertoast.showToast(
+                          msg: "SENT SUCCESSFULLY",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 17.0);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text('Submit',style:TextStyle(fontFamily: 'Inter')),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -320,7 +331,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
                 backgroundColor: AppColors.lightSandal,
-                title: Text('Upload work completion proofs'),
+                title: Text('Upload work completion proofs',style:TextStyle(fontFamily: 'Montserrat',fontSize: 18)),
                 content: Container(
                   child: SingleChildScrollView(
                     child: Column(
@@ -335,10 +346,16 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                               });
                             }
                           },
-                          child: Text('Select from gallery'),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text('Select from gallery',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                          ),
                           style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.darkBrown,
                     foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0), // Adjust the value for the desired corner radius
+                            ),
                   ),
                         ),
                         SizedBox(height:10),
@@ -353,10 +370,16 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                               });
                             }
                           },
-                          child: Text('Take a new photo'),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text('Take a new photo',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.darkBrown,
                             foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0), // Adjust the value for the desired corner radius
+                            ),
                           ),
                         ),
                         SizedBox(height:10),
@@ -401,13 +424,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('Cancel'),
+                    child: Text('Cancel',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     },
                   ),
                   TextButton(
-                    child: Text('Proceed'),
+                    child: Text('Proceed',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
@@ -423,6 +446,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         setState(() {
           isLoading = true;
         });
+        if(selectedImages!.isEmpty){
+          return false;
+        }
         for (XFile image in selectedImages!) {
           String url = await uploadImage(image);
           print('Image URL: $url');
@@ -431,8 +457,6 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
       }
       return proceed == true;
     }
-
-
 
 
     Future<void> showUploadPhotoDialog(BuildContext context, task) async {
@@ -454,12 +478,16 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       decorationThickness: 0.001,
                       color: AppColors.darkBrown,
                       fontSize: 30,
+                      fontFamily: 'Montserrat'
                     ),
                   ),
                   SizedBox(height: 70,),                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.darkBrown,
                       foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0), // Adjust the value for the desired corner radius
+                      ),
                     ),
                     onPressed: () async {
                       Navigator.of(context).pop(); // Close the dialog
@@ -489,7 +517,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                               uploadSuccess
                                   ? 'Uploaded successfully'
                                   : 'Upload failed',
-                            ),
+                                style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
                             actions: <Widget>[
                               TextButton(style: TextButton.styleFrom(
                             backgroundColor: AppColors.darkBrown,foregroundColor: Colors.white,
@@ -505,11 +533,17 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                         },
                       );
                     },
-                    child: const Text("Upload Attachments"),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text("Upload Attachments",style:TextStyle(fontFamily: 'Inter',fontSize: 18)),
+                    ),
                   ),
                   SizedBox(height: 30,),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0), // Adjust the value for the desired corner radius
+                        ),
                       backgroundColor: AppColors.darkBrown,
                       foregroundColor: Colors.white
                     ),
@@ -519,14 +553,17 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       await updatecompletion(task['task_id'], task['weightage']);
                       setState(() {});
                     },
-                    child: const Text('Skip'),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text('Skip',style:TextStyle(fontFamily: 'Inter',fontSize: 18)),
+                    ),
                   ),
                   SizedBox(height: 15,),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Cancel'))
+                      child: Text('Cancel',style:TextStyle(fontSize: 16)))
                 ],
               ),]
             ),
@@ -534,8 +571,11 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         },
       );
     }
-
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
+    ));
     return Scaffold(
+      backgroundColor: Color.fromRGBO(250, 253, 255, 1),
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
@@ -650,7 +690,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
               children: [
                 Text(
                   "Weightage and importance level",
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 18,fontFamily: 'Inter',fontWeight: FontWeight.w500),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -718,6 +758,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                           return Text('Error: ${snapshot.error}');
                         } else {
                           return Material(
+                            color: Color.fromRGBO(250, 253, 255, 1),
                             child: ReorderableListView.builder(
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
@@ -752,10 +793,11 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                             },child: Text(task['task_name'],
                                               maxLines: isExpanded ? null : 1,
                                               overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                                              style: TextStyle(fontFamily: 'LexendDeca'),
                                             ),),
                                             subtitle: Text(
                                               "Due: ${dateTime(task['due_date'])}${DateTime.now().year == DateTime.parse(task['due_date']).year && DateTime.now().month == DateTime.parse(task['due_date']).month && DateTime.now().day == DateTime.parse(task['due_date']).day ? " \u203C" : ""}",
-                                            ),
+                                            style: TextStyle(fontFamily: 'Inter'),),
                                             leading: task['completed']
                                                 ? Container(
                                                     padding:
@@ -780,7 +822,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                                           context, task);
                                                     },
                                                     icon: const Icon(
-                                                      Icons.check_circle,
+                                                      Icons.check_box_outlined,
                                                       color: AppColors.darkBrown,
                                                       size: 30,
                                                     )),

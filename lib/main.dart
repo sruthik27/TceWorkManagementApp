@@ -3,17 +3,19 @@ import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:work_management_app/homepage.dart';
-import 'package:work_management_app/registration.dart';
+import 'package:tce_dmdr/homepage.dart';
+import 'package:tce_dmdr/privacy_policy_page.dart';
+import 'package:tce_dmdr/registration.dart';
 import 'package:dio/dio.dart';
-import 'package:work_management_app/widgets/welcome.dart';
+import 'package:tce_dmdr/widgets/welcome.dart';
 import 'firebase_options.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 
-import 'package:work_management_app/widgets/appColors.dart';
+import 'package:tce_dmdr/widgets/appColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int worker_id = 0;
@@ -23,14 +25,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  bool isFirst = prefs.getBool('isFirst')??false;
   int workerId = prefs.getInt('worker_id') ?? 0;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    title: 'TCE Work Management',
-    home: isLoggedIn
+    title: 'TCE DMDR',
+    home: !isFirst ? PrivacyPolicyPage():
+    isLoggedIn
         ? HomePage(workerId)
-        : MyHomePage(title: 'TCE Work Management'),
+        : MyHomePage(title: 'TCE DMDR'),
     theme: ThemeData(
       colorScheme: ColorScheme.light(
         primary: AppColors.mediumBrown,
@@ -50,8 +54,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TCE Work Management',
-      home: MyHomePage(title: 'TCE Work Management'),
+      title: 'TCE DMDR',
+      home: MyHomePage(title: 'TCE DMDR'),
       theme: ThemeData(primaryColor: AppColors.darkBrown),
     );
   }
@@ -230,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (verified &&
         DateTime.now().difference(otpGeneratedTime!).inMinutes < 5) {
       if (newPasswordController.text == confirmNewPasswordController.text) {
-        print('----------verified------------');
+        // print('----------verified------------');
         Navigator.of(context).pop();
         await changepass();
         Fluttertoast.showToast(
@@ -267,316 +271,322 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
+    ));
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
-        title: const Text('TCE DMDR WORKERS PORTAL'),
+        title: const Text('TCE DMDR WORKERS PORTAL',style: TextStyle(fontFamily: 'LexendDeca',fontWeight: FontWeight.bold,fontSize: 18),),
         backgroundColor: AppColors.darkBrown,
         foregroundColor: Colors.white,
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(height: 90,),
-            TextButton(
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'New User? ',
-                      style: TextStyle(
-                        color: AppColors.darkBrown,
-                        fontSize: 20,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'REGISTER',
-                      style: TextStyle(
-                        color: AppColors.darkBrown,
-                        fontSize: 20,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        decoration: TextDecoration.underline,
-                        height: 0,
-                      ),
-                    ),
-                  ],
-                ),
-                textAlign: TextAlign.center,
-              ),
-              onPressed: () {
-                // Navigate to the registration page
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const RegistrationForm(),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 20,),
-            Container(
-              height: 480,
-              padding: EdgeInsets.only(top: 50),
-              decoration: ShapeDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment(0.65, -0.76),
-                  end: Alignment(-0.65, 0.76),
-                  colors: [Color(0xFFFACD84), Color(0xE2630000)],
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                shadows: [
-                  BoxShadow(
-                    color: Color(0x3F000000),
-                    blurRadius: 5,
-                    offset: Offset(8, 9),
-                    spreadRadius: 1,
-                  )
-                ],
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 214,
-                      height: 42,
-                      child: Text(
-                        'LOGIN',
-                        textAlign: TextAlign.center,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              SizedBox(height: 90,),
+              TextButton(
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'New User? ',
                         style: TextStyle(
-                          color: Color(0xFF630000),
-                          fontSize: 35,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          height: 0.01,
-                          letterSpacing: 3.50,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        focusNode: myFocusNode,
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xFFFBEEFF),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.0)),
-                          labelText: 'Email',
-                          labelStyle: TextStyle(
-                              color: myFocusNode.hasFocus ? AppColors.darkBrown : Colors.grey // Change the color as needed
-                          ),
-                          errorStyle: TextStyle(
-                              color: AppColors.lightSandal
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        focusNode: myFocusNode2,
-                        obscureText: !passwordVisible,
-                        controller: passwordController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xFFFBEEFF),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          labelText: 'Password',
-                          labelStyle: TextStyle(
-                            color: myFocusNode2.hasFocus ? AppColors.darkBrown : Colors.grey, // Change the color as needed
-                          ),
-                          errorStyle: TextStyle(
-                            color: AppColors.lightSandal
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                passwordVisible = !passwordVisible;
-                              });
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    TextButton(
-                      child: Text(
-                        'Forgot password?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.darkBrown,
                           fontSize: 20,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.bold,
+                          height: 0,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' REGISTER',
+                        style: TextStyle(
+                          color: AppColors.darkBrown,
+                          fontSize: 22,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
                           decoration: TextDecoration.underline,
                           height: 0,
                         ),
                       ),
-                      onPressed: () async {
-                        if (emailController.text != "" && isValidEmail(emailController.text)) {
-                          await generateOtpAndSendEmail();
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return StatefulBuilder(builder:
-                                  (BuildContext context, StateSetter setState) {
-                                return AlertDialog(
-                                  backgroundColor: AppColors.lightSandal,
-                                  title: Text('CHANGE PASSWORD'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min ,
-                                    children: <Widget>[
-                                      Text('OTP sent to ${emailController.text}'),
-                                      TextField(
-                                        controller: otpController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Enter OTP',
-                                          hintStyle: TextStyle(color: Colors.brown),
-                                        ),
-                                      ),
-                                      SizedBox(height: 10,),
-                                      TimerCountdown(
-                                        format: CountDownTimerFormat.minutesSeconds,
-                                        endTime:
-                                            DateTime.now().add(Duration(minutes: 5)),
-                                        onEnd: () {
-                                          print("Timer finished");
-                                          Navigator.of(context).pop();
-                                        },
-                                        timeTextStyle: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10,),
-                                      TextField(
-                                        controller: newPasswordController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Enter new password',
-                                          hintStyle: TextStyle(color: Colors.brown),
-                                        ),
-                                      ),
-                                      TextField(
-                                        controller: confirmNewPasswordController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Confirm new password',
-                                          hintStyle: TextStyle(color: Colors.brown),
-                                        ),
-                                      ),
-                                      SizedBox(height: 10,),
-                                      ElevatedButton(
-                                        child: Text('Submit'),
-                                        onPressed: () {
-                                          verifyOtpAndChangePassword();
-                                        },
-                                        style: ElevatedButton.styleFrom(backgroundColor:AppColors.darkBrown,foregroundColor: Colors.white),
-                                      ),
-                                      SizedBox(height: 5,),
-                                      TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel'))
-                                    ],
-                                  ),
-                                );
-                              });
-                            },
-                          );
-                        } else {
-                          FocusScope.of(context).unfocus();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Fill email field with proper email'),
-                            ),
-                          );
-                        }
-                      },
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: () {
+                  // Navigate to the registration page
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const RegistrationForm(),
                     ),
-                    if (isLoading)
-                      Center(
-                        child: SpinKitFadingCircle(
-                          color: AppColors.darkSandal,
-                          size: 100.0,
-                        ),
-                      ),
-                    Container(
-                      width: 300,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 8,
-                            backgroundColor: AppColors.darkSandal,
-                            foregroundColor: AppColors.darkBrown
-                            // You can customize other properties like padding, elevation, shape, etc.
-                            ),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            showLoadingDialog(context);
-                            bool success = await handleLogin();
-                            Navigator.pop(context); // Dismiss the dialog
-                            if (success) {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              bool? notFirstTime = prefs.getBool('not_first_time');
-                              if (notFirstTime != null && notFirstTime) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomePage(worker_id)),
-                                );
-                              } else {
-                                prefs.setBool('not_first_time', true);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Welcome()),
-                                );
-                              }
-                            }
-                          }
-                        },
-                        child: const Text(
+                  );
+                },
+              ),
+              SizedBox(height: 20,),
+              Container(
+                height: 480,
+                padding: EdgeInsets.only(top: 50),
+                decoration: ShapeDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment(0.65, -0.76),
+                    end: Alignment(-0.65, 0.76),
+                    colors: [Color(0xFFFACD84), Color(0xE2630000)],
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  shadows: [
+                    BoxShadow(
+                      color: Color(0x3F000000),
+                      blurRadius: 5,
+                      offset: Offset(8, 9),
+                      spreadRadius: 1,
+                    )
+                  ],
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 214,
+                        height: 42,
+                        child: Text(
                           'LOGIN',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xFF630000),
-                            fontSize: 20,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
-                            height: 0.04,
+                            fontSize: 35,
+                            fontFamily: 'Monserrat',
+                            fontWeight: FontWeight.bold,
+                            height: 0.01,
+                            letterSpacing: 3.50,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextFormField(
+                          focusNode: myFocusNode,
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xFFFBEEFF),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12.0)),
+                            labelText: 'Email',
+                            labelStyle: TextStyle(
+                                color: myFocusNode.hasFocus ? AppColors.darkBrown : Colors.grey // Change the color as needed
+                            ),
+                            errorStyle: TextStyle(
+                                color: AppColors.lightSandal
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextFormField(
+                          focusNode: myFocusNode2,
+                          obscureText: !passwordVisible,
+                          controller: passwordController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xFFFBEEFF),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            labelText: 'Password',
+                            labelStyle: TextStyle(
+                              color: myFocusNode2.hasFocus ? AppColors.darkBrown : Colors.grey, // Change the color as needed
+                            ),
+                            errorStyle: TextStyle(
+                              color: AppColors.lightSandal
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      TextButton(
+                        child: Text(
+                          'Forgot password?',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: 'LexendDeca',
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline,
+                            height: 0,
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (emailController.text != "" && isValidEmail(emailController.text)) {
+                            await generateOtpAndSendEmail();
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return StatefulBuilder(builder:
+                                    (BuildContext context, StateSetter setState) {
+                                  return AlertDialog(
+                                    backgroundColor: AppColors.lightSandal,
+                                    title: Text('CHANGE PASSWORD',style:TextStyle(fontFamily: 'Monserrat')),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min ,
+                                      children: <Widget>[
+                                        Text('OTP sent to ${emailController.text}',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                                        TextField(
+                                          controller: otpController,
+                                          decoration: InputDecoration(
+                                            hintText: 'Enter OTP',
+                                            hintStyle: TextStyle(color: Colors.brown,fontFamily: 'Inter'),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        TimerCountdown(
+                                          format: CountDownTimerFormat.minutesSeconds,
+                                          endTime:
+                                              DateTime.now().add(Duration(minutes: 5)),
+                                          onEnd: () {
+                                            print("Timer finished");
+                                            Navigator.of(context).pop();
+                                          },
+                                          timeTextStyle: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        TextField(
+                                          controller: newPasswordController,
+                                          decoration: InputDecoration(
+                                            hintText: 'Enter new password',
+                                            hintStyle: TextStyle(color: Colors.brown,fontFamily: 'Inter'),
+                                          ),
+                                        ),
+                                        TextField(
+                                          controller: confirmNewPasswordController,
+                                          decoration: InputDecoration(
+                                            hintText: 'Confirm new password',
+                                            hintStyle: TextStyle(color: Colors.brown,fontFamily: 'Inter'),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10,),
+                                        ElevatedButton(
+                                          child: Text('Submit',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                                          onPressed: () {
+                                            verifyOtpAndChangePassword();
+                                          },
+                                          style: ElevatedButton.styleFrom(backgroundColor:AppColors.darkBrown,foregroundColor: Colors.white,shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5.0), // Adjust the value for the desired corner radius
+                                          ),),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        TextButton(onPressed: (){Navigator.pop(context);}, child: Text('cancel',style:TextStyle(fontFamily: 'Inter',fontSize: 16)))
+                                      ],
+                                    ),
+                                  );
+                                });
+                              },
+                            );
+                          } else {
+                            FocusScope.of(context).unfocus();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Fill email field with proper email'),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      if (isLoading)
+                        Center(
+                          child: SpinKitFadingCircle(
+                            color: AppColors.darkSandal,
+                            size: 100.0,
+                          ),
+                        ),
+                      Container(
+                        width: 300,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 8,
+                              backgroundColor: AppColors.darkSandal,
+                              foregroundColor: AppColors.darkBrown
+                              // You can customize other properties like padding, elevation, shape, etc.
+                              ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              showLoadingDialog(context);
+                              bool success = await handleLogin();
+                              Navigator.pop(context); // Dismiss the dialog
+                              if (success) {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                bool? notFirstTime = prefs.getBool('not_first_time');
+                                if (notFirstTime != null && notFirstTime) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage(worker_id)),
+                                  );
+                                } else {
+                                  prefs.setBool('not_first_time', true);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => Welcome()),
+                                  );
+                                }
+                              }
+                            }
+                          },
+                          child: const Text(
+                            'LOGIN',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFF630000),
+                              fontSize: 28,
+                              fontFamily: 'NotoSans',
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 3.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

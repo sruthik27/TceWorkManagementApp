@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
-import 'package:work_management_app/work_desc.dart';
+import 'package:tce_dmdr/work_desc.dart';
 import '../main.dart';
 import '../widgets/appColors.dart';
 import '../widgets/appImages.dart';
@@ -88,12 +89,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: AppColors.darkBrown, // Set the desired color
+    ));
     return Scaffold(
       backgroundColor: AppColors.mediumBrown,
       appBar: AppBar(
         backgroundColor: AppColors.darkBrown,
         foregroundColor: Colors.white,
-        title: const Text("TCE DMDR Platform"),
+        automaticallyImplyLeading: false,
+        title: const Text("TCE  DMDR  Platform",style: TextStyle(fontFamily: 'Lato',fontWeight: FontWeight.bold),),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
@@ -126,6 +131,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 30,
+                              fontFamily: 'Lato',
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -133,7 +139,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             "\"வினையே உயிர்\"",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 18,
                             ),
                           ),
                         ],
@@ -184,10 +190,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         ),
                                         Text(
                                           "You have no works currently",
-                                          style: TextStyle(fontSize: 18),
+                                          style: TextStyle(fontSize: 18,fontFamily: 'NotoSans'),
                                         ),
-                                      ],
-                                    ),
+                                      ],                                     ),
                                   ),
                                 );
                               } else {
@@ -209,12 +214,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           "WORKS ASSIGNED..",
                                           style: TextStyle(
                                             fontStyle: FontStyle.italic,
-                                            fontSize: 18,
-                                          ),
+                                            fontFamily: 'Lato',
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.bold,
+                                            decoration: TextDecoration.underline,
+                                            decorationColor: AppColors.darkBrown,
+                                            decorationThickness: 2.0,
+                                shadows: [
+                                Shadow(
+                                color: AppColors.mediumBrown,
+                                offset: Offset(0, -5))
+                                ],
+                                color: Colors.transparent,
+                                decorationStyle:
+                                TextDecorationStyle.dashed,
+                                ),
+
                                         ),
                                         SizedBox(
-                                          height: 50,
-                                          width: 150,
+                                          height: 45,
+                                          width: 140,
                                           child: DecoratedBox(
                                             decoration: BoxDecoration(
                                               color: Color.fromRGBO(248, 204, 29, 1.0),
@@ -251,7 +270,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       padding:EdgeInsets.only(left: 10),
                                                       child: Text(
                                                         'Sort by',
-                                                        style: TextStyle(color: AppColors.darkBrown, fontSize: 16),
+                                                        style: TextStyle(color: AppColors.darkBrown, fontSize: 16,fontFamily: 'Lato'),
                                                       ),
                                                     ),
                                                   ),
@@ -331,7 +350,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 SimpleCircularProgressBar(
                                                   progressStrokeWidth: 5,
                                                   backStrokeWidth: 6,
-                                                  size: 47,
+                                                  size: 48,
                                                   mergeMode: true,
                                                   progressColors: const [
                                                     AppColors.darkBrown
@@ -347,7 +366,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       1.0),
                                                   onGetText: (double value) {
                                                     return Text(
-                                                        '${value.toInt()}%');
+                                                        '${value.toInt()}%',style: TextStyle(fontFamily: 'LexendDeca'),);
                                                   },
                                                 ),
                                               ),

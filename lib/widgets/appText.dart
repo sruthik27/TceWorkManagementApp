@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:work_management_app/widgets/appColors.dart';
+import 'package:tce_dmdr/widgets/appColors.dart';
 
 class AppText {
   static HeadingText(String text) {
