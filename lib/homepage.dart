@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         backgroundColor: AppColors.darkBrown,
         foregroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: const Text("TCE  DMDR  Platform",style: TextStyle(fontFamily: 'Lato',fontWeight: FontWeight.bold),),
+        title: Text("TCE  DMDR  Platform",style: TextStyle(fontFamily: 'Lato',fontWeight: FontWeight.bold,fontSize: pWidth*0.06),),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
@@ -125,23 +125,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       BlendMode.srcATop,
                     ),child: Image.asset(AppImages.workers,fit: BoxFit.fill)),
                     Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(pHeight*0.03),
                       child: Column(
                         children: [
-                          const Text(
+                           Text(
                             "Greetings from TCE!!",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 30,
+                              fontSize: pWidth*0.068,
                               fontFamily: 'Lato',
                               fontStyle: FontStyle.italic,
                             ),
                           ),
-                          const Text(
+                           Text(
                             "\"வினையே உயிர்\"",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: pWidth*0.045,
                             ),
                           ),
                         ],
@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.fromLTRB(20,0,20,20),
+                  padding: EdgeInsets.fromLTRB(pWidth*0.045,0,pWidth*0.045,pWidth*0.045),
                   decoration: const BoxDecoration(
                     color: AppColors.lightSandal,
                     borderRadius:
@@ -179,23 +179,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               WorkNameList = snapshot.data;
                               if (WorkNameList.isEmpty) {
                                 return Card(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Column(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.refresh),
-                                          onPressed: () {
-                                            fetchData();
-                                            setState(() {});
-                                          },
-                                        ),
-                                        Text(
-                                          "You have no works currently",
-                                          style: TextStyle(fontSize: 18,fontFamily: 'NotoSans'),
-                                        ),
-                                      ],                                     ),
-                                  ),
+                                  child: Column(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.refresh),
+                                        onPressed: () {
+                                          fetchData();
+                                          setState(() {});
+                                        },
+                                      ),
+                                      Text(
+                                        "You have no works currently",
+                                        style: TextStyle(fontSize: pWidth*0.035,fontFamily: 'NotoSans'),
+                                      ),
+                                    ],                                     ),
                                 );
                               } else {
                                 return Column(
@@ -212,12 +209,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                       mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Text(
+                                         Text(
                                           "WORKS ASSIGNED..",
                                           style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontFamily: 'Lato',
-                                            fontSize: 19,
+                                            fontSize: pWidth*0.048,
                                             fontWeight: FontWeight.bold,
                                             decoration: TextDecoration.underline,
                                             decorationColor: AppColors.darkBrown,
@@ -258,10 +255,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                               ],
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets
+                                              padding: EdgeInsets
                                                   .symmetric(
                                                   vertical: 0,
-                                                  horizontal: 10),
+                                                  horizontal: pWidth*0.018),
                                               child: DropdownButton<String>(
                                                 alignment: AlignmentDirectional.center,
                                                 value: _sortProperty, // This will be null initially
@@ -269,10 +266,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                   DropdownMenuItem<String>(
                                                     value: null, // This item will not be selectable
                                                     child: Container(
-                                                      padding:EdgeInsets.only(left: 10),
+                                                      padding:EdgeInsets.only(left: pWidth*0.03),
                                                       child: Text(
                                                         'Sort by',
-                                                        style: TextStyle(color: AppColors.darkBrown, fontSize: 16,fontFamily: 'Lato'),
+                                                        style: TextStyle(color: AppColors.darkBrown, fontSize: pWidth*0.04,fontFamily: 'Lato'),
                                                       ),
                                                     ),
                                                   ),
@@ -282,7 +279,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                       child: Center(
                                                         child: Text(
                                                           value,
-                                                          style: TextStyle(color: AppColors.darkBrown, fontSize: 16),
+                                                          style: TextStyle(color: AppColors.darkBrown, fontSize: pWidth*0.04),
                                                         ),
                                                       ),
                                                     );
@@ -299,7 +296,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 hint: _sortProperty == null // This hint will be displayed when _sortProperty is null
                                                     ? Text(
                                                   'Sort by',
-                                                  style: TextStyle(color: AppColors.darkBrown, fontSize: 16),
+                                                  style: TextStyle(color: AppColors.darkBrown, fontSize: pWidth*0.04),
                                                 )
                                                     : null,
                                                 icon: Icon(Icons.arrow_drop_down, color: AppColors.darkBrown),
@@ -327,7 +324,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                               borderRadius: BorderRadius.circular(5), // Adjust the value for the desired corner radius
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
+                                              padding: EdgeInsets.symmetric(vertical: pHeight*0.013),
                                               child: ListTile(
                                                 onTap: () {
                                                   Navigator.push(
@@ -344,7 +341,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 title: Text(
                                                     "${WorkNameList[index]['work_name']}", style: TextStyle(
                                                   fontFamily: 'LexendDeca', // Replace 'YourFontFamily' with the desired font family
-                                                  fontSize: 16, // Adjust the font size as needed
+                                                  fontSize: pWidth*0.0405, // Adjust the font size as needed
                                                   fontWeight: FontWeight.bold, // Specify the font weight if needed
                                                   // other text styling properties...
                                                 ),),
@@ -352,7 +349,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 SimpleCircularProgressBar(
                                                   progressStrokeWidth: 5,
                                                   backStrokeWidth: 6,
-                                                  size: 48,
+                                                  size: pWidth*0.12,
                                                   mergeMode: true,
                                                   progressColors: const [
                                                     AppColors.darkBrown

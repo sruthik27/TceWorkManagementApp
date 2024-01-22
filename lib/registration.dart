@@ -105,7 +105,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               children: <Widget>[
                 Text('WELCOME',style: TextStyle(
                   color: AppColors.darkBrown,
-                  fontSize: 27,
+                  fontSize: pWidth*0.07,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold,
                 ),),
@@ -115,7 +115,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 ),
                 SizedBox(height: pHeight*0.02,),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(pWidth*0.022),
                   child: TextField(
                     controller: nameController,
                     decoration: const InputDecoration(
@@ -125,7 +125,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     ),
                   ),
                 ),Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(pWidth*0.022),
                   child: TextField(
                     controller: phoneController,
                     keyboardType: TextInputType.phone,
@@ -138,7 +138,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(pWidth*0.022),
                   child: TextField(
                     controller: emailController,
                     decoration: const InputDecoration(
@@ -149,7 +149,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding:  EdgeInsets.all(pWidth*0.022),
                   child: TextFormField(
                     obscureText: !passwordVisible1,
                     controller: passwordController,
@@ -183,7 +183,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(pWidth*0.022),
                   child: TextFormField(
                     obscureText: !passwordVisible1,
                     controller: confirmPasswordController,
@@ -217,7 +217,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text('Verification Code (get from TCE-DMDR head)',style: TextStyle(fontFamily: 'NotoSans',fontWeight: FontWeight.bold,fontSize: 16),textAlign:TextAlign.center),
                     ),
                     OtpTextField(
@@ -241,7 +241,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   width: pWidth*0.65,
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
-                    child: const Text('Register',style: TextStyle(fontFamily: 'Inter',fontWeight: FontWeight.bold,fontSize: 24),),style: ElevatedButton.styleFrom(
+                    child:  Text('Register',style: TextStyle(fontFamily: 'Inter',fontWeight: FontWeight.bold,fontSize: pWidth*0.065),),style: ElevatedButton.styleFrom(
                     foregroundColor: AppColors.darkSandal,
                     backgroundColor: AppColors.darkBrown, // Set the text color
                     // You can customize other properties like padding, elevation, shape, etc.

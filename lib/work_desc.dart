@@ -150,7 +150,6 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
   @override
   Widget build(BuildContext context) {
     var work = widget.work_details;
-    int total = work['total_subtasks'];
     final pHeight = MediaQuery.of(context).size.height;
     final pWidth = MediaQuery.of(context).size.width;
 
@@ -334,7 +333,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
                 backgroundColor: AppColors.lightSandal,
-                title: Text('Upload work completion proofs',style:TextStyle(fontFamily: 'Montserrat',fontSize: 18)),
+                title: Text('Upload work completion proofs',style:TextStyle(fontFamily: 'Montserrat',fontSize: pWidth*0.045)),
                 content: Container(
                   child: SingleChildScrollView(
                     child: Column(
@@ -350,8 +349,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             }
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text('Add from gallery',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                            padding: EdgeInsets.all(pHeight*0.015),
+                            child: Text('Add from gallery',style:TextStyle(fontFamily: 'Inter',fontSize: pWidth*0.04)),
                           ),
                           style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.darkBrown,
@@ -374,8 +373,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                             }
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text('Take a new photo',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                            padding: EdgeInsets.all(pHeight*0.015),
+                            child: Text('Take a new photo',style:TextStyle(fontFamily: 'Inter',fontSize: pWidth*0.04)),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.darkBrown,
@@ -427,13 +426,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('Cancel',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                    child: Text('Cancel',style:TextStyle(fontFamily: 'Inter',fontSize: pWidth*0.04)),
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     },
                   ),
                   TextButton(
-                    child: Text('Proceed',style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                    child: Text('Proceed',style:TextStyle(fontFamily: 'Inter',fontSize: pWidth*0.04)),
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
@@ -468,19 +467,19 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         context: _scaffoldKey.currentContext!,
         builder: (BuildContext context) {
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: 20,vertical: 220),
+            margin: EdgeInsets.symmetric(horizontal: pWidth*0.05,vertical: pHeight*0.25),
             child: Stack(
               alignment: Alignment.topCenter,
               children: [Image.asset(AppImages.pop_up), Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(height: pHeight*0.04,),
-                  const Text(
+                   Text(
                     "Completed?",
                     style: TextStyle(
                       decorationThickness: 0.001,
                       color: AppColors.darkBrown,
-                      fontSize: 30,
+                      fontSize: pWidth*0.075,
                       fontFamily: 'Montserrat'
                     ),
                   ),
@@ -521,7 +520,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                               uploadSuccess
                                   ? 'Uploaded successfully'
                                   : 'Upload failed',
-                                style:TextStyle(fontFamily: 'Inter',fontSize: 16)),
+                                style:TextStyle(fontFamily: 'Inter',fontSize: pWidth*0.04)),
                             actions: <Widget>[
                               TextButton(style: TextButton.styleFrom(
                             backgroundColor: AppColors.darkBrown,foregroundColor: Colors.white,
@@ -538,8 +537,8 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: const Text("Upload Attachments",style:TextStyle(fontFamily: 'Inter',fontSize: 18)),
+                      padding: EdgeInsets.all(pWidth*0.03),
+                      child: Text("Upload Attachments",style:TextStyle(fontFamily: 'Inter',fontSize: pWidth*0.045)),
                     ),
                   ),
                   SizedBox(height: pHeight*0.03,),
@@ -558,16 +557,16 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       setState(() {});
                     },
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: const Text('Skip',style:TextStyle(fontFamily: 'Inter',fontSize: 18)),
+                      padding: EdgeInsets.all(pWidth*0.03),
+                      child: Text('Skip',style:TextStyle(fontFamily: 'Inter',fontSize: pWidth*0.045)),
                     ),
                   ),
-                  SizedBox(height: pHeight*0.04,),
+                  SizedBox(height: pHeight*0.035,),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Cancel',style:TextStyle(fontSize: 16)))
+                      child: Text('Cancel',style:TextStyle(fontSize: pWidth*0.04)))
                 ],
               ),]
             ),
@@ -603,23 +602,23 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
         child: const Icon(Icons.announcement),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(pWidth*0.055),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Work Description",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
+                style: TextStyle(fontSize: pWidth*0.044, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
             SizedBox(height: pHeight*0.008),
-            Text("${work['work_description']}", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca')),
+            Text("${work['work_description']}", style: TextStyle(fontSize: pWidth*0.043,fontFamily: 'LexendDeca')),
             SizedBox(height: pHeight*0.025),
             Text("Time Period",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
+                style: TextStyle(fontSize: pWidth*0.044, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
             SizedBox(height: pHeight*0.008),
             Text(
                 "${dateTime(work['start_date'])} - ${dateTime(work['due_date'])}",
                 style: TextStyle(
-                    fontSize: 17,
+                    fontSize: pWidth*0.0425,
                     fontFamily: 'LexendDeca',
                     color:
                         DateTime.parse(work['due_date']).isAfter(DateTime.now())
@@ -635,13 +634,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   children: [
                     Text("Total Wage",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
+                            fontSize: pWidth*0.044, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
                     SizedBox(height: pHeight*0.008),
-                    Text("₹${work['wage']}", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca')),
+                    Text("₹${work['wage']}", style: TextStyle(fontSize: pWidth*0.043,fontFamily: 'LexendDeca')),
                     SizedBox(height: pHeight*0.025),
                     Text("Advance Paid",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
+                            fontSize: pWidth*0.044, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
                     SizedBox(height: pHeight*0.008),
                     (work['advance_paid']
                         ? FutureBuilder<String>(
@@ -654,14 +653,14 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                           }
                           // Display the result
                           return Text("${work['advance_paid'] ? "Yes - ₹" : "No"} ${snapshot.data}",
-                              style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca'));
+                              style: TextStyle(fontSize: pWidth*0.043,fontFamily: 'LexendDeca'));
                         } else {
                           // Show a loading indicator while waiting for the Future to complete
                           return CircularProgressIndicator();
                         }
                       },
                     )
-                        : Text("No", style: TextStyle(fontSize: 17,fontFamily: 'LexendDeca'))
+                        : Text("No", style: TextStyle(fontSize: pWidth*0.043,fontFamily: 'LexendDeca'))
                     ),
                   ],
                 ),
@@ -669,7 +668,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                   children: [
                     Text('Progress %',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
+                            fontSize: pWidth*0.044, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca')),
                     SizedBox(height: pHeight*0.02),
                     SimpleCircularProgressBar(
                       mergeMode: true,
@@ -677,8 +676,9 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                       backColor: AppColors.darkSandal,
                       fullProgressColor: Colors.green,
                       valueNotifier: _progressNotifier,
+                      size: pWidth*0.23,
                       onGetText: (double value) {
-                        return Text('${value.toInt()}%',style: TextStyle(fontFamily: 'LexendDeca',fontWeight: FontWeight.bold,fontSize: 18),);
+                        return Text('${value.toInt()}%',style: TextStyle(fontFamily: 'LexendDeca',fontWeight: FontWeight.bold,fontSize: pWidth*0.044),);
                       },
                     ),
                   ],
@@ -689,13 +689,13 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             Center(
                 child: Text("Sub Tasks:",
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca'))),
+                        TextStyle(fontSize: pWidth*0.044, fontWeight: FontWeight.bold,fontFamily: 'LexendDeca'))),
             SizedBox(height: pHeight*0.005),
             Column(
               children: [
                 Text(
                   "Weightage and importance level",
-                  style: TextStyle(fontSize: 18,fontFamily: 'Inter',fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: pWidth*0.044,fontFamily: 'Inter',fontWeight: FontWeight.w500),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -750,7 +750,7 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
             isLoading
                 ? SpinKitFadingCircle(
                     color: AppColors.darkSandal,
-                    size: 100.0,
+                    size: pWidth*0.25,
                   )
                 : Expanded(
                     child: FutureBuilder<List<Map<String, dynamic>>>(
@@ -826,10 +826,10 @@ class _WorkDescriptionPageState extends State<WorkDescriptionPage> {
                                                       await showUploadPhotoDialog(
                                                           context, task);
                                                     },
-                                                    icon: const Icon(
+                                                    icon:  Icon(
                                                       Icons.check_box_outlined,
                                                       color: AppColors.darkBrown,
-                                                      size: 30,
+                                                      size: pWidth*0.08,
                                                     )),
                                             trailing: ReorderableDragStartListener(
                                               index: index,

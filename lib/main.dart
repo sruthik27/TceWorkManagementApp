@@ -280,13 +280,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: AppColors.lightSandal,
       appBar: AppBar(
-        title: const Text('TCE DMDR WORKERS PORTAL',style: TextStyle(fontFamily: 'LexendDeca',fontWeight: FontWeight.bold,fontSize: 18),),
+        title: Text('TCE DMDR WORKERS PORTAL',style: TextStyle(fontFamily: 'LexendDeca',fontWeight: FontWeight.bold,fontSize: pWidth*0.042),),
         backgroundColor: AppColors.darkBrown,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: pWidth*0.05),
           child: Column(
             children: [
               SizedBox(height: pHeight*0.10,),
@@ -298,7 +298,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         text: 'New User? ',
                         style: TextStyle(
                           color: AppColors.darkBrown,
-                          fontSize: 20,
+                          fontSize: pWidth*0.05,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.bold,
                           height: 0,
@@ -308,7 +308,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         text: ' REGISTER',
                         style: TextStyle(
                           color: AppColors.darkBrown,
-                          fontSize: 22,
+                          fontSize: pWidth*0.055,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w600,
                           decoration: TextDecoration.underline,
@@ -331,7 +331,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: pHeight*0.05,),
               Container(
                 height: pHeight*0.5,
-                padding: EdgeInsets.only(top: 50),
+                padding: EdgeInsets.only(top: pHeight*0.065),
                 decoration: ShapeDecoration(
                   gradient: LinearGradient(
                     begin: Alignment(0.65, -0.76),
@@ -362,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xFF630000),
-                            fontSize: 35,
+                            fontSize: pWidth*0.09,
                             fontFamily: 'Monserrat',
                             fontWeight: FontWeight.bold,
                             height: 0.01,
@@ -371,7 +371,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(pHeight*0.015),
                         child: TextFormField(
                           focusNode: myFocusNode,
                           controller: emailController,
@@ -397,7 +397,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(pHeight*0.015),
                         child: TextFormField(
                           focusNode: myFocusNode2,
                           obscureText: !passwordVisible,
@@ -442,7 +442,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: pWidth*0.045,
                             fontFamily: 'LexendDeca',
                             fontWeight: FontWeight.w500,
                             decoration: TextDecoration.underline,
@@ -477,7 +477,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           endTime:
                                               DateTime.now().add(Duration(minutes: 5)),
                                           onEnd: () {
-                                            print("Timer finished");
+                                            // print("Timer finished");
                                             Navigator.of(context).pop();
                                           },
                                           timeTextStyle: TextStyle(
@@ -571,12 +571,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               }
                             }
                           },
-                          child: const Text(
+                          child: Text(
                             'LOGIN',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xFF630000),
-                              fontSize: 28,
+                              fontSize: pWidth*0.07,
                               fontFamily: 'NotoSans',
                               fontWeight: FontWeight.bold,
                               letterSpacing: 3.0,
